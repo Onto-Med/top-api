@@ -57,14 +57,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                required:
-                  - token
-                properties:
-                  token:
-                    description: The JWT token
-                    type: string
-                    readOnly: true
+                $ref: '#/components/schemas/AuthenticationToken'
         401:
           $ref: '#/components/schemas/Unauthorized'
         default:
@@ -1343,6 +1336,16 @@ components:
         password:
           type: string
           format: password
+
+    AuthenticationToken:
+      type: object
+      required:
+        - token
+      properties:
+        token:
+          description: The JWT token
+          type: string
+          readOnly: true
 
   securitySchemes:
     BearerAuth:

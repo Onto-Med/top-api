@@ -49,16 +49,8 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              required:
-                - username
-                - password
-              properties:
-                username:
-                  type: string
-                password:
-                  type: string
-                  format: password
+              $ref: '#/components/schemas/LoginRequest'
+
       responses:
         200:
           description: Generated JWT token
@@ -1339,6 +1331,18 @@ components:
           format: int32
         message:
           type: string
+
+    LoginRequest:
+      type: object
+      required:
+        - username
+        - password
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+          format: password
 
   securitySchemes:
     BearerAuth:

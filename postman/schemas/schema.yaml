@@ -1183,7 +1183,7 @@ components:
       properties:
         type:
           type: string
-          enum: [union, intersection, complement, restriction]
+          enum: [union, intersection, complement, class]
         id:
           type: string
           format: uuid

@@ -1183,7 +1183,7 @@ components:
       properties:
         type:
           type: string
-          enum: [union, intersection, complement, restriction]
+          enum: [union, intersection, complement, class]
         id:
           type: string
           format: uuid
@@ -1290,20 +1290,57 @@ components:
           $ref: '#/components/schemas/RestrictionOperator'
         maxOperator:
           $ref: '#/components/schemas/RestrictionOperator'
-        values:
-          type: array
-          description: In case there are operators, the first two values are used as values for those operators
-          items:
-            $ref: '#/components/schemas/RestrictionValue'
+      discriminator:
+        propertyName: type
     
-    RestrictionValue:
-      description: Single value of a restriction
-      oneOf:
-        - type: string
-        - type: number
-        - type: boolean
-        - type: string
-          format: date-time
+    StringRestriction:
+      allOf:
+        - $ref: '#/components/schemas/Restriction'
+        - type: object
+          properties:
+            values:
+              type: array
+              items:
+                type: string
+
+    BooleanRestriction:
+      allOf:
+        - $ref: '#/components/schemas/Restriction'
+        - type: object
+          properties:
+            values:
+              type: array
+              items:
+                type: boolean
+
+    NumberRestriction:
+      allOf:
+        - $ref: '#/components/schemas/Restriction'
+        - type: object
+          properties:
+            minOperator:
+              $ref: '#/components/schemas/RestrictionOperator'
+            maxOperator:
+              $ref: '#/components/schemas/RestrictionOperator'
+            values:
+              type: array
+              description: In case there are operators, the first two values are used as values for those operators
+              items:
+                type: number
+
+    DateRestriction:
+      allOf:
+        - $ref: '#/components/schemas/Restriction'
+        - type: object
+          properties:
+            minOperator:
+              $ref: '#/components/schemas/RestrictionOperator'
+            maxOperator:
+              $ref: '#/components/schemas/RestrictionOperator'
+            values:
+              type: string
+              description: In case there are operators, the first two values are used as values for those operators
+              format: date-time
 
     RestrictionOperator:
       type: string

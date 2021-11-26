@@ -721,7 +721,7 @@ paths:
           description: Filter phenotypes or categories by data type
           in: query
           schema:
-            $ref: "#/components/schemas/EntityDataType"
+            $ref: "#/components/schemas/DataType"
         - $ref: "#/components/parameters/page"
       responses:
         200:
@@ -1134,7 +1134,7 @@ components:
         - type: object
           properties:
             dataType:
-              $ref: "#/components/schemas/EntityDataType"
+              $ref: "#/components/schemas/DataType"
             formula:
               type: string
             restriction:
@@ -1209,7 +1209,7 @@ components:
         - combined_restriction
         - derived_restriction
 
-    EntityDataType:
+    DataType:
       type: string
       enum: [string, number, boolean, date_time]
 
@@ -1276,8 +1276,7 @@ components:
         - type
       properties:
         type:
-          type: string
-          enum: [string, number, date_time, boolean]
+          $ref:  "#/components/schemas/DataType"
         negated:
           type: boolean
           default: false

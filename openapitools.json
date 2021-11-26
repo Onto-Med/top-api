@@ -6,7 +6,7 @@
     "generators": {
       "axios": {
         "generatorName": "typescript-axios",
-        "output": "#{cwd}/output/axios/#{ext}/#{name}",
+        "output": "#{cwd}/output/axios",
         "glob": "postman/schemas/schema.yaml",
         "additionalProperties": {
           "npmName": "top-api",

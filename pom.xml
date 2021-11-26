@@ -95,7 +95,7 @@
 							<goal>generate</goal>
 						</goals>
 						<configuration>
-							<inputSpec>${project.basedir}/postman/schemas/schema.yaml</inputSpec>
+							<inputSpec>${project.basedir}/schemas/top-api.yml</inputSpec>
 							<generatorName>spring</generatorName>
 							<modelPackage>de.uni_leipzig.imise.top.backend.model</modelPackage>
 							<apiPackage>de.uni_leipzig.imise.top.backend.api</apiPackage>

@@ -7,7 +7,7 @@
       "axios": {
         "generatorName": "typescript-axios",
         "output": "#{cwd}/output/axios",
-        "glob": "postman/schemas/schema.yaml",
+        "glob": "schemas/top-api.yml",
         "typeMappings": "DateTime=Date",
         "additionalProperties": {
           "npmName": "@onto-med/top-api",

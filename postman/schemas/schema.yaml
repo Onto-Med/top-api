@@ -1065,18 +1065,19 @@ components:
         superOrganisation:
           $ref: '#/components/schemas/Organisation'
 
-    Category:
+    Entity:
+      description: Either category or phenotype
       allOf:
         - $ref: '#/components/schemas/VersionedContent'
         - type: object
           required:
             - type
           properties:
+            type:
+              $ref: '#/components/schemas/EntityType'
             uuid:
               type: string
               format: uuid
-            type:
-              $ref: '#/components/schemas/EntityType'
             titles:
               type: array
               description: There should only be one title per language
@@ -1098,20 +1099,38 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/Code'
-            superCategories:
-              type: array
-              items:
-                $ref: '#/components/schemas/Category'
             repository:
               $ref: '#/components/schemas/Repository'
             equivalentEntities:
               type: array
               items:
                 $ref: '#/components/schemas/Entity'
+          discriminator:
+            propertyName: type
+            mapping:
+              category: '#/components/schemas/Category'
+              # missing_value: TODO
+              # phenotype_group: TODO
+              single_phenotype: '#/components/schemas/Phenotype'
+              combined_phenotype: '#/components/schemas/Phenotype'
+              derived_phenotype: '#/components/schemas/Phenotype'
+              single_restriction: '#/components/schemas/Phenotype'
+              combined_restriction: '#/components/schemas/Phenotype'
+              derived_restriction: '#/components/schemas/Phenotype'
+
+    Category:
+      allOf:
+        - $ref: '#/components/schemas/Entity'
+        - type: object
+          properties:
+            superCategories:
+              type: array
+              items:
+                $ref: '#/components/schemas/Category'
 
     Phenotype:
       allOf:
-        - $ref: '#/components/schemas/Category'
+        - $ref: '#/components/schemas/Entity'
         - oneOf:
           - $ref: '#/components/schemas/HasDataType'
           - allOf:
@@ -1135,14 +1154,12 @@ components:
                     minLength: 1
             score:
               type: number
+            superCategories:
+              type: array
+              items:
+                $ref: '#/components/schemas/Category'
             superPhenotype:
               $ref: '#/components/schemas/Phenotype'
-
-    Entity:
-      description: Either category or phenotype
-      oneOf:
-        - $ref: '#/components/schemas/Category'
-        - $ref: '#/components/schemas/Phenotype'
 
     HasDataType:
       type: object
@@ -1286,12 +1303,13 @@ components:
           default: false
         quantor:
           $ref: '#/components/schemas/Quantor'
-        minOperator:
-          $ref: '#/components/schemas/RestrictionOperator'
-        maxOperator:
-          $ref: '#/components/schemas/RestrictionOperator'
       discriminator:
         propertyName: type
+        mapping:
+          string: '#/components/schemas/StringRestriction'
+          number: '#/components/schemas/NumberRestriction'
+          date_time: '#/components/schemas/DateTimeRestriction'
+          boolean: '#/components/schemas/BooleanRestriction'
     
     StringRestriction:
       allOf:
@@ -1328,7 +1346,7 @@ components:
               items:
                 type: number
 
-    DateRestriction:
+    DateTimeRestriction:
       allOf:
         - $ref: '#/components/schemas/Restriction'
         - type: object

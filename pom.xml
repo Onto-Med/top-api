@@ -4,7 +4,7 @@
 
 	<groupId>de.uni_leipzig.imise.top</groupId>
 	<artifactId>top-api</artifactId>
-	<version>0.1.5</version>
+	<version>0.1.6</version>
 
 	<name>TOP API</name>
 	<description>REST API of the TOP framework</description>
@@ -95,7 +95,7 @@
 							<goal>generate</goal>
 						</goals>
 						<configuration>
-							<inputSpec>${project.basedir}/postman/schemas/schema.yaml</inputSpec>
+							<inputSpec>${project.basedir}/schemas/top-api.yml</inputSpec>
 							<generatorName>spring</generatorName>
 							<modelPackage>de.uni_leipzig.imise.top.backend.model</modelPackage>
 							<apiPackage>de.uni_leipzig.imise.top.backend.api</apiPackage>

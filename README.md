@@ -27,3 +27,18 @@ Usage of the skeleton in your Spring Boot application:
 ```
 2. Add annotation `@ComponentScan("de.uni_leipzig.imise.top.backend")` to your application class.
 3. Create implementations for the delegate interfaces in `de.uni_leipzig.imise.top.backend.api` (e.g., `CodeSystemApiDelegate`).
+
+## Typescript Axios
+
+1. Add the file .npmrc to the project folder, with the following content:
+```properties
+@onto-med:registry=https://npm.pkg.github.com
+```
+2. Authenticate at GitHub Packages registry (you will be prompted for username and password aka. personal access token):
+```sh
+npm login --scope=@onto-med --registry=https://npm.pkg.github.com
+```
+3. Add `@onto-med/top-api` as dependency, e.g.:
+```sh
+yarn add @onto-med/top-api
+```

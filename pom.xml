@@ -97,12 +97,34 @@
 						<configuration>
 							<inputSpec>${project.basedir}/schemas/top-api.yml</inputSpec>
 							<generatorName>spring</generatorName>
+							<output>target/generated-sources/openapi/spring</output>
 							<modelPackage>de.uni_leipzig.imise.top.backend.model</modelPackage>
 							<apiPackage>de.uni_leipzig.imise.top.backend.api</apiPackage>
 							<supportingFilesToGenerate>ApiUtil.java</supportingFilesToGenerate>
 							<configOptions>
 								<serializableModel>true</serializableModel>
 								<delegatePattern>true</delegatePattern>
+							</configOptions>
+						</configuration>
+					</execution>
+					<execution>
+						<id>typescript-axios</id>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<inputSpec>${project.basedir}/schemas/top-api.yml</inputSpec>
+							<generatorName>typescript-axios</generatorName>
+							<output>target/generated-sources/openapi/axios</output>
+							<typeMappings>
+								<typeMapping>DateTime=Date</typeMapping>
+							</typeMappings>
+							<configOptions>
+								<npmName>@onto-med/top-api</npmName>
+								<npmRepository>https://npm.pkg.github.com</npmRepository>
+								<supportsES6>true</supportsES6>
+								<withInterfaces>true</withInterfaces>
+								<withoutPrefixEnums>true</withoutPrefixEnums>
 							</configOptions>
 						</configuration>
 					</execution>

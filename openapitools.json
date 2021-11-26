@@ -10,8 +10,10 @@
         "glob": "postman/schemas/schema.yaml",
         "additionalProperties": {
           "npmName": "top-api",
+          "npmVersion": "0.1.4",
           "supportsES6": "true",
-          "withInterfaces": true
+          "withInterfaces": true,
+          "withoutPrefixEnums": true
         }
       }
     }

@@ -9,7 +9,7 @@
         "output": "#{cwd}/output/axios",
         "glob": "postman/schemas/schema.yaml",
         "additionalProperties": {
-          "npmName": "top-api",
+          "npmName": "@onto-med/top-api",
           "npmVersion": "0.1.5",
           "npmRepository": "https://npm.pkg.github.com",
           "supportsES6": "true",

@@ -25,7 +25,8 @@
 	"extensions": [
 		"vscjava.vscode-java-pack",
 		"redhat.vscode-xml",
-		"redhat.fabric8-analytics"
+		"redhat.fabric8-analytics",
+		"42crunch.vscode-openapi"
 	],
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.

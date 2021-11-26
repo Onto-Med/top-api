@@ -1218,6 +1218,8 @@ components:
       properties:
         version:
           $ref: "#/components/schemas/VersionNumber"
+        author:
+          $ref: "#/components/schemas/UserAccount"
         createdAt:
           type: string
           format: date-time

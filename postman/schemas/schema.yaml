@@ -1071,9 +1071,9 @@ components:
         - $ref: '#/components/schemas/VersionedContent'
         - type: object
           required:
-            - type
+            - entityType
           properties:
-            type:
+            entityType:
               $ref: '#/components/schemas/EntityType'
             uuid:
               type: string
@@ -1106,7 +1106,7 @@ components:
               items:
                 $ref: '#/components/schemas/Entity'
           discriminator:
-            propertyName: type
+            propertyName: entityType
             mapping:
               category: '#/components/schemas/Category'
               # missing_value: TODO

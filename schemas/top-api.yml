@@ -1144,15 +1144,7 @@ components:
             units:
               type: array
               items:
-                type: object
-                properties:
-                  preferred:
-                    type: boolean
-                    default: false
-                    description: If there are multiple preferred units, the first one will be used
-                  unit:
-                    type: string
-                    minLength: 1
+                $ref:  "#/components/schemas/Unit"
             score:
               type: number
             superCategories:
@@ -1161,6 +1153,17 @@ components:
                 $ref: "#/components/schemas/Category"
             superPhenotype:
               $ref: "#/components/schemas/Phenotype"
+
+    Unit:
+      type: object
+      properties:
+        preferred:
+          type: boolean
+          default: false
+          description: If there are multiple preferred units, the first one will be used
+        unit:
+          type: string
+          minLength: 1
 
     Expression:
       type: object

@@ -3,6 +3,7 @@
 This repository contains the OpenAPI 3 specification of the TOP framework. The schema file is located at [postman/schemas/schema.yaml](postman/schemas/schema.yaml)
 
 [![Node.js Package](https://github.com/Onto-Med/top-api/actions/workflows/npm-publish.yml/badge.svg)](https://github.com/Onto-Med/top-api/actions/workflows/npm-publish.yml)
+[![Maven Package](https://github.com/Onto-Med/top-api/actions/workflows/maven-publish.yml/badge.svg)](https://github.com/Onto-Med/top-api/actions/workflows/maven-publish.yml)
 
 ## Development
 

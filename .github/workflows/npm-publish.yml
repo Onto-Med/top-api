@@ -23,6 +23,10 @@ jobs:
         distribution: 'adopt'
     - name: Build with Maven
       run: mvn -B package --file pom.xml
+    - uses: actions/setup-node@v2
+      with:
+        node-version: 14
+        registry-url: https://npm.pkg.github.com
     - name: Install dependencies
       working-directory: ./target/generated-sources/openapi/axios
       run: npm install

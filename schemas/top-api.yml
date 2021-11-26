@@ -1199,8 +1199,7 @@ components:
         - type
       properties:
         type:
-          type: string
-          enum: [union, intersection, complement, class]
+          $ref: "#/components/schemas/ExpressionType"
         id:
           type: string
           format: uuid
@@ -1209,6 +1208,15 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/Expression"
+    
+    ExpressionType:
+      type: string
+      enum:
+        - union
+        - intersection
+        - complement
+        - class
+        - restriction
 
     VersionNumber:
       description: Reflects the version of the content. The value is generated server-side.

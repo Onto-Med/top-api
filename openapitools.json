@@ -1,0 +1,19 @@
+{
+  "$schema": "node_modules/@openapitools/openapi-generator-cli/config.schema.json",
+  "spaces": 2,
+  "generator-cli": {
+    "version": "5.3.0",
+    "generators": {
+      "axios": {
+        "generatorName": "typescript-axios",
+        "output": "#{cwd}/output/axios/#{ext}/#{name}",
+        "glob": "postman/schemas/schema.yaml",
+        "additionalProperties": {
+          "npmName": "top-api",
+          "supportsES6": "true",
+          "withInterfaces": true
+        }
+      }
+    }
+  }
+}

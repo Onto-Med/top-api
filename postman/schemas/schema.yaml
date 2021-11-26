@@ -34,7 +34,7 @@ paths:
         200:
           description: Server is up and running
         default:
-          $ref: '#/components/schemas/UnexpectedError'
+          $ref: '#/components/responses/UnexpectedError'
   
   /authentication_token:
     post:
@@ -59,9 +59,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/AuthenticationToken'
         401:
-          $ref: '#/components/schemas/Unauthorized'
+          $ref: '#/components/responses/Unauthorized'
         default:
-          $ref: '#/components/schemas/UnexpectedError'
+          $ref: '#/components/responses/UnexpectedError'
 
   /user_account:
     parameters:
@@ -88,9 +88,9 @@ paths:
                 items:
                   $ref: '#/components/schemas/UserAccount'
         401:
-          $ref: '#/components/schemas/Unauthorized'
+          $ref: '#/components/responses/Unauthorized'
         default:
-          $ref: '#/components/schemas/UnexpectedError'
+          $ref: '#/components/responses/UnexpectedError'
     post:
       summary: Creates new user account and returns the result
       operationId: createUserAccount
@@ -111,9 +111,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/UserAccount'
         401:
-          $ref: '#/components/schemas/Unauthorized'
+          $ref: '#/components/responses/Unauthorized'
         default:
-          $ref: '#/components/schemas/UnexpectedError'
+          $ref: '#/components/responses/UnexpectedError'
 
   /user_account/{userAccountId}:
     summary: Represents a user account
@@ -138,11 +138,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/UserAccount'
         401:
-          $ref: '#/components/schemas/Unauthorized'
+          $ref: '#/components/responses/Unauthorized'
         404:
-          $ref: '#/components/schemas/NotFound'
+          $ref: '#/components/responses/NotFound'
         default:
-          $ref: '#/components/schemas/UnexpectedError'
+          $ref: '#/components/responses/UnexpectedError'
     patch:
       summary: Updates a particular user account by ID and returns the resulting user account
       operationId: updateUserAccountByUserAccountId
@@ -163,11 +163,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/UserAccount'
         401:
-          $ref: '#/components/schemas/Unauthorized'
+          $ref: '#/components/responses/Unauthorized'
         404:
-          $ref: '#/components/schemas/NotFound'
+          $ref: '#/components/responses/NotFound'
         default:
-          $ref: '#/components/schemas/UnexpectedError'
+          $ref: '#/components/responses/UnexpectedError'
     delete:
       summary: Deletes a particular user account by ID and returns the deleted user account
       operationId: deleteUserAccountByUserAccountId
@@ -181,11 +181,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/UserAccount'
         401:
-          $ref: '#/components/schemas/Unauthorized'
+          $ref: '#/components/responses/Unauthorized'
         404:
-          $ref: '#/components/schemas/NotFound'
+          $ref: '#/components/responses/NotFound'
         default:
-          $ref: '#/components/schemas/UnexpectedError'
+          $ref: '#/components/responses/UnexpectedError'
 
   /organisation:
     parameters:
@@ -212,9 +212,9 @@ paths:
                 items:
                   $ref: '#/components/schemas/Organisation'
         401:
-          $ref: '#/components/schemas/Unauthorized'
+          $ref: '#/components/responses/Unauthorized'
         default:
-          $ref: '#/components/schemas/UnexpectedError'
+          $ref: '#/components/responses/UnexpectedError'
     post:
       summary: Creates new organisation
       operationId: createOrganisation
@@ -235,9 +235,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/Organisation'
         401:
-          $ref: '#/components/schemas/Unauthorized'
+          $ref: '#/components/responses/Unauthorized'
         default:
-          $ref: '#/components/schemas/UnexpectedError'
+          $ref: '#/components/responses/UnexpectedError'
 
   /{organisationName}:
     summary: Represents an organisation
@@ -261,11 +261,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/Organisation'
         401:
-          $ref: '#/components/schemas/Unauthorized'
+          $ref: '#/components/responses/Unauthorized'
         404:
-          $ref: '#/components/schemas/NotFound'
+          $ref: '#/components/responses/NotFound'
         default:
-          $ref: '#/components/schemas/UnexpectedError'
+          $ref: '#/components/responses/UnexpectedError'
     patch:
       summary: Updates a particular organisation by name and returns the result
       operationId: updateOrganisationByName
@@ -286,11 +286,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/Organisation'
         401:
-          $ref: '#/components/schemas/Unauthorized'
+          $ref: '#/components/responses/Unauthorized'
         404:
-          $ref: '#/components/schemas/NotFound'
+          $ref: '#/components/responses/NotFound'
         default:
-          $ref: '#/components/schemas/UnexpectedError'
+          $ref: '#/components/responses/UnexpectedError'
     delete:
       summary: Deletes a particular organisation by name and returns the deleted organisation
       operationId: deleteOrganisationByName
@@ -304,11 +304,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/Organisation'
         401:
-          $ref: '#/components/schemas/Unauthorized'
+          $ref: '#/components/responses/Unauthorized'
         404:
-          $ref: '#/components/schemas/NotFound'
+          $ref: '#/components/responses/NotFound'
         default:
-          $ref: '#/components/schemas/UnexpectedError'
+          $ref: '#/components/responses/UnexpectedError'
 
   /repository:
     parameters:
@@ -335,9 +335,9 @@ paths:
                 items:
                   $ref: '#/components/schemas/Repository'
         401:
-          $ref: '#/components/schemas/Unauthorized'
+          $ref: '#/components/responses/Unauthorized'
         default:
-          $ref: '#/components/schemas/UnexpectedError'
+          $ref: '#/components/responses/UnexpectedError'
 
   /ontology:
     parameters:
@@ -364,9 +364,9 @@ paths:
                 items:
                   $ref: '#/components/schemas/Ontology'
         401:
-          $ref: '#/components/schemas/Unauthorized'
+          $ref: '#/components/responses/Unauthorized'
         default:
-          $ref: '#/components/schemas/UnexpectedError'
+          $ref: '#/components/responses/UnexpectedError'
 
   /{organisationName}/repository:
     parameters:
@@ -398,11 +398,11 @@ paths:
                 items:
                   $ref: '#/components/schemas/Repository'
         401:
-          $ref: '#/components/schemas/Unauthorized'
+          $ref: '#/components/responses/Unauthorized'
         404:
-          $ref: '#/components/schemas/NotFound'
+          $ref: '#/components/responses/NotFound'
         default:
-          $ref: '#/components/schemas/UnexpectedError'
+          $ref: '#/components/responses/UnexpectedError'
     post:
       summary: Creates new repository in organisation
       operationId: createRepository
@@ -423,11 +423,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/Repository'
         401:
-          $ref: '#/components/schemas/Unauthorized'
+          $ref: '#/components/responses/Unauthorized'
         404:
-          $ref: '#/components/schemas/NotFound'
+          $ref: '#/components/responses/NotFound'
         default:
-          $ref: '#/components/schemas/UnexpectedError'
+          $ref: '#/components/responses/UnexpectedError'
 
   /{organisationName}/{repositoryName}:
     summary: Represents a repository in an organisation
@@ -456,11 +456,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/Repository'
         401:
-          $ref: '#/components/schemas/Unauthorized'
+          $ref: '#/components/responses/Unauthorized'
         404:
-          $ref: '#/components/schemas/NotFound'
+          $ref: '#/components/responses/NotFound'
         default:
-          $ref: '#/components/schemas/UnexpectedError'
+          $ref: '#/components/responses/UnexpectedError'
     patch:
       summary: Updates a particular repository by name in the organisation and returns the resulting repository
       operationId: updateRepositoryByName
@@ -481,11 +481,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/Repository'
         401:
-          $ref: '#/components/schemas/Unauthorized'
+          $ref: '#/components/responses/Unauthorized'
         404:
-          $ref: '#/components/schemas/NotFound'
+          $ref: '#/components/responses/NotFound'
         default:
-          $ref: '#/components/schemas/UnexpectedError'
+          $ref: '#/components/responses/UnexpectedError'
     delete:
       summary: Deletes a particular repository by name in the organisation and returns the deleted repository
       operationId: deleteRepositoryByName
@@ -510,11 +510,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/Repository'
         401:
-          $ref: '#/components/schemas/Unauthorized'
+          $ref: '#/components/responses/Unauthorized'
         404:
-          $ref: '#/components/schemas/NotFound'
+          $ref: '#/components/responses/NotFound'
         default:
-          $ref: '#/components/schemas/UnexpectedError'
+          $ref: '#/components/responses/UnexpectedError'
 
   /{organisationName}/{repositoryName}/ontology:
     parameters:
@@ -551,11 +551,11 @@ paths:
                 items:
                   $ref: '#/components/schemas/Ontology'
         401:
-          $ref: '#/components/schemas/Unauthorized'
+          $ref: '#/components/responses/Unauthorized'
         404:
-          $ref: '#/components/schemas/NotFound'
+          $ref: '#/components/responses/NotFound'
         default:
-          $ref: '#/components/schemas/UnexpectedError'
+          $ref: '#/components/responses/UnexpectedError'
     post:
       summary: Creates new ontology in repository
       operationId: createOntology
@@ -576,11 +576,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/Ontology'
         401:
-          $ref: '#/components/schemas/Unauthorized'
+          $ref: '#/components/responses/Unauthorized'
         404:
-          $ref: '#/components/schemas/NotFound'
+          $ref: '#/components/responses/NotFound'
         default:
-          $ref: '#/components/schemas/UnexpectedError'
+          $ref: '#/components/responses/UnexpectedError'
 
   /{organisationName}/{repositoryName}/ontology/{ontologyName}/{version}:
     summary: Represents an entity (i.e. phenotype or category) in a repository
@@ -620,11 +620,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/Ontology'
         401:
-          $ref: '#/components/schemas/Unauthorized'
+          $ref: '#/components/responses/Unauthorized'
         404:
-          $ref: '#/components/schemas/NotFound'
+          $ref: '#/components/responses/NotFound'
         default:
-          $ref: '#/components/schemas/UnexpectedError'
+          $ref: '#/components/responses/UnexpectedError'
     put:
       summary: Updates a particular ontology by name in the repository and returns the result
       operationId: updateOntologyByName
@@ -645,11 +645,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/Ontology'
         401:
-          $ref: '#/components/schemas/Unauthorized'
+          $ref: '#/components/responses/Unauthorized'
         404:
-          $ref: '#/components/schemas/NotFound'
+          $ref: '#/components/responses/NotFound'
         default:
-          $ref: '#/components/schemas/UnexpectedError'
+          $ref: '#/components/responses/UnexpectedError'
     patch:
       summary: Build a new release for the ontology
       operationId: releaseOntology
@@ -663,9 +663,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/Ontology'
         401:
-          $ref: '#/components/schemas/Unauthorized'
+          $ref: '#/components/responses/Unauthorized'
         404:
-          $ref: '#/components/schemas/NotFound'
+          $ref: '#/components/responses/NotFound'
         default:
           $ref: '#/components/schemas/Error'
     delete:
@@ -681,11 +681,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/Ontology'
         401:
-          $ref: '#/components/schemas/Unauthorized'
+          $ref: '#/components/responses/Unauthorized'
         404:
-          $ref: '#/components/schemas/NotFound'
+          $ref: '#/components/responses/NotFound'
         default:
-          $ref: '#/components/schemas/UnexpectedError'
+          $ref: '#/components/responses/UnexpectedError'
 
   /{organisationName}/{repositoryName}/entity:
     parameters:
@@ -733,11 +733,11 @@ paths:
                 items:
                   $ref: '#/components/schemas/Entity'
         401:
-          $ref: '#/components/schemas/Unauthorized'
+          $ref: '#/components/responses/Unauthorized'
         404:
-          $ref: '#/components/schemas/NotFound'
+          $ref: '#/components/responses/NotFound'
         default:
-          $ref: '#/components/schemas/UnexpectedError'
+          $ref: '#/components/responses/UnexpectedError'
     post:
       summary: Creates a new phenotype or category in the repository and returns the result
       operationId: createEntity
@@ -759,11 +759,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/Entity'
         401:
-          $ref: '#/components/schemas/Unauthorized'
+          $ref: '#/components/responses/Unauthorized'
         404:
-          $ref: '#/components/schemas/NotFound'
+          $ref: '#/components/responses/NotFound'
         default:
-          $ref: '#/components/schemas/UnexpectedError'
+          $ref: '#/components/responses/UnexpectedError'
 
   /{organisationName}/{repositoryName}/{id}:
     summary: Represents an entity (i.e. phenotype or category) in a repository
@@ -804,11 +804,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/Entity'
         401:
-          $ref: '#/components/schemas/Unauthorized'
+          $ref: '#/components/responses/Unauthorized'
         404:
-          $ref: '#/components/schemas/NotFound'
+          $ref: '#/components/responses/NotFound'
         default:
-          $ref: '#/components/schemas/UnexpectedError'
+          $ref: '#/components/responses/UnexpectedError'
     put:
       summary: Updates a particular phenotype or category by id in the repository and returns the result
       operationId: updateEntityById
@@ -830,11 +830,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/Entity'
         401:
-          $ref: '#/components/schemas/Unauthorized'
+          $ref: '#/components/responses/Unauthorized'
         404:
-          $ref: '#/components/schemas/NotFound'
+          $ref: '#/components/responses/NotFound'
         default:
-          $ref: '#/components/schemas/UnexpectedError'
+          $ref: '#/components/responses/UnexpectedError'
     patch:
       summary: Build a new release for the phenotype or category
       operationId: releaseEntity
@@ -849,9 +849,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/Entity'
         401:
-          $ref: '#/components/schemas/Unauthorized'
+          $ref: '#/components/responses/Unauthorized'
         404:
-          $ref: '#/components/schemas/NotFound'
+          $ref: '#/components/responses/NotFound'
         default:
           $ref: '#/components/schemas/Error'
     delete:
@@ -868,11 +868,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/Entity'
         401:
-          $ref: '#/components/schemas/Unauthorized'
+          $ref: '#/components/responses/Unauthorized'
         404:
-          $ref: '#/components/schemas/NotFound'
+          $ref: '#/components/responses/NotFound'
         default:
-          $ref: '#/components/schemas/UnexpectedError'
+          $ref: '#/components/responses/UnexpectedError'
 
   /code_system:
     get:
@@ -900,9 +900,9 @@ paths:
                 items:
                   $ref: '#/components/schemas/CodeSystem'
         401:
-          $ref: '#/components/schemas/Unauthorized'
+          $ref: '#/components/responses/Unauthorized'
         default:
-          $ref: '#/components/schemas/UnexpectedError'
+          $ref: '#/components/responses/UnexpectedError'
   
   /code:
     get:
@@ -938,9 +938,9 @@ paths:
                 items:
                   $ref: '#/components/schemas/Code'
         401:
-          $ref: '#/components/schemas/Unauthorized'
+          $ref: '#/components/responses/Unauthorized'
         default:
-          $ref: '#/components/schemas/UnexpectedError'
+          $ref: '#/components/responses/UnexpectedError'
 
 components:
   responses:

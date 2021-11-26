@@ -765,7 +765,7 @@ paths:
         default:
           $ref: '#/components/schemas/UnexpectedError'
 
-  /{organisationName}/{repositoryName}/{uuid}:
+  /{organisationName}/{repositoryName}/{id}:
     summary: Represents an entity (i.e. phenotype or category) in a repository
     parameters:
       - name: organisationName
@@ -778,7 +778,7 @@ paths:
         required: true
         schema:
           type: string
-      - name: uuid
+      - name: id
         in: path
         required: true
         schema:
@@ -792,7 +792,7 @@ paths:
       - $ref: '#/components/parameters/include'
     get:
       summary: Returns a particular phenotype or category in the repository
-      operationId: getEntityByUuid
+      operationId: getEntityById
       tags:
         - phenotype
         - category
@@ -810,8 +810,8 @@ paths:
         default:
           $ref: '#/components/schemas/UnexpectedError'
     put:
-      summary: Updates a particular phenotype or category by uuid in the repository and returns the result
-      operationId: updateEntityByUuid
+      summary: Updates a particular phenotype or category by id in the repository and returns the result
+      operationId: updateEntityById
       tags:
         - phenotype
         - category
@@ -855,8 +855,8 @@ paths:
         default:
           $ref: '#/components/schemas/Error'
     delete:
-      summary: Deletes a particular phenotype or category by uuid in the repository and returns the deleted phenotype or category
-      operationId: deleteEntityByUuid
+      summary: Deletes a particular phenotype or category by id in the repository and returns the deleted phenotype or category
+      operationId: deleteEntityById
       tags:
         - phenotype
         - category
@@ -1075,7 +1075,7 @@ components:
           properties:
             entityType:
               $ref: '#/components/schemas/EntityType'
-            uuid:
+            id:
               type: string
               format: uuid
             titles:

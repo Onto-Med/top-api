@@ -1065,6 +1065,24 @@ components:
         superOrganisation:
           $ref: '#/components/schemas/Organisation'
 
+    Entity:
+      description: Either category or phenotype
+      oneOf:
+        - $ref: '#/components/schemas/Category'
+        - $ref: '#/components/schemas/Phenotype'
+      discriminator:
+        propertyName: entityType
+        mapping:
+          category: '#/components/schemas/Category'
+          # missing_value: TODO
+          # phenotype_group: TODO
+          single_phenotype: '#/components/schemas/Phenotype'
+          combined_phenotype: '#/components/schemas/Phenotype'
+          derived_phenotype: '#/components/schemas/Phenotype'
+          single_restriction: '#/components/schemas/Phenotype'
+          combined_restriction: '#/components/schemas/Phenotype'
+          derived_restriction: '#/components/schemas/Phenotype'
+
     Category:
       allOf:
         - $ref: '#/components/schemas/VersionedContent'
@@ -1137,12 +1155,6 @@ components:
               type: number
             superPhenotype:
               $ref: '#/components/schemas/Phenotype'
-
-    Entity:
-      description: Either category or phenotype
-      oneOf:
-        - $ref: '#/components/schemas/Category'
-        - $ref: '#/components/schemas/Phenotype'
 
     HasDataType:
       type: object
@@ -1292,6 +1304,11 @@ components:
           $ref: '#/components/schemas/RestrictionOperator'
       discriminator:
         propertyName: type
+        mapping:
+          string: '#/components/schemas/StringRestriction'
+          number: '#/components/schemas/NumberRestriction'
+          date_time: '#/components/schemas/DateTimeRestriction'
+          boolean: '#/components/schemas/BooleanRestriction'
     
     StringRestriction:
       allOf:
@@ -1328,7 +1345,7 @@ components:
               items:
                 type: number
 
-    DateRestriction:
+    DateTimeRestriction:
       allOf:
         - $ref: '#/components/schemas/Restriction'
         - type: object

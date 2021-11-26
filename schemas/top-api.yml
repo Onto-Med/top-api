@@ -667,7 +667,7 @@ paths:
         404:
           $ref: "#/components/responses/NotFound"
         default:
-          $ref: "#/components/schemas/Error"
+          $ref: "#/components/schemas/ErrorResponse"
     delete:
       summary: Deletes a particular ontology by name in the repository and returns the deleted ontology
       operationId: deleteOntologyByName
@@ -853,7 +853,7 @@ paths:
         404:
           $ref: "#/components/responses/NotFound"
         default:
-          $ref: "#/components/schemas/Error"
+          $ref: "#/components/schemas/ErrorResponse"
     delete:
       summary: Deletes a particular phenotype or category by id in the repository and returns the deleted phenotype or category
       operationId: deleteEntityById
@@ -949,21 +949,21 @@ components:
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/Error"
+            $ref: "#/components/schemas/ErrorResponse"
 
     Unauthorized:
       description: Unauthorized, Access token is missing or invalid
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/Error"
+            $ref: "#/components/schemas/ErrorResponse"
 
     UnexpectedError:
       description: Unexpected error
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/Error"
+            $ref: "#/components/schemas/ErrorResponse"
 
   parameters:
     page:
@@ -1351,7 +1351,7 @@ components:
       type: string
       enum: ["none", "exists", "some", "all"]
 
-    Error:
+    ErrorResponse:
       type: object
       required:
         - code

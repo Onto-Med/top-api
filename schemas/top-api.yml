@@ -1131,15 +1131,16 @@ components:
     Phenotype:
       allOf:
         - $ref: "#/components/schemas/Entity"
-        - oneOf:
-            - $ref: "#/components/schemas/HasDataType"
-            - allOf:
-                - $ref: "#/components/schemas/HasDataType"
-                - $ref: "#/components/schemas/HasFormula"
-            - $ref: "#/components/schemas/HasRestriction"
-            - $ref: "#/components/schemas/HasExpression"
         - type: object
           properties:
+            dataType:
+              $ref: "#/components/schemas/EntityDataType"
+            formula:
+              type: string
+            restriction:
+              $ref: "#/components/schemas/Restriction"
+            expression:
+              $ref: "#/components/schemas/Expression"
             units:
               type: array
               items:
@@ -1160,38 +1161,6 @@ components:
                 $ref: "#/components/schemas/Category"
             superPhenotype:
               $ref: "#/components/schemas/Phenotype"
-
-    HasDataType:
-      type: object
-      required:
-        - dataType
-      properties:
-        dataType:
-          $ref: "#/components/schemas/EntityDataType"
-
-    HasFormula:
-      type: object
-      required:
-        - formula
-      properties:
-        formula:
-          type: string
-
-    HasRestriction:
-      type: object
-      required:
-        - restriction
-      properties:
-        restriction:
-          $ref: "#/components/schemas/Restriction"
-
-    HasExpression:
-      type: object
-      required:
-        - expression
-      properties:
-        expression:
-          $ref: "#/components/schemas/Expression"
 
     Expression:
       type: object

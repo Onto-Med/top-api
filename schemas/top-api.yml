@@ -6,6 +6,8 @@ info:
 
 servers:
   - url: http://localhost:8080
+  - url: http://host.docker.internal:8080
+    description: In case the server is running on the Docker host
 
 paths:
   /metadata:

@@ -20,12 +20,12 @@ Usage of the skeleton in your Spring Boot application:
 1. Add maven dependency
 ```xml
 <dependency>
-  <groupId>de.uni_leipzig.imise.top</groupId>
+  <groupId>care.smith.top</groupId>
   <artifactId>top-api</artifactId>
   <version><!-- the version number --></version>
 </dependency>
 ```
-2. Add annotation `@ComponentScan("de.uni_leipzig.imise.top.backend")` to your application class.
+2. Add annotation `@ComponentScan("care.smith.top.backend")` to your application class.
 3. Create implementations for the delegate interfaces in `de.uni_leipzig.imise.top.backend.api` (e.g., `CodeSystemApiDelegate`).
 
 ## Typescript Axios

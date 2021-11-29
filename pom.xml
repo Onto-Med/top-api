@@ -2,7 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>de.uni_leipzig.imise.top</groupId>
+	<groupId>care.smith.top</groupId>
 	<artifactId>top-api</artifactId>
 	<version>0.1.6</version>
 
@@ -103,8 +103,8 @@
 							<inputSpec>${project.basedir}/schemas/top-api.yml</inputSpec>
 							<generatorName>spring</generatorName>
 							<output>target/generated-sources/openapi/spring</output>
-							<modelPackage>de.uni_leipzig.imise.top.backend.model</modelPackage>
-							<apiPackage>de.uni_leipzig.imise.top.backend.api</apiPackage>
+							<modelPackage>care.smith.top.backend.model</modelPackage>
+							<apiPackage>care.smith.top.backend.api</apiPackage>
 							<supportingFilesToGenerate>ApiUtil.java</supportingFilesToGenerate>
 							<configOptions>
 								<serializableModel>true</serializableModel>

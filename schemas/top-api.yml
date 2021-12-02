@@ -1081,8 +1081,7 @@ components:
             propertyName: entityType
             mapping:
               category: "#/components/schemas/Category"
-              # missing_value: TODO
-              # phenotype_group: TODO
+              phenotype_group: "#/components/schemas/PhenotypeGroup"
               single_phenotype: "#/components/schemas/Phenotype"
               combined_phenotype: "#/components/schemas/Phenotype"
               derived_phenotype: "#/components/schemas/Phenotype"
@@ -1100,6 +1099,16 @@ components:
               items:
                 $ref: "#/components/schemas/Category"
 
+    PhenotypeGroup:
+      allOf:
+        - $ref: "#/components/schemas/Category"
+        - type: object
+          properties:
+            phenotypes:
+              type: array
+              items:
+                $ref: "#/components/schemas/Phenotype"
+
     Phenotype:
       allOf:
         - $ref: "#/components/schemas/Entity"
@@ -1116,7 +1125,7 @@ components:
             units:
               type: array
               items:
-                $ref:  "#/components/schemas/Unit"
+                $ref: "#/components/schemas/Unit"
             score:
               type: number
             superCategories:
@@ -1125,6 +1134,10 @@ components:
                 $ref: "#/components/schemas/Category"
             superPhenotype:
               $ref: "#/components/schemas/Phenotype"
+            phenotypeGroups:
+              type: array
+              items:
+                $ref: "#/components/schemas/PhenotypeGroup"
 
     Unit:
       type: object

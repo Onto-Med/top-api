@@ -828,6 +828,7 @@ paths:
           description: Whether the entity version shall be deleted permanently.
           schema:
             type: boolean
+            default: false
       summary:
         Deletes a particular phenotype or category by id in the repository and returns the deleted phenotype or category.
         The Entity is not actually deleted, but set to invisible.

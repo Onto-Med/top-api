@@ -11,7 +11,7 @@ We recommend to use a [Visual Studie Code](https://code.visualstudio.com) [devco
 The container has the [OpenAPI (Swagger) Editor](https://marketplace.visualstudio.com/items?itemName=42Crunch.vscode-openapi) extension preinstalled.
 
 Creating a release will automaticaly build and publish a new Spring Boot skeleton package, generated with [https://github.com/OpenAPITools/openapi-generator/tree/master/modules/openapi-generator-maven-plugin](openapi-generator-maven-plugin).
-Please update the version number in the [pom.xml](pom.xml) file before drafting a new release.
+Please update the version number in the [pom.xml](pom.xml) and [schemas/top-api.yml](schemas/top-api.yml) files before drafting a new release.
 
 ## Spring Boot Skeleton
 

@@ -109,6 +109,8 @@
 							<configOptions>
 								<serializableModel>true</serializableModel>
 								<delegatePattern>true</delegatePattern>
+								<booleanGetterPrefix>is</booleanGetterPrefix>
+								<useTags>true</useTags>
 							</configOptions>
 						</configuration>
 					</execution>

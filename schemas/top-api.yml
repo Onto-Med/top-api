@@ -690,8 +690,7 @@ paths:
       summary: Searches for phenotypes or categories. Use the query parameters to filter the result.
       operationId: getEntities
       tags:
-        - phenotype
-        - category
+        - entity
       parameters:
         - name: name
           description: Filter phenotypes or categories by name.
@@ -728,8 +727,7 @@ paths:
       summary: Creates a new phenotype or category in the repository and returns the result
       operationId: createEntity
       tags:
-        - phenotype
-        - category
+        - entity
       requestBody:
         description: Phenotype or category details to be applied
         required: true
@@ -780,8 +778,7 @@ paths:
       summary: Returns a particular phenotype or category in the repository
       operationId: getEntityById
       tags:
-        - phenotype
-        - category
+        - entity
       responses:
         200:
           description: Details of the phenotype or category
@@ -799,8 +796,7 @@ paths:
       summary: Updates a particular phenotype or category by id in the repository and returns the result
       operationId: updateEntityById
       tags:
-        - phenotype
-        - category
+        - entity
       requestBody:
         description: Phenotype or category details to be applied
         required: true
@@ -821,31 +817,20 @@ paths:
           $ref: "#/components/responses/NotFound"
         default:
           $ref: "#/components/responses/UnexpectedError"
-    patch:
-      summary: Build a new release for the phenotype or category
-      operationId: releaseEntity
-      tags:
-        - phenotype
-        - category
-      responses:
-        200:
-          description: Details about the released phenotype or category
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Entity"
-        401:
-          $ref: "#/components/responses/Unauthorized"
-        404:
-          $ref: "#/components/responses/NotFound"
-        default:
-          $ref: "#/components/schemas/ErrorResponse"
     delete:
-      summary: Deletes a particular phenotype or category by id in the repository and returns the deleted phenotype or category
+      parameters:
+        - name: permanent
+          in: query
+          description: Whether the entity version shall be deleted permanently.
+          schema:
+            type: boolean
+            default: false
+      summary:
+        Deletes a particular phenotype or category by id in the repository and returns the deleted phenotype or category.
+        The Entity is not actually deleted, but set to invisible.
       operationId: deleteEntityById
       tags:
-        - phenotype
-        - category
+        - entity
       responses:
         204:
           description: The entity was deleted successfully.
@@ -1091,8 +1076,7 @@ components:
             propertyName: entityType
             mapping:
               category: "#/components/schemas/Category"
-              # missing_value: TODO
-              # phenotype_group: TODO
+              phenotype_group: "#/components/schemas/PhenotypeGroup"
               single_phenotype: "#/components/schemas/Phenotype"
               combined_phenotype: "#/components/schemas/Phenotype"
               derived_phenotype: "#/components/schemas/Phenotype"
@@ -1110,6 +1094,16 @@ components:
               items:
                 $ref: "#/components/schemas/Category"
 
+    PhenotypeGroup:
+      allOf:
+        - $ref: "#/components/schemas/Category"
+        - type: object
+          properties:
+            phenotypes:
+              type: array
+              items:
+                $ref: "#/components/schemas/Phenotype"
+
     Phenotype:
       allOf:
         - $ref: "#/components/schemas/Entity"
@@ -1126,7 +1120,7 @@ components:
             units:
               type: array
               items:
-                $ref:  "#/components/schemas/Unit"
+                $ref: "#/components/schemas/Unit"
             score:
               type: number
             superCategories:
@@ -1135,6 +1129,10 @@ components:
                 $ref: "#/components/schemas/Category"
             superPhenotype:
               $ref: "#/components/schemas/Phenotype"
+            phenotypeGroups:
+              type: array
+              items:
+                $ref: "#/components/schemas/PhenotypeGroup"
 
     Unit:
       type: object

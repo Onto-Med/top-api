@@ -1182,7 +1182,6 @@ components:
       type: string
       enum:
         - category
-        - missing_value
         - phenotype_group
         - single_phenotype
         - combined_phenotype

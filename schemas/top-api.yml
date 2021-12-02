@@ -822,7 +822,15 @@ paths:
         default:
           $ref: "#/components/responses/UnexpectedError"
     delete:
-      summary: Deletes a particular phenotype or category by id in the repository and returns the deleted phenotype or category
+      parameters:
+        - name: permanent
+          in: query
+          description: Whether the entity version shall be deleted permanently.
+          schema:
+            type: boolean
+      summary:
+        Deletes a particular phenotype or category by id in the repository and returns the deleted phenotype or category.
+        The Entity is not actually deleted, but set to invisible.
       operationId: deleteEntityById
       tags:
         - phenotype

@@ -690,8 +690,7 @@ paths:
       summary: Searches for phenotypes or categories. Use the query parameters to filter the result.
       operationId: getEntities
       tags:
-        - phenotype
-        - category
+        - entity
       parameters:
         - name: name
           description: Filter phenotypes or categories by name.
@@ -728,8 +727,7 @@ paths:
       summary: Creates a new phenotype or category in the repository and returns the result
       operationId: createEntity
       tags:
-        - phenotype
-        - category
+        - entity
       requestBody:
         description: Phenotype or category details to be applied
         required: true
@@ -780,8 +778,7 @@ paths:
       summary: Returns a particular phenotype or category in the repository
       operationId: getEntityById
       tags:
-        - phenotype
-        - category
+        - entity
       responses:
         200:
           description: Details of the phenotype or category
@@ -799,8 +796,7 @@ paths:
       summary: Updates a particular phenotype or category by id in the repository and returns the result
       operationId: updateEntityById
       tags:
-        - phenotype
-        - category
+        - entity
       requestBody:
         description: Phenotype or category details to be applied
         required: true
@@ -834,8 +830,7 @@ paths:
         The Entity is not actually deleted, but set to invisible.
       operationId: deleteEntityById
       tags:
-        - phenotype
-        - category
+        - entity
       responses:
         204:
           description: The entity was deleted successfully.

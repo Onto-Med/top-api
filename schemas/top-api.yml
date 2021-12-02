@@ -176,12 +176,8 @@ paths:
       tags:
         - userAccount
       responses:
-        200:
-          description: Details about the deleted user account
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/UserAccount"
+        204:
+          description: User account was deleted successfully.
         401:
           $ref: "#/components/responses/Unauthorized"
         404:
@@ -299,12 +295,8 @@ paths:
       tags:
         - organisation
       responses:
-        200:
-          description: Details about the deleted organisation
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Organisation"
+        204:
+          description: The organisation was deleted successfully.
         401:
           $ref: "#/components/responses/Unauthorized"
         404:
@@ -505,12 +497,8 @@ paths:
           schema:
             type: string
       responses:
-        200:
-          description: Details about the deleted repository
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Repository"
+        204:
+          description: The repository was deleted successfully.
         401:
           $ref: "#/components/responses/Unauthorized"
         404:
@@ -676,12 +664,8 @@ paths:
       tags:
         - ontology
       responses:
-        200:
-          description: Details about the deleted ontology
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Ontology"
+        204:
+          description: The ontology was deleted successfully.
         401:
           $ref: "#/components/responses/Unauthorized"
         404:
@@ -863,12 +847,8 @@ paths:
         - phenotype
         - category
       responses:
-        200:
-          description: Details about the deleted phenotype or category
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Entity"
+        204:
+          description: The entity was deleted successfully.
         401:
           $ref: "#/components/responses/Unauthorized"
         404:
@@ -1202,7 +1182,6 @@ components:
       type: string
       enum:
         - category
-        - missing_value
         - phenotype_group
         - single_phenotype
         - combined_phenotype

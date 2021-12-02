@@ -821,25 +821,6 @@ paths:
           $ref: "#/components/responses/NotFound"
         default:
           $ref: "#/components/responses/UnexpectedError"
-    patch:
-      summary: Build a new release for the phenotype or category
-      operationId: releaseEntity
-      tags:
-        - phenotype
-        - category
-      responses:
-        200:
-          description: Details about the released phenotype or category
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Entity"
-        401:
-          $ref: "#/components/responses/Unauthorized"
-        404:
-          $ref: "#/components/responses/NotFound"
-        default:
-          $ref: "#/components/schemas/ErrorResponse"
     delete:
       summary: Deletes a particular phenotype or category by id in the repository and returns the deleted phenotype or category
       operationId: deleteEntityById

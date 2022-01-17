@@ -1112,7 +1112,7 @@ components:
             dataType:
               $ref: "#/components/schemas/DataType"
             formula:
-              type: string
+              $ref: "#/components/schemas/Formula"
             restriction:
               $ref: "#/components/schemas/Restriction"
             expression:
@@ -1160,7 +1160,7 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/Expression"
-    
+
     ExpressionType:
       type: string
       enum:
@@ -1169,6 +1169,24 @@ components:
         - complement
         - class
         - restriction
+
+    Formula:
+      type: object
+      properties:
+        operator:
+          $ref: "#/components/schemas/FormulaOperator"
+        id:
+          type: string
+          format: uuid
+          description: If operator equals class or restriction, this property contains the id of that class or restriction.
+        operands:
+          type: array
+          items:
+            $ref: "#/components/schemas/Formula"
+
+    FormulaOperator:
+      type: string
+      enum: [add, substract, multiply, divide, if_else, class, restriction]
 
     VersionNumber:
       description: Reflects the version of the content. The value is generated server-side.

@@ -4,7 +4,7 @@
 
 	<groupId>care.smith.top</groupId>
 	<artifactId>top-api</artifactId>
-	<version>0.1.7</version>
+	<version>0.1.8</version>
 
 	<name>TOP API</name>
 	<description>REST API of the TOP framework</description>
@@ -12,7 +12,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.5.7</version>
+		<version>2.6.3</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 
@@ -92,7 +92,7 @@
 			<plugin>
 				<groupId>org.openapitools</groupId>
 				<artifactId>openapi-generator-maven-plugin</artifactId>
-				<version>5.3.0</version>
+				<version>5.3.1</version>
 				<executions>
 					<execution>
 						<id>spring-server</id>

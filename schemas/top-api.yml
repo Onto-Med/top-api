@@ -1106,7 +1106,7 @@ components:
 
     Phenotype:
       allOf:
-        - $ref: "#/components/schemas/Entity"
+        - $ref: "#/components/schemas/Category"
         - type: object
           properties:
             dataType:
@@ -1123,10 +1123,6 @@ components:
                 $ref: "#/components/schemas/Unit"
             score:
               type: number
-            superCategories:
-              type: array
-              items:
-                $ref: "#/components/schemas/Category"
             superPhenotype:
               $ref: "#/components/schemas/Phenotype"
             phenotypeGroups:

@@ -1072,17 +1072,17 @@ components:
               type: array
               items:
                 $ref: "#/components/schemas/Entity"
-          discriminator:
-            propertyName: entityType
-            mapping:
-              category: "#/components/schemas/Category"
-              phenotype_group: "#/components/schemas/PhenotypeGroup"
-              single_phenotype: "#/components/schemas/Phenotype"
-              combined_phenotype: "#/components/schemas/Phenotype"
-              derived_phenotype: "#/components/schemas/Phenotype"
-              single_restriction: "#/components/schemas/Phenotype"
-              combined_restriction: "#/components/schemas/Phenotype"
-              derived_restriction: "#/components/schemas/Phenotype"
+      discriminator:
+        propertyName: entityType
+        mapping:
+          category: "#/components/schemas/Category"
+          phenotype_group: "#/components/schemas/PhenotypeGroup"
+          single_phenotype: "#/components/schemas/Phenotype"
+          combined_phenotype: "#/components/schemas/Phenotype"
+          derived_phenotype: "#/components/schemas/Phenotype"
+          single_restriction: "#/components/schemas/Phenotype"
+          combined_restriction: "#/components/schemas/Phenotype"
+          derived_restriction: "#/components/schemas/Phenotype"
 
     Category:
       allOf:

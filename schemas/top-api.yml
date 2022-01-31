@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: TOP API
-  version: 0.1.9
+  version: 0.1.10
   description: API to manage phenotypes, repositories, ontologies and organisations
 
 servers:
@@ -237,10 +237,10 @@ paths:
         default:
           $ref: "#/components/responses/UnexpectedError"
 
-  /{organisationName}:
+  /{organisationId}:
     summary: Represents an organisation
     parameters:
-      - name: organisationName
+      - name: organisationId
         in: path
         required: true
         schema:
@@ -248,7 +248,7 @@ paths:
       - $ref: "#/components/parameters/include"
     get:
       summary: Returns a particular organisation
-      operationId: getOrganisationByName
+      operationId: getOrganisationById
       tags:
         - organisation
       responses:
@@ -265,8 +265,8 @@ paths:
         default:
           $ref: "#/components/responses/UnexpectedError"
     patch:
-      summary: Updates a particular organisation by name and returns the result
-      operationId: updateOrganisationByName
+      summary: Updates a particular organisation by id and returns the result
+      operationId: updateOrganisationById
       tags:
         - organisation
       requestBody:
@@ -290,8 +290,8 @@ paths:
         default:
           $ref: "#/components/responses/UnexpectedError"
     delete:
-      summary: Deletes a particular organisation by name and returns the deleted organisation
-      operationId: deleteOrganisationByName
+      summary: Deletes a particular organisation by id and returns the deleted organisation
+      operationId: deleteOrganisationById
       tags:
         - organisation
       responses:
@@ -362,9 +362,9 @@ paths:
         default:
           $ref: "#/components/responses/UnexpectedError"
 
-  /{organisationName}/repository:
+  /{organisationId}/repository:
     parameters:
-      - name: organisationName
+      - name: organisationId
         in: path
         required: true
         schema:
@@ -372,7 +372,7 @@ paths:
       - $ref: "#/components/parameters/include"
     get:
       summary: Searches for repositories in organisation. Use the query parameters to filter the result.
-      operationId: getRepositoriesByOrganisationName
+      operationId: getRepositoriesByOrganisationId
       tags:
         - repository
       parameters:
@@ -423,15 +423,15 @@ paths:
         default:
           $ref: "#/components/responses/UnexpectedError"
 
-  /{organisationName}/{repositoryName}:
+  /{organisationId}/{repositoryId}:
     summary: Represents a repository in an organisation
     parameters:
-      - name: organisationName
+      - name: organisationId
         in: path
         required: true
         schema:
           type: string
-      - name: repositoryName
+      - name: repositoryId
         in: path
         required: true
         schema:
@@ -439,7 +439,7 @@ paths:
       - $ref: "#/components/parameters/include"
     get:
       summary: Returns a particular repository in organisation
-      operationId: getRepositoryByName
+      operationId: getRepositoryById
       tags:
         - repository
       responses:
@@ -456,8 +456,8 @@ paths:
         default:
           $ref: "#/components/responses/UnexpectedError"
     patch:
-      summary: Updates a particular repository by name in the organisation and returns the resulting repository
-      operationId: updateRepositoryByName
+      summary: Updates a particular repository by id in the organisation and returns the resulting repository
+      operationId: updateRepositoryById
       tags:
         - repository
       requestBody:
@@ -481,17 +481,17 @@ paths:
         default:
           $ref: "#/components/responses/UnexpectedError"
     delete:
-      summary: Deletes a particular repository by name in the organisation and returns the deleted repository
-      operationId: deleteRepositoryByName
+      summary: Deletes a particular repository by id in the organisation and returns the deleted repository
+      operationId: deleteRepositoryById
       tags:
         - repository
       parameters:
-        - name: repositoryName
+        - name: repositoryId
           in: path
           required: true
           schema:
             type: string
-        - name: organisationName
+        - name: organisationId
           in: path
           required: true
           schema:
@@ -506,14 +506,14 @@ paths:
         default:
           $ref: "#/components/responses/UnexpectedError"
 
-  /{organisationName}/{repositoryName}/ontology:
+  /{organisationId}/{repositoryId}/ontology:
     parameters:
-      - name: organisationName
+      - name: organisationId
         in: path
         required: true
         schema:
           type: string
-      - name: repositoryName
+      - name: repositoryId
         in: path
         required: true
         schema:
@@ -521,7 +521,7 @@ paths:
       - $ref: "#/components/parameters/include"
     get:
       summary: Searches for ontologies in repository. Use the query parameters to filter the result.
-      operationId: getOntologiesByRepositoryName
+      operationId: getOntologiesByRepositoryId
       tags:
         - ontology
       parameters:
@@ -572,25 +572,24 @@ paths:
         default:
           $ref: "#/components/responses/UnexpectedError"
 
-  /{organisationName}/{repositoryName}/ontology/{ontologyName}/{version}:
-    summary: Represents an entity (i.e. phenotype or category) in a repository
+  /{organisationId}/{repositoryId}/ontology/{ontologyId}/{version}:
+    summary: Represents an ontology in a repository
     parameters:
-      - name: organisationName
+      - name: organisationId
         in: path
         required: true
         schema:
           type: string
-      - name: repositoryName
+      - name: repositoryId
         in: path
         required: true
         schema:
           type: string
-      - name: ontologyName
+      - name: ontologyId
         in: path
         required: true
         schema:
           type: string
-          format: uuid
       - name: version
         in: path
         required: true
@@ -616,8 +615,8 @@ paths:
         default:
           $ref: "#/components/responses/UnexpectedError"
     put:
-      summary: Updates a particular ontology by name in the repository and returns the result
-      operationId: updateOntologyByName
+      summary: Updates a particular ontology by id in the repository and returns the result
+      operationId: updateOntologyById
       tags:
         - ontology
       requestBody:
@@ -659,8 +658,8 @@ paths:
         default:
           $ref: "#/components/schemas/ErrorResponse"
     delete:
-      summary: Deletes a particular ontology by name in the repository and returns the deleted ontology
-      operationId: deleteOntologyByName
+      summary: Deletes a particular ontology by id in the repository and returns the deleted ontology
+      operationId: deleteOntologyById
       tags:
         - ontology
       responses:
@@ -673,14 +672,14 @@ paths:
         default:
           $ref: "#/components/responses/UnexpectedError"
 
-  /{organisationName}/{repositoryName}/entity:
+  /{organisationId}/{repositoryId}/entity:
     parameters:
-      - name: organisationName
+      - name: organisationId
         in: path
         required: true
         schema:
           type: string
-      - name: repositoryName
+      - name: repositoryId
         in: path
         required: true
         schema:
@@ -749,15 +748,15 @@ paths:
         default:
           $ref: "#/components/responses/UnexpectedError"
 
-  /{organisationName}/{repositoryName}/{id}:
+  /{organisationId}/{repositoryId}/{id}:
     summary: Represents an entity (i.e. phenotype or category) in a repository
     parameters:
-      - name: organisationName
+      - name: organisationId
         in: path
         required: true
         schema:
           type: string
-      - name: repositoryName
+      - name: repositoryId
         in: path
         required: true
         schema:
@@ -980,11 +979,10 @@ components:
     Repository:
       type: object
       required:
-        - name
+        - id
       properties:
-        repositoryId:
-          type: integer
-          format: int32
+        id:
+          type: string
         name:
           type: string
         description:
@@ -1000,11 +998,10 @@ components:
         - $ref: "#/components/schemas/VersionedContent"
         - type: object
           required:
-            - name
+            - id
           properties:
-            ontologyId:
-              type: integer
-              format: int32
+            id:
+              type: string
             name:
               type: string
             description:
@@ -1017,11 +1014,10 @@ components:
     Organisation:
       type: object
       required:
-        - name
+        - id
       properties:
-        organisationId:
-          type: integer
-          format: int32
+        id:
+          type: string
         name:
           type: string
         description:

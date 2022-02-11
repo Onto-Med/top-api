@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: TOP API
-  version: 0.1.10
+  version: 0.1.11
   description: API to manage phenotypes, repositories, ontologies and organisations
 
 servers:
@@ -766,7 +766,6 @@ paths:
         required: true
         schema:
           type: string
-          format: uuid
       - name: version
         description: Defaults to the latest version number.
         in: query
@@ -1040,7 +1039,6 @@ components:
               $ref: "#/components/schemas/EntityType"
             id:
               type: string
-              format: uuid
             titles:
               type: array
               description: There should only be one title per language
@@ -1146,7 +1144,6 @@ components:
           $ref: "#/components/schemas/ExpressionType"
         id:
           type: string
-          format: uuid
           description: If type equals class or restriction, this property contains the id of that class or restriction
         operands:
           type: array
@@ -1169,7 +1166,6 @@ components:
           $ref: "#/components/schemas/FormulaOperator"
         id:
           type: string
-          format: uuid
           description: If operator equals class or restriction, this property contains the id of that class or restriction.
         operands:
           type: array

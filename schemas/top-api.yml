@@ -990,6 +990,9 @@ components:
         createdAt:
           type: string
           format: date-time
+        updatedAt:
+          type: string
+          format: date-time
         organisation:
           $ref: "#/components/schemas/Organisation"
 
@@ -1023,6 +1026,9 @@ components:
         description:
           type: string
         createdAt:
+          type: string
+          format: date-time
+        updatedAt:
           type: string
           format: date-time
         superOrganisation:

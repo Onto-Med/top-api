@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: TOP API
-  version: 0.1.11
+  version: 0.1.12
   description: API to manage phenotypes, repositories, ontologies and organisations
 
 servers:
@@ -832,6 +832,47 @@ paths:
       responses:
         204:
           description: The entity was deleted successfully.
+        401:
+          $ref: "#/components/responses/Unauthorized"
+        404:
+          $ref: "#/components/responses/NotFound"
+        default:
+          $ref: "#/components/responses/UnexpectedError"
+
+  /{organisationId}/{repositoryId}/{id}/history:
+    summary: Represents the version history of an entity (i.e. phenotype or category) in a repository
+    parameters:
+      - name: organisationId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: repositoryId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - $ref: "#/components/parameters/include"
+    get:
+      summary: Returns all versions of a particular phenotype or category in the repository
+      operationId: getEntityVersionsById
+      tags:
+        - entity
+      responses:
+        200:
+          description: List of versions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Entity"
         401:
           $ref: "#/components/responses/Unauthorized"
         404:

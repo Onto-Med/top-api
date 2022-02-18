@@ -857,7 +857,6 @@ paths:
         required: true
         schema:
           type: string
-          format: uuid
       - $ref: "#/components/parameters/include"
     get:
       summary: Returns all versions of a particular phenotype or category in the repository

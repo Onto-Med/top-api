@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: TOP API
-  version: 0.1.12
+  version: 0.1.13
   description: API to manage phenotypes, repositories, ontologies and organisations
 
 servers:
@@ -879,6 +879,46 @@ paths:
         default:
           $ref: "#/components/responses/UnexpectedError"
 
+  /{organisationId}/{repositoryId}/{id}/subclasses:
+    summary: Represents subclasses (categories, abstract or restricted phenotypes) of an entity in a repository
+    parameters:
+      - name: organisationId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: repositoryId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - $ref: "#/components/parameters/include"
+    get:
+      summary: Returns all sublcasses of a particular phenotype or category in the repository
+      operationId: getSubclassesById
+      tags:
+        - entity
+      responses:
+        200:
+          description: List of subclasses
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Entity"
+        401:
+          $ref: "#/components/responses/Unauthorized"
+        404:
+          $ref: "#/components/responses/NotFound"
+        default:
+          $ref: "#/components/responses/UnexpectedError"
+
   /code_system:
     get:
       summary: Searches for code systems
@@ -983,6 +1023,7 @@ components:
 
     include:
       name: include
+      description: This field has no purpose jet.
       in: header
       schema:
         type: array

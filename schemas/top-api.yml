@@ -376,6 +376,16 @@ paths:
           in: query
           schema:
             type: string
+        - name: type
+          description: Filter phenotypes or categories by type.
+          in: query
+          schema:
+            $ref: "#/components/schemas/EntityType"
+        - name: dataType
+          description: Filter phenotypes or categories by data type
+          in: query
+          schema:
+            $ref: "#/components/schemas/DataType"
         - $ref: "#/components/parameters/page"
       responses:
         200:

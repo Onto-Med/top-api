@@ -380,7 +380,9 @@ paths:
           description: Filter phenotypes or categories by type.
           in: query
           schema:
-            $ref: "#/components/schemas/EntityType"
+            type: array
+            items:
+              $ref: "#/components/schemas/EntityType"
         - name: dataType
           description: Filter phenotypes or categories by data type
           in: query
@@ -739,7 +741,9 @@ paths:
           description: Filter phenotypes or categories by type.
           in: query
           schema:
-            $ref: "#/components/schemas/EntityType"
+            type: array
+            items:
+              $ref: "#/components/schemas/EntityType"
         - name: dataType
           description: Filter phenotypes or categories by data type
           in: query
@@ -815,7 +819,9 @@ paths:
           description: Filter phenotypes or categories by type.
           in: query
           schema:
-            $ref: "#/components/schemas/EntityType"
+            type: array
+            items:
+              $ref: "#/components/schemas/EntityType"
         - name: dataType
           description: Filter phenotypes or categories by data type
           in: query

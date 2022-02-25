@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: TOP API
-  version: 0.1.13
+  version: 0.2.0
   description: API to manage phenotypes, repositories, ontologies and organisations
 
 servers:
@@ -362,6 +362,35 @@ paths:
         default:
           $ref: "#/components/responses/UnexpectedError"
 
+  /entity:
+    parameters:
+      - $ref: "#/components/parameters/include"
+    get:
+      summary: Searches for phenotypes or categories. Use the query parameters to filter the result.
+      operationId: getEntities
+      tags:
+        - entity
+      parameters:
+        - name: name
+          description: Filter phenotypes or categories by name.
+          in: query
+          schema:
+            type: string
+        - $ref: "#/components/parameters/page"
+      responses:
+        200:
+          description: List of phenotypes or categories
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Entity"
+        401:
+          $ref: "#/components/responses/Unauthorized"
+        default:
+          $ref: "#/components/responses/UnexpectedError"
+
   /{organisationId}/repository:
     parameters:
       - name: organisationId
@@ -687,7 +716,7 @@ paths:
       - $ref: "#/components/parameters/include"
     get:
       summary: Searches for phenotypes or categories. Use the query parameters to filter the result.
-      operationId: getEntities
+      operationId: getEntitiesByRepositoryId
       tags:
         - entity
       parameters:
@@ -741,6 +770,57 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Entity"
+        401:
+          $ref: "#/components/responses/Unauthorized"
+        404:
+          $ref: "#/components/responses/NotFound"
+        default:
+          $ref: "#/components/responses/UnexpectedError"
+
+  /{organisationId}/{repositoryId}/root:
+    parameters:
+      - name: organisationId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: repositoryId
+        in: path
+        required: true
+        schema:
+          type: string
+      - $ref: "#/components/parameters/include"
+    get:
+      summary: Searches for root phenotypes or categories. Use the query parameters to filter the result.
+      operationId: getRootEntitiesByRepositoryId
+      tags:
+        - entity
+      parameters:
+        - name: name
+          description: Filter phenotypes or categories by name.
+          in: query
+          schema:
+            type: string
+        - name: type
+          description: Filter phenotypes or categories by type.
+          in: query
+          schema:
+            $ref: "#/components/schemas/EntityType"
+        - name: dataType
+          description: Filter phenotypes or categories by data type
+          in: query
+          schema:
+            $ref: "#/components/schemas/DataType"
+        - $ref: "#/components/parameters/page"
+      responses:
+        200:
+          description: List of root phenotypes or categories
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Entity"
         401:
           $ref: "#/components/responses/Unauthorized"
         404:

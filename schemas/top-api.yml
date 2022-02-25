@@ -777,6 +777,57 @@ paths:
         default:
           $ref: "#/components/responses/UnexpectedError"
 
+  /{organisationId}/{repositoryId}/root:
+    parameters:
+      - name: organisationId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: repositoryId
+        in: path
+        required: true
+        schema:
+          type: string
+      - $ref: "#/components/parameters/include"
+    get:
+      summary: Searches for root phenotypes or categories. Use the query parameters to filter the result.
+      operationId: getRootEntitiesByRepositoryId
+      tags:
+        - entity
+      parameters:
+        - name: name
+          description: Filter phenotypes or categories by name.
+          in: query
+          schema:
+            type: string
+        - name: type
+          description: Filter phenotypes or categories by type.
+          in: query
+          schema:
+            $ref: "#/components/schemas/EntityType"
+        - name: dataType
+          description: Filter phenotypes or categories by data type
+          in: query
+          schema:
+            $ref: "#/components/schemas/DataType"
+        - $ref: "#/components/parameters/page"
+      responses:
+        200:
+          description: List of root phenotypes or categories
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Entity"
+        401:
+          $ref: "#/components/responses/Unauthorized"
+        404:
+          $ref: "#/components/responses/NotFound"
+        default:
+          $ref: "#/components/responses/UnexpectedError"
+
   /{organisationId}/{repositoryId}/{id}:
     summary: Represents an entity (i.e. phenotype or category) in a repository
     parameters:

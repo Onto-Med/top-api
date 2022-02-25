@@ -362,6 +362,35 @@ paths:
         default:
           $ref: "#/components/responses/UnexpectedError"
 
+  /entity:
+    parameters:
+      - $ref: "#/components/parameters/include"
+    get:
+      summary: Searches for phenotypes or categories. Use the query parameters to filter the result.
+      operationId: getEntities
+      tags:
+        - entity
+      parameters:
+        - name: name
+          description: Filter phenotypes or categories by name.
+          in: query
+          schema:
+            type: string
+        - $ref: "#/components/parameters/page"
+      responses:
+        200:
+          description: List of phenotypes or categories
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Entity"
+        401:
+          $ref: "#/components/responses/Unauthorized"
+        default:
+          $ref: "#/components/responses/UnexpectedError"
+
   /{organisationId}/repository:
     parameters:
       - name: organisationId
@@ -687,7 +716,7 @@ paths:
       - $ref: "#/components/parameters/include"
     get:
       summary: Searches for phenotypes or categories. Use the query parameters to filter the result.
-      operationId: getEntities
+      operationId: getEntitiesByRepositoryId
       tags:
         - entity
       parameters:

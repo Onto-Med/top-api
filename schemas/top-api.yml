@@ -1310,10 +1310,6 @@ components:
               type: number
             superPhenotype:
               $ref: "#/components/schemas/Phenotype"
-            subPhenotypes:
-              type: array
-              items:
-                $ref: "#/components/schemas/Phenotype"
             phenotypeGroups:
               type: array
               items:

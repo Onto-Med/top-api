@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: TOP API
-  version: 0.2.0
+  version: 0.2.1
   description: API to manage phenotypes, repositories, ontologies and organisations
 
 servers:
@@ -1270,6 +1270,14 @@ components:
               type: array
               items:
                 $ref: "#/components/schemas/Category"
+            subCategories:
+              type: array
+              items:
+                $ref: "#/components/schemas/Category"
+            phenotypes:
+              type: array
+              items:
+                $ref: "#/components/schemas/Phenotype"
 
     PhenotypeGroup:
       allOf:
@@ -1302,6 +1310,10 @@ components:
               type: number
             superPhenotype:
               $ref: "#/components/schemas/Phenotype"
+            subPhenotypes:
+              type: array
+              items:
+                $ref: "#/components/schemas/Phenotype"
             phenotypeGroups:
               type: array
               items:

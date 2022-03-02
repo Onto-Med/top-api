@@ -934,6 +934,31 @@ paths:
           $ref: "#/components/responses/NotFound"
         default:
           $ref: "#/components/responses/UnexpectedError"
+    patch:
+      summary: Reset the state of a particular phenotype or category to the specified version.
+      operationId: setCurrentEntityVersion
+      tags:
+        - entity
+      parameters:
+        - name: version
+          description: Defaults to the latest version number.
+          in: query
+          required: true
+          schema:
+            $ref: "#/components/schemas/VersionNumber"
+      responses:
+        200:
+          description: The current version of the entity after performing the reset.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Entity"
+        401:
+          $ref: "#/components/responses/Unauthorized"
+        404:
+          $ref: "#/components/responses/NotFound"
+        default:
+          $ref: "#/components/responses/UnexpectedError"
 
   /{organisationId}/{repositoryId}/{id}/history:
     summary: Represents the version history of an entity (i.e. phenotype or category) in a repository
@@ -968,31 +993,6 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Entity"
-        401:
-          $ref: "#/components/responses/Unauthorized"
-        404:
-          $ref: "#/components/responses/NotFound"
-        default:
-          $ref: "#/components/responses/UnexpectedError"
-    patch:
-      summary: Reset the state of a particular phenotype or category to the specified version.
-      operationId: setCurrentEntityVersion
-      tags:
-        - entity
-      parameters:
-        - name: version
-          description: Defaults to the latest version number.
-          in: query
-          required: true
-          schema:
-            $ref: "#/components/schemas/VersionNumber"
-      responses:
-        200:
-          description: The current version of the entity after performing the reset.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Entity"
         401:
           $ref: "#/components/responses/Unauthorized"
         404:

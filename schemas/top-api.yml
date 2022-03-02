@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: TOP API
-  version: 0.2.1
+  version: 0.2.2
   description: API to manage phenotypes, repositories, ontologies and organisations
 
 servers:
@@ -912,22 +912,41 @@ paths:
         default:
           $ref: "#/components/responses/UnexpectedError"
     delete:
-      parameters:
-        - name: permanent
-          in: query
-          description: Whether the entity version shall be deleted permanently.
-          schema:
-            type: boolean
-            default: false
       summary:
-        Deletes a particular phenotype or category by id in the repository and returns the deleted phenotype or category.
-        The Entity is not actually deleted, but set to invisible.
+        Deletes a particular phenotype or category by id in the repository.
+        One can delete the whole entity or a version by specifying the version parameter.
+        The current version of an entity cannot be deleted.
       operationId: deleteEntityById
       tags:
         - entity
       responses:
         204:
-          description: The entity was deleted successfully.
+          description: The entity or version was deleted successfully.
+        401:
+          $ref: "#/components/responses/Unauthorized"
+        404:
+          $ref: "#/components/responses/NotFound"
+        default:
+          $ref: "#/components/responses/UnexpectedError"
+    patch:
+      summary: Reset the state of a particular phenotype or category to the specified version.
+      operationId: setCurrentEntityVersion
+      tags:
+        - entity
+      parameters:
+        - name: version
+          description: Defaults to the latest version number.
+          in: query
+          required: true
+          schema:
+            $ref: "#/components/schemas/VersionNumber"
+      responses:
+        200:
+          description: The current version of the entity after performing the reset.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Entity"
         401:
           $ref: "#/components/responses/Unauthorized"
         404:
@@ -1397,9 +1416,6 @@ components:
         author:
           $ref: "#/components/schemas/UserAccount"
         createdAt:
-          type: string
-          format: date-time
-        hiddenAt:
           type: string
           format: date-time
         refer:

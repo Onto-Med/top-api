@@ -974,6 +974,31 @@ paths:
           $ref: "#/components/responses/NotFound"
         default:
           $ref: "#/components/responses/UnexpectedError"
+    patch:
+      summary: Reset the state of a particular phenotype or category to the specified version.
+      operationId: setCurrentEntityVersion
+      tags:
+        - entity
+      parameters:
+        - name: version
+          description: Defaults to the latest version number.
+          in: query
+          required: true
+          schema:
+            $ref: "#/components/schemas/VersionNumber"
+      responses:
+        200:
+          description: The current version of the entity after performing the reset.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Entity"
+        401:
+          $ref: "#/components/responses/Unauthorized"
+        404:
+          $ref: "#/components/responses/NotFound"
+        default:
+          $ref: "#/components/responses/UnexpectedError"
 
   /{organisationId}/{repositoryId}/{id}/subclasses:
     summary: Represents subclasses (categories, abstract or restricted phenotypes) of an entity in a repository

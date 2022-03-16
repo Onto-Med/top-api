@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: TOP API
-  version: 0.2.2
+  version: 0.3.0
   description: API to manage phenotypes, repositories, ontologies and organisations
 
 servers:
@@ -1102,6 +1102,26 @@ paths:
         default:
           $ref: "#/components/responses/UnexpectedError"
 
+  /formula_operator:
+    get:
+      summary: Get all supported formula operators
+      operationId: getFormulaOperators
+      tags:
+        - formula_operator
+      responses:
+        200:
+          description: List of supported formula operators
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FormulaOperator'
+        401:
+          $ref: "#/components/responses/Unauthorized"
+        default:
+          $ref: "#/components/responses/UnexpectedError"
+
 components:
   responses:
     NotFound:
@@ -1373,18 +1393,58 @@ components:
       type: object
       properties:
         operator:
-          $ref: "#/components/schemas/FormulaOperator"
+          type: string
+          description: A string identifying a valid operator.
         id:
           type: string
-          description: If operator equals class or restriction, this property contains the id of that class or restriction.
+          description: In case this formula holds an entity, this property contains the id of that entity.
+        constant:
+          type: number
+          description: In case this formula holds a constant value, it is stored here.
         operands:
           type: array
           items:
             $ref: "#/components/schemas/Formula"
 
     FormulaOperator:
-      type: string
-      enum: [add, substract, multiply, divide, if_else, class, restriction]
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: string
+          description: The identifier of the operator. Should be unique.
+        title:
+          type: string
+          description: Human-readable title of the operator.
+        type:
+          type: string
+          enum:
+            - nullary
+            - unary
+            - binary
+            - multary
+          description: The type of this operator.
+      discriminator:
+        propertyName: type
+        mapping:
+          nullary: "#/components/schemas/FormulaOperator"
+          unary: "#/components/schemas/FormulaOperator"
+          binary: "#/components/schemas/FormulaOperator"
+          multary: "#/components/schemas/FormulaMultaryOperator"
+
+    FormulaMultaryOperator:
+      allOf:
+        - $ref: "#/components/schemas/FormulaOperator"
+        - type: object
+          required:
+            - required
+          properties:
+            required:
+              type: integer
+              format: int32
+              minimum: 0
+              description: In case this is a multary operator, the value of this property determins how many operands are at least required for this operator to be valid.
 
     VersionNumber:
       description: Reflects the version of the content. The value is generated server-side.

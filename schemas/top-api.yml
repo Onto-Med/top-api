@@ -1393,7 +1393,7 @@ components:
       type: object
       properties:
         operator:
-          $ref: '#/components/schemas/FormulaOperator'
+          type: string
           description: A string identifying a valid operator.
         id:
           type: string

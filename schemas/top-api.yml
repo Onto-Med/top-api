@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: TOP API
-  version: 0.3.0
+  version: 0.3.1
   description: API to manage phenotypes, repositories, ontologies and organisations
 
 servers:
@@ -1393,7 +1393,7 @@ components:
       type: object
       properties:
         operator:
-          type: string
+          $ref: '#/components/schemas/FormulaOperator'
           description: A string identifying a valid operator.
         id:
           type: string
@@ -1417,6 +1417,15 @@ components:
         title:
           type: string
           description: Human-readable title of the operator.
+        representation:
+          type: string
+          enum:
+            - prefix
+            - infix
+            - postfix
+          description:
+            This property defines the prefered representation of an operator.
+            If the property is missing or undefined, it should be treated as prefix.
         type:
           type: string
           enum:

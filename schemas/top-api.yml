@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: TOP API
-  version: 0.3.1
+  version: 0.3.2
   description: API to manage phenotypes, repositories, ontologies and organisations
 
 servers:
@@ -1102,21 +1102,27 @@ paths:
         default:
           $ref: "#/components/responses/UnexpectedError"
 
-  /formula_operator:
+  /expression_operator:
+    parameters:
+      - name: type
+        in: query
+        description: The type (math or boolean) for which operators are queried.
+        schema:
+          type: string
     get:
-      summary: Get all supported formula operators
-      operationId: getFormulaOperators
+      summary: Get all supported expression operators
+      operationId: getExpressionOperators
       tags:
-        - formula_operator
+        - expression_operator
       responses:
         200:
-          description: List of supported formula operators
+          description: List of supported expression operators
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/FormulaOperator'
+                  $ref: '#/components/schemas/ExpressionOperator'
         401:
           $ref: "#/components/responses/Unauthorized"
         default:
@@ -1335,8 +1341,6 @@ components:
           properties:
             dataType:
               $ref: "#/components/schemas/DataType"
-            formula:
-              $ref: "#/components/schemas/Formula"
             restriction:
               $ref: "#/components/schemas/Restriction"
             expression:
@@ -1367,46 +1371,22 @@ components:
 
     Expression:
       type: object
-      required:
-        - type
       properties:
-        type:
-          $ref: "#/components/schemas/ExpressionType"
+        operator:
+          type: string
+          description: A string identifying a valid operator. See ExpressionOperator for a detailed description.
         id:
           type: string
-          description: If type equals class or restriction, this property contains the id of that class or restriction
+          description: In case this expression holds an entity, this property contains the id of that entity.
+        constant:
+          type: number
+          description: In case this expression holds a constant value, it is stored here.
         operands:
           type: array
           items:
             $ref: "#/components/schemas/Expression"
 
-    ExpressionType:
-      type: string
-      enum:
-        - union
-        - intersection
-        - complement
-        - class
-        - restriction
-
-    Formula:
-      type: object
-      properties:
-        operator:
-          type: string
-          description: A string identifying a valid operator.
-        id:
-          type: string
-          description: In case this formula holds an entity, this property contains the id of that entity.
-        constant:
-          type: number
-          description: In case this formula holds a constant value, it is stored here.
-        operands:
-          type: array
-          items:
-            $ref: "#/components/schemas/Formula"
-
-    FormulaOperator:
+    ExpressionOperator:
       type: object
       required:
         - id
@@ -1437,14 +1417,14 @@ components:
       discriminator:
         propertyName: type
         mapping:
-          nullary: "#/components/schemas/FormulaOperator"
-          unary: "#/components/schemas/FormulaOperator"
-          binary: "#/components/schemas/FormulaOperator"
-          multary: "#/components/schemas/FormulaMultaryOperator"
+          nullary: "#/components/schemas/ExpressionOperator"
+          unary: "#/components/schemas/ExpressionOperator"
+          binary: "#/components/schemas/ExpressionOperator"
+          multary: "#/components/schemas/ExpressionMultaryOperator"
 
-    FormulaMultaryOperator:
+    ExpressionMultaryOperator:
       allOf:
-        - $ref: "#/components/schemas/FormulaOperator"
+        - $ref: "#/components/schemas/ExpressionOperator"
         - type: object
           required:
             - required

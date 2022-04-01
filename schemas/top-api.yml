@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: TOP API
-  version: 0.3.2
+  version: 0.3.3
   description: API to manage phenotypes, repositories, ontologies and organisations
 
 servers:
@@ -954,6 +954,105 @@ paths:
         default:
           $ref: "#/components/responses/UnexpectedError"
 
+  /{organisationId}/{repositoryId}/{id}/fork:
+    summary: Manage forks of an entity. E.g. create new forks, list them and apply updates from origin.
+    parameters:
+      - name: organisationId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: repositoryId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: version
+        description: Defaults to the latest version number.
+        in: query
+        schema:
+          $ref: "#/components/schemas/VersionNumber"
+      - $ref: "#/components/parameters/include"
+    get:
+      summary: Returns all forks of a particular entity.
+      operationId: getForks
+      tags:
+        - fork
+      responses:
+        200:
+          description: List of forks
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Entity"
+        401:
+          $ref: "#/components/responses/Unauthorized"
+        404:
+          $ref: "#/components/responses/NotFound"
+        default:
+          $ref: "#/components/responses/UnexpectedError"
+    post:
+      summary: Create a new fork from a particular entity.
+      operationId: createFork
+      tags:
+        - fork
+      requestBody:
+        description: Fork instructions like destination
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ForkCreateInstruction"
+      responses:
+        200:
+          description: List of affected entities (i.e., entities created in the destination repository).
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Entity"
+        401:
+          $ref: "#/components/responses/Unauthorized"
+        404:
+          $ref: "#/components/responses/NotFound"
+        default:
+          $ref: "#/components/responses/UnexpectedError"
+    patch:
+        summary: In case the referred entity is a fork of another entity, create a new version from the current state of the originating entity.
+        operationId: updateFork
+        tags:
+          - fork
+        requestBody:
+          description: Fork update instructions
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForkUpdateInstruction"
+        responses:
+          200:
+            description: List of affected entities (i.e., entities created in the destination repository).
+            content:
+              application/json:
+                schema:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/Entity"
+          401:
+            $ref: "#/components/responses/Unauthorized"
+          404:
+            $ref: "#/components/responses/NotFound"
+          default:
+            $ref: "#/components/responses/UnexpectedError"
+
   /{organisationId}/{repositoryId}/{id}/history:
     summary: Represents the version history of an entity (i.e. phenotype or category) in a repository
     parameters:
@@ -1434,6 +1533,40 @@ components:
               format: int32
               minimum: 0
               description: In case this is a multary operator, the value of this property determins how many operands are at least required for this operator to be valid.
+
+    ForkCreateInstruction:
+      allOf:
+        - $ref: "#/components/schemas/ForkUpdateInstruction"
+        - type: object
+          required:
+            - organisationId
+            - repositoryId
+          properties:
+            organisationId:
+              type: string
+              description: Destination organisation where fork will be created.
+            repositoryId:
+              type: string
+              description: Destination repository where fork will be created.
+
+    ForkUpdateInstruction:
+      type: object
+      properties:
+        version:
+          $ref: "#/components/schemas/VersionNumber"
+          description: The version number of originating entity that will be applied to the fork.
+        cascade:
+          type: boolean
+          default: false
+          description: Whether all referenced entities shall be forked too.
+        history:
+          type: boolean
+          default: false
+          description: Whether all versions shall be copied to the destination. This also applies to entities created by cascade.
+        preserveOrigin:
+          type: boolean
+          default: true
+          description: Whether a relationship between the fork and its originating entity version shall be created. This also applies to entities created by cascade.
 
     VersionNumber:
       description: Reflects the version of the content. The value is generated server-side.

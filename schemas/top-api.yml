@@ -972,11 +972,6 @@ paths:
         required: true
         schema:
           type: string
-      - name: version
-        description: Defaults to the latest version number.
-        in: query
-        schema:
-          $ref: "#/components/schemas/VersionNumber"
       - $ref: "#/components/parameters/include"
     get:
       summary: Returns all forks of a particular entity.
@@ -1003,6 +998,12 @@ paths:
       operationId: createFork
       tags:
         - fork
+      parameters:
+        - name: version
+          description: Defaults to the latest version number.
+          in: query
+          schema:
+            $ref: "#/components/schemas/VersionNumber"
       requestBody:
         description: Fork instructions like destination
         required: true

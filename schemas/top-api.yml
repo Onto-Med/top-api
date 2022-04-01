@@ -1012,7 +1012,7 @@ paths:
             schema:
               $ref: "#/components/schemas/ForkCreateInstruction"
       responses:
-        200:
+        201:
           description: List of affected entities (i.e., entities created in the destination repository).
           content:
             application/json:

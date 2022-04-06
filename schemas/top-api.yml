@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: TOP API
-  version: 0.3.3
+  version: 0.3.4
   description: API to manage phenotypes, repositories, ontologies and organisations
 
 servers:
@@ -62,6 +62,23 @@ paths:
                 $ref: "#/components/schemas/AuthenticationToken"
         401:
           $ref: "#/components/responses/Unauthorized"
+        default:
+          $ref: "#/components/responses/UnexpectedError"
+
+  /statistic:
+    summary: Get statistics about available content. Returned data may be cached.
+    get:
+      operationId: getStatistics
+      security:
+        - BearerAuth: []
+        - BasicAuth: []
+      responses:
+        200:
+          description: Object holding statistics
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Statistic"
         default:
           $ref: "#/components/responses/UnexpectedError"
 
@@ -1759,6 +1776,29 @@ components:
           description: The JWT token
           type: string
           readOnly: true
+
+    Statistic:
+      description:
+        Holds statistics about content. The scope may be a subset of content stored on the server.
+        Statistics may vary depending on user permissions.
+      type: object
+      properties:
+        organisations:
+          description: Number of organisations
+          type: integer
+          format: int32
+        repositories:
+          description: Number of repositories
+          type: integer
+          format: int32
+        categories:
+          description: Number of phenotype categories
+          type: integer
+          format: int32
+        phenotypes:
+          description: Number of phenotypes
+          type: integer
+          format: int32
 
   securitySchemes:
     BearerAuth:

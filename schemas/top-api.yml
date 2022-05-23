@@ -335,6 +335,11 @@ paths:
           in: query
           schema:
             type: string
+        - name: primary
+          description: Filter repositories by primary state.
+          in: query
+          schema:
+            type: boolean
         - $ref: "#/components/parameters/page"
       responses:
         200:
@@ -1325,6 +1330,10 @@ components:
           type: string
         description:
           type: string
+        primary:
+          description: Determines whether this repository is a primary (aka. public) repository
+          type: boolean
+          default: false
         createdAt:
           type: string
           format: date-time

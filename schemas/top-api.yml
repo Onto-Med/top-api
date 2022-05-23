@@ -388,7 +388,7 @@ paths:
     parameters:
       - $ref: "#/components/parameters/include"
     get:
-      summary: Searches for phenotypes or categories. Use the query parameters to filter the result.
+      summary: Searches for phenotypes or categories. Use the query parameters to filter the result. Only entites in primary repositories are returned.
       operationId: getEntities
       tags:
         - entity

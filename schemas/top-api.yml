@@ -1752,6 +1752,43 @@ components:
       type: string
       enum: ["none", "exists", "some", "all"]
 
+    Query:
+      description: >
+        Represents a search query for subjects.
+        A query has basic configurations for data source connections as well as in/exclusions and projections.
+      type: object
+      properties:
+        criteria:
+          description: List of in- and exclusion criteria.
+          type: array
+          items:
+            $ref: "#/components/schemas/QueryCriterion"
+        projection:
+          description: The projection to be performed on the result set.
+          $ref: "#/components/schemas/Projection"
+
+    QueryCriterion:
+      description: A single criterion of a search query. Criteria can be inclusions or exclusions.
+      type: object
+      required:
+        - subject
+        - exclusion
+      properties:
+        subject:
+          description: The subject this criterion refers to.
+          $ref: "#/components/schemas/Phenotype"
+        exclusion:
+          type: boolean
+          default: false
+
+    Projection:
+      type: object
+      properties:
+        requestedData:
+          type: array
+          items:
+            $ref: "#/components/schemas/Phenotype"
+
     ErrorResponse:
       type: object
       required:

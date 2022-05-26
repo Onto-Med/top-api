@@ -1787,7 +1787,24 @@ components:
         requestedData:
           type: array
           items:
-            $ref: "#/components/schemas/Phenotype"
+            $ref: "#/components/schemas/RequestedData"
+
+    RequestedData:
+      type: object
+      required:
+        - subject
+        - sorting
+      properties:
+        subject:
+          $ref: "#/components/schemas/Phenotype"
+        sorting:
+          $ref: "#/components/schemas/Sorting"
+
+    Sorting:
+      type: string
+      enum:
+        - asc
+        - desc
 
     ErrorResponse:
       type: object

@@ -1049,32 +1049,32 @@ paths:
         default:
           $ref: "#/components/responses/UnexpectedError"
     patch:
-        summary: In case the referred entity is a fork of another entity, create a new version from the current state of the originating entity.
-        operationId: updateFork
-        tags:
-          - fork
-        requestBody:
-          description: Fork update instructions
-          required: true
+      summary: In case the referred entity is a fork of another entity, create a new version from the current state of the originating entity.
+      operationId: updateFork
+      tags:
+        - fork
+      requestBody:
+        description: Fork update instructions
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ForkUpdateInstruction"
+      responses:
+        200:
+          description: List of affected entities (i.e., entities created in the destination repository).
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ForkUpdateInstruction"
-        responses:
-          200:
-            description: List of affected entities (i.e., entities created in the destination repository).
-            content:
-              application/json:
-                schema:
-                  type: array
-                  items:
-                    $ref: "#/components/schemas/Entity"
-          401:
-            $ref: "#/components/responses/Unauthorized"
-          404:
-            $ref: "#/components/responses/NotFound"
-          default:
-            $ref: "#/components/responses/UnexpectedError"
+                type: array
+                items:
+                  $ref: "#/components/schemas/Entity"
+        401:
+          $ref: "#/components/responses/Unauthorized"
+        404:
+          $ref: "#/components/responses/NotFound"
+        default:
+          $ref: "#/components/responses/UnexpectedError"
 
   /{organisationId}/{repositoryId}/{id}/history:
     summary: Represents the version history of an entity (i.e. phenotype or category) in a repository
@@ -1244,7 +1244,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/ExpressionOperator'
+                  $ref: "#/components/schemas/ExpressionOperator"
         401:
           $ref: "#/components/responses/Unauthorized"
         default:
@@ -1679,7 +1679,7 @@ components:
         - type
       properties:
         type:
-          $ref:  "#/components/schemas/DataType"
+          $ref: "#/components/schemas/DataType"
         negated:
           type: boolean
           default: false

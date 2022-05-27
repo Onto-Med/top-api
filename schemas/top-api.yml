@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: TOP API
-  version: 0.3.6
+  version: 0.3.7
   description: API to manage phenotypes, repositories, ontologies and organisations
 
 servers:
@@ -388,7 +388,7 @@ paths:
     parameters:
       - $ref: "#/components/parameters/include"
     get:
-      summary: Searches for phenotypes or categories. Use the query parameters to filter the result.
+      summary: Searches for phenotypes or categories. Use the query parameters to filter the result. Only entites in primary repositories are returned.
       operationId: getEntities
       tags:
         - entity
@@ -1049,32 +1049,32 @@ paths:
         default:
           $ref: "#/components/responses/UnexpectedError"
     patch:
-        summary: In case the referred entity is a fork of another entity, create a new version from the current state of the originating entity.
-        operationId: updateFork
-        tags:
-          - fork
-        requestBody:
-          description: Fork update instructions
-          required: true
+      summary: In case the referred entity is a fork of another entity, create a new version from the current state of the originating entity.
+      operationId: updateFork
+      tags:
+        - fork
+      requestBody:
+        description: Fork update instructions
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ForkUpdateInstruction"
+      responses:
+        200:
+          description: List of affected entities (i.e., entities created in the destination repository).
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ForkUpdateInstruction"
-        responses:
-          200:
-            description: List of affected entities (i.e., entities created in the destination repository).
-            content:
-              application/json:
-                schema:
-                  type: array
-                  items:
-                    $ref: "#/components/schemas/Entity"
-          401:
-            $ref: "#/components/responses/Unauthorized"
-          404:
-            $ref: "#/components/responses/NotFound"
-          default:
-            $ref: "#/components/responses/UnexpectedError"
+                type: array
+                items:
+                  $ref: "#/components/schemas/Entity"
+        401:
+          $ref: "#/components/responses/Unauthorized"
+        404:
+          $ref: "#/components/responses/NotFound"
+        default:
+          $ref: "#/components/responses/UnexpectedError"
 
   /{organisationId}/{repositoryId}/{id}/history:
     summary: Represents the version history of an entity (i.e. phenotype or category) in a repository
@@ -1244,7 +1244,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/ExpressionOperator'
+                  $ref: "#/components/schemas/ExpressionOperator"
         401:
           $ref: "#/components/responses/Unauthorized"
         default:
@@ -1679,7 +1679,7 @@ components:
         - type
       properties:
         type:
-          $ref:  "#/components/schemas/DataType"
+          $ref: "#/components/schemas/DataType"
         negated:
           type: boolean
           default: false
@@ -1751,6 +1751,79 @@ components:
     Quantor:
       type: string
       enum: ["none", "exists", "some", "all"]
+
+    Query:
+      description: >
+        Represents a search query for subjects/individuals.
+        A query has basic configurations for data source connections as well as in/exclusions and projections.
+      type: object
+      properties:
+        name:
+          description: Name of this query. For example, you could allow users to save a query for later use and use the name as identifier.
+          type: string
+        configuration:
+          $ref: "#/components/schemas/QueryConfiguration"
+        criteria:
+          description: List of in- and exclusion criteria.
+          type: array
+          items:
+            $ref: "#/components/schemas/QueryCriterion"
+        projection:
+          description: The projection to be performed on the result set.
+          $ref: "#/components/schemas/Projection"
+
+    QueryConfiguration:
+      description: Configurations to execute query on data sources.
+      type: object
+      required:
+        - sources
+      properties:
+        sources:
+          type: array
+          items:
+            type: string
+
+    QueryCriterion:
+      description: A single criterion of a search query. Criteria can be inclusions or exclusions.
+      type: object
+      required:
+        - subject
+        - exclusion
+      properties:
+        subject:
+          description: The subject this criterion refers to.
+          $ref: "#/components/schemas/Phenotype"
+        exclusion:
+          type: boolean
+          default: false
+
+    Projection:
+      description: Represents the projection to be performed on a result set.
+      type: object
+      properties:
+        select:
+          description: Ordered list of subjects with sorting directions.
+          type: array
+          items:
+            $ref: "#/components/schemas/ProjectionSelectEntry"
+
+    ProjectionSelectEntry:
+      description: Single entry of a projection select list.
+      type: object
+      required:
+        - subject
+        - sorting
+      properties:
+        subject:
+          $ref: "#/components/schemas/Phenotype"
+        sorting:
+          $ref: "#/components/schemas/Sorting"
+
+    Sorting:
+      type: string
+      enum:
+        - asc
+        - desc
 
     ErrorResponse:
       type: object

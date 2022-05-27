@@ -1754,10 +1754,15 @@ components:
 
     Query:
       description: >
-        Represents a search query for subjects.
+        Represents a search query for subjects/individuals.
         A query has basic configurations for data source connections as well as in/exclusions and projections.
       type: object
       properties:
+        name:
+          description: Name of this query. For example, you could allow users to save a query for later use and use the name as identifier.
+          type: string
+        configuration:
+          $ref: "#/components/schemas/QueryConfiguration"
         criteria:
           description: List of in- and exclusion criteria.
           type: array
@@ -1766,6 +1771,17 @@ components:
         projection:
           description: The projection to be performed on the result set.
           $ref: "#/components/schemas/Projection"
+
+    QueryConfiguration:
+      description: Configurations to execute query on data sources.
+      type: object
+      required:
+        - sources
+      properties:
+        sources:
+          type: array
+          items:
+            type: string
 
     QueryCriterion:
       description: A single criterion of a search query. Criteria can be inclusions or exclusions.

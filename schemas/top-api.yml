@@ -1798,14 +1798,17 @@ components:
           default: false
 
     Projection:
+      description: Represents the projection to be performed on a result set.
       type: object
       properties:
-        requestedData:
+        select:
+          description: Ordered list of subjects with sorting directions.
           type: array
           items:
-            $ref: "#/components/schemas/RequestedData"
+            $ref: "#/components/schemas/ProjectionSelectEntry"
 
-    RequestedData:
+    ProjectionSelectEntry:
+      description: Single entry of a projection select list.
       type: object
       required:
         - subject

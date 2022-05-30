@@ -1798,6 +1798,14 @@ components:
         exclusion:
           type: boolean
           default: false
+        timeRestrictions:
+          type: array
+          items:
+            $ref: "#/components/schemas/Restriction"
+        ageRestrictions:
+          type: array
+          items:
+            $ref: "#/components/schemas/Restriction"
 
     Projection:
       description: Represents the projection to be performed on a result set.

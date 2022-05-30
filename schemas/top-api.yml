@@ -1467,6 +1467,8 @@ components:
           properties:
             dataType:
               $ref: "#/components/schemas/DataType"
+            specialType:
+              type: string
             restriction:
               $ref: "#/components/schemas/Restriction"
             expression:

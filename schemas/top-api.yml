@@ -1773,6 +1773,13 @@ components:
         projection:
           description: The projection to be performed on the result set.
           $ref: "#/components/schemas/Projection"
+        dependentSubjects:
+          description: >
+            List of additional subjects that hold information, required to execute the query.
+            This list should be disjoint from criteria and projection.
+          type: array
+          items:
+            $ref: "#/components/schemas/Phenotype"
 
     QueryConfiguration:
       description: Configurations to execute query on data sources.

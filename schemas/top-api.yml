@@ -1844,6 +1844,14 @@ components:
           $ref: "#/components/schemas/Phenotype"
         sorting:
           $ref: "#/components/schemas/Sorting"
+        timeRestrictions:
+          type: array
+          items:
+            $ref: "#/components/schemas/Restriction"
+        ageRestrictions:
+          type: array
+          items:
+            $ref: "#/components/schemas/Restriction"
 
     Sorting:
       type: string

@@ -1250,6 +1250,26 @@ paths:
         default:
           $ref: "#/components/responses/UnexpectedError"
 
+  /constant:
+    get:
+      summary: Get all supported derived-expression constants
+      operationId: getConstants
+      tags:
+        - expression_constant
+      responses:
+        200:
+          description: List of supported derived-expression constants
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Constant"
+        401:
+          $ref: "#/components/responses/Unauthorized"
+        default:
+          $ref: "#/components/responses/UnexpectedError"
+
 components:
   responses:
     NotFound:
@@ -1497,6 +1517,18 @@ components:
           type: string
           minLength: 1
 
+    Constant:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: string
+          description: A unique identifier of the constant.
+        title:
+          type: string
+          description: Human-readable title of the constant.
+
     Expression:
       type: object
       properties:
@@ -1507,8 +1539,10 @@ components:
           type: string
           description: In case this expression holds an entity, this property contains the id of that entity.
         constant:
-          type: number
-          description: In case this expression holds a constant value, it is stored here.
+          type: string
+          description: >
+            In case this expression holds a constant value, it is stored here.
+            A constant can be a numeric value or an identifier of a supported derived-expression constant.
         operands:
           type: array
           items:

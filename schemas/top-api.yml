@@ -1777,9 +1777,7 @@ components:
           $ref: "#/components/schemas/DependentSubjectsMap"
 
     DependentSubjectsMap:
-      description: >
-        Map of additional subjects that hold information, required to execute the query.
-        This list should be disjoint from criteria and projection.
+      description: Map of additional subjects that hold information, required to execute the query.
       type: object
       required:
         - id

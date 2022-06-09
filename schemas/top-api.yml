@@ -1814,14 +1814,14 @@ components:
         exclusion:
           type: boolean
           default: false
-        timeRestrictions:
-          type: array
-          items:
-            $ref: "#/components/schemas/Restriction"
         ageRestrictions:
           type: array
           items:
-            $ref: "#/components/schemas/Restriction"
+            $ref: "#/components/schemas/NumberRestriction"
+        dateTimeRestrictions:
+          type: array
+          items:
+            $ref: "#/components/schemas/DateTimeRestriction"
 
     Projection:
       description: Represents the projection to be performed on a result set.
@@ -1844,14 +1844,14 @@ components:
           $ref: "#/components/schemas/Phenotype"
         sorting:
           $ref: "#/components/schemas/Sorting"
-        timeRestrictions:
-          type: array
-          items:
-            $ref: "#/components/schemas/Restriction"
         ageRestrictions:
           type: array
           items:
-            $ref: "#/components/schemas/Restriction"
+            $ref: "#/components/schemas/NumberRestriction"
+        dateTimeRestrictions:
+          type: array
+          items:
+            $ref: "#/components/schemas/DateTimeRestriction"
 
     Sorting:
       type: string

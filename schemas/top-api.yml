@@ -1539,8 +1539,10 @@ components:
           type: string
           description: In case this expression holds an entity, this property contains the id of that entity.
         constant:
-          type: number
-          description: In case this expression holds a constant value, it is stored here.
+          type: string
+          description: >
+            In case this expression holds a constant value, it is stored here.
+            A constant can be a numeric value or an identifier of a supported derived-expression constant.
         operands:
           type: array
           items:

@@ -1497,6 +1497,18 @@ components:
           type: string
           minLength: 1
 
+    Constant:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: string
+          description: A unique identifier of the constant.
+        title:
+          type: string
+          description: Human-readable title of the constant.
+
     Expression:
       type: object
       properties:

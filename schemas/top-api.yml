@@ -1773,6 +1773,20 @@ components:
         projection:
           description: The projection to be performed on the result set.
           $ref: "#/components/schemas/Projection"
+        dependentSubjects:
+          $ref: "#/components/schemas/DependentSubjectsMap"
+
+    DependentSubjectsMap:
+      description: Map of additional subjects that hold information, required to execute the query.
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: string
+          description: ID of the dependent subject.
+      additionalProperties:
+        $ref: "#/components/schemas/Phenotype"
 
     QueryConfiguration:
       description: Configurations to execute query on data sources.
@@ -1798,14 +1812,14 @@ components:
         exclusion:
           type: boolean
           default: false
-        timeRestrictions:
-          type: array
-          items:
-            $ref: "#/components/schemas/Restriction"
         ageRestrictions:
           type: array
           items:
-            $ref: "#/components/schemas/Restriction"
+            $ref: "#/components/schemas/NumberRestriction"
+        dateTimeRestrictions:
+          type: array
+          items:
+            $ref: "#/components/schemas/DateTimeRestriction"
 
     Projection:
       description: Represents the projection to be performed on a result set.
@@ -1828,6 +1842,14 @@ components:
           $ref: "#/components/schemas/Phenotype"
         sorting:
           $ref: "#/components/schemas/Sorting"
+        ageRestrictions:
+          type: array
+          items:
+            $ref: "#/components/schemas/NumberRestriction"
+        dateTimeRestrictions:
+          type: array
+          items:
+            $ref: "#/components/schemas/DateTimeRestriction"
 
     Sorting:
       type: string

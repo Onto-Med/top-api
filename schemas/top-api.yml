@@ -1224,27 +1224,27 @@ paths:
         default:
           $ref: "#/components/responses/UnexpectedError"
 
-  /expression_operator:
+  /expression_function:
     parameters:
       - name: type
         in: query
-        description: The type (math or boolean) for which operators are queried.
+        description: The type (math or boolean) for which functions are queried.
         schema:
           type: string
     get:
-      summary: Get all supported expression operators
-      operationId: getExpressionOperators
+      summary: Get all supported expression functions
+      operationId: getExpressionFunctions
       tags:
-        - expression_operator
+        - expression_function
       responses:
         200:
-          description: List of supported expression operators
+          description: List of supported expression functions
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/ExpressionOperator"
+                  $ref: "#/components/schemas/ExpressionFunction"
         401:
           $ref: "#/components/responses/Unauthorized"
         default:
@@ -1532,9 +1532,9 @@ components:
     Expression:
       type: object
       properties:
-        operator:
+        function:
           type: string
-          description: A string identifying a valid operator. See ExpressionOperator for a detailed description.
+          description: A string identifying a valid expression function. See ExpressionFunction for a detailed description.
         id:
           type: string
           description: In case this expression holds an entity, this property contains the id of that entity.
@@ -1543,59 +1543,46 @@ components:
           description: >
             In case this expression holds a constant value, it is stored here.
             A constant can be a numeric value or an identifier of a supported derived-expression constant.
-        operands:
+        arguments:
           type: array
           items:
             $ref: "#/components/schemas/Expression"
 
-    ExpressionOperator:
+    ExpressionFunction:
       type: object
       required:
         - id
       properties:
         id:
           type: string
-          description: The identifier of the operator. Should be unique.
+          description: The identifier of the function. Should be unique.
+          example: add
         title:
           type: string
-          description: Human-readable title of the operator.
-        representation:
+          description: Human-readable title of the function.
+          example: +
+        notation:
           type: string
           enum:
             - prefix
             - infix
             - postfix
-          description:
-            This property defines the prefered representation of an operator.
+          default: prefix
+          description: >
+            This property defines the prefered notation of a function.
             If the property is missing or undefined, it should be treated as prefix.
-        type:
-          type: string
-          enum:
-            - nullary
-            - unary
-            - binary
-            - multary
-          description: The type of this operator.
-      discriminator:
-        propertyName: type
-        mapping:
-          nullary: "#/components/schemas/ExpressionOperator"
-          unary: "#/components/schemas/ExpressionOperator"
-          binary: "#/components/schemas/ExpressionOperator"
-          multary: "#/components/schemas/ExpressionMultaryOperator"
-
-    ExpressionMultaryOperator:
-      allOf:
-        - $ref: "#/components/schemas/ExpressionOperator"
-        - type: object
-          required:
-            - required
-          properties:
-            required:
-              type: integer
-              format: int32
-              minimum: 0
-              description: In case this is a multary operator, the value of this property determins how many operands are at least required for this operator to be valid.
+        minArgumentNumber:
+          type: number
+          format: int32
+          description: >
+            Determines how many arguments are at least required for this function.
+            If this property is missing, the minimum argument number is unrestricted.
+        maxArgumentNumber:
+          type: number
+          format: int32
+          description: >
+            Determines how many arguments are allowed for this function at max.
+            If this property is missing, the maximum argument number is unrestricted.
 
     ForkCreateInstruction:
       allOf:

@@ -1572,13 +1572,13 @@ components:
             This property defines the prefered notation of a function.
             If the property is missing or undefined, it should be treated as prefix.
         minArgumentNumber:
-          type: number
+          type: integer
           format: int32
           description: >
             Determines how many arguments are at least required for this function.
             If this property is missing, the minimum argument number is unrestricted.
         maxArgumentNumber:
-          type: number
+          type: integer
           format: int32
           description: >
             Determines how many arguments are allowed for this function at max.

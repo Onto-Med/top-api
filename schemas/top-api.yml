@@ -996,19 +996,17 @@ paths:
           type: string
       - $ref: "#/components/parameters/include"
     get:
-      summary: Returns all forks of a particular entity.
+      summary: Returns all forks of a particular entity and the originationg class of the entity, if present.
       operationId: getForks
       tags:
         - fork
       responses:
         200:
-          description: List of forks
+          description: Forking stats that contain a list of forked entities and the originating entity.
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Entity"
+                $ref: "#/components/schemas/ForkingStats"
         401:
           $ref: "#/components/responses/Unauthorized"
         404:
@@ -1598,6 +1596,16 @@ components:
             repositoryId:
               type: string
               description: Destination repository where fork will be created.
+
+    ForkingStats:
+      type: object
+      properties:
+        origin:
+          $ref: "#/components/schemas/Entity"
+        forks:
+          type: array
+          items:
+            $ref: "#/components/schemas/Entity"
 
     ForkUpdateInstruction:
       type: object

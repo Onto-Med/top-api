@@ -1538,10 +1538,8 @@ components:
               $ref: "#/components/schemas/Restriction"
             expression:
               $ref: "#/components/schemas/Expression"
-            units:
-              type: array
-              items:
-                $ref: "#/components/schemas/Unit"
+            unit:
+              $ref: "#/components/schemas/Unit"
             score:
               type: number
             superPhenotype:
@@ -1554,10 +1552,6 @@ components:
     Unit:
       type: object
       properties:
-        preferred:
-          type: boolean
-          default: false
-          description: If there are multiple preferred units, the first one will be used
         unit:
           type: string
           minLength: 1

@@ -1005,8 +1005,6 @@ paths:
         required: true
         schema:
           type: string
-          enum:
-            - vnd.r-project.r
     get:
       operationId: exportEntity
       tags:

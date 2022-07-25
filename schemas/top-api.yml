@@ -976,6 +976,55 @@ paths:
         default:
           $ref: "#/components/responses/UnexpectedError"
 
+  /{organisationId}/{repositoryId}/{id}/export:
+    summary: Export entity in the requested format.
+    parameters:
+      - name: organisationId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: repositoryId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: version
+        description: Defaults to the latest version number.
+        in: query
+        schema:
+          $ref: "#/components/schemas/VersionNumber"
+      - name: format
+        description: The export format.
+        in: query
+        required: true
+        schema:
+          type: string
+          enum:
+            - vnd.r-project.r
+    get:
+      operationId: exportEntity
+      tags:
+        - entity
+      responses:
+        200:
+          description: The entity in the requested export format.
+          content:
+            text/plain:
+              schema:
+                type: string
+        401:
+          $ref: "#/components/responses/Unauthorized"
+        404:
+          $ref: "#/components/responses/NotFound"
+        default:
+          $ref: "#/components/responses/UnexpectedError"
+
   /{organisationId}/{repositoryId}/{id}/fork:
     summary: Manage forks of an entity. E.g. create new forks, list them and apply updates from origin.
     parameters:

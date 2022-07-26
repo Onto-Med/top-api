@@ -129,6 +129,7 @@
 							<configOptions>
 								<npmName>@onto-med/top-api</npmName>
 								<npmRepository>https://npm.pkg.github.com</npmRepository>
+								<npmVersion>${project.version}</npmVersion>
 								<supportsES6>true</supportsES6>
 								<withInterfaces>true</withInterfaces>
 								<withoutPrefixEnums>true</withoutPrefixEnums>

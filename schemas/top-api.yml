@@ -1574,18 +1574,71 @@ components:
         function:
           type: string
           description: A string identifying a valid expression function. See ExpressionFunction for a detailed description.
-        id:
+        entityId:
           type: string
           description: In case this expression holds an entity, this property contains the id of that entity.
-        constant:
-          type: string
-          description: >
-            In case this expression holds a constant value, it is stored here.
-            A constant can be a numeric value or an identifier of a supported derived-expression constant.
+        value:
+          $ref: "#/components/schemas/ExpressionValue"
         arguments:
           type: array
           items:
             $ref: "#/components/schemas/Expression"
+
+    ExpressionValue:
+      type: object
+      description: An expression value can be a constant (from a predefined set of constants) or a userdefined value.
+      properties:
+        constant:
+          $ref: "#/components/schemas/Constant"
+        value:
+          $ref: "#/components/schemas/Value"
+
+    Value:
+      required:
+        - dataType
+      properties:
+        dataType:
+          $ref: "#/components/schemas/DataType"
+      discriminator:
+        propertyName: dataType
+        mapping:
+          string: "#/components/schemas/StringValue"
+          number: "#/components/schemas/NumberValue"
+          date_time: "#/components/schemas/DateTimeValue"
+          boolean: "#/components/schemas/BooleanValue"
+
+    StringValue:
+      allOf:
+        - $ref: "#/components/schemas/Value"
+        - type: object
+          properties:
+            value:
+              type: string
+
+    NumberValue:
+      allOf:
+        - $ref: "#/components/schemas/Value"
+        - type: object
+          properties:
+            value:
+              type: number
+
+    DateTimeValue:
+      allOf:
+        - $ref: "#/components/schemas/Value"
+        - type: object
+          properties:
+            value:
+              type: string
+              format: date-time
+
+    BooleanValue:
+      allOf:
+        - $ref: "#/components/schemas/Value"
+        - type: object
+          properties:
+            value:
+              type: boolean
 
     ExpressionFunction:
       type: object

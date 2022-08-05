@@ -2,8 +2,8 @@
 
 This repository contains the OpenAPI 3 specification of the TOP framework. The schema file is located at [schemas/top-api.yaml](schemas/top-api.yaml)
 
-[![Node.js Package](https://github.com/Onto-Med/top-api/actions/workflows/npm-publish.yml/badge.svg)](https://github.com/Onto-Med/top-api/actions/workflows/npm-publish.yml)
-[![Maven Package](https://github.com/Onto-Med/top-api/actions/workflows/maven-publish.yml/badge.svg)](https://github.com/Onto-Med/top-api/actions/workflows/maven-publish.yml)
+[![Publish snapshots](https://github.com/Onto-Med/top-api/actions/workflows/publish-snapshots.yml/badge.svg)](https://github.com/Onto-Med/top-api/actions/workflows/publish-snapshots.yml)
+[![Publish packages and create release](https://github.com/Onto-Med/top-api/actions/workflows/release.yml/badge.svg)](https://github.com/Onto-Med/top-api/actions/workflows/release.yml)
 
 ## Development
 

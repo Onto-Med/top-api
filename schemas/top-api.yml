@@ -1567,6 +1567,48 @@ components:
         title:
           type: string
           description: Human-readable title of the constant.
+        dataType:
+          $ref: "#/components/schemas/DataType"
+      discriminator:
+        propertyName: dataType
+        mapping:
+          string: "#/components/schemas/StringConstant"
+          number: "#/components/schemas/NumberConstant"
+          date_time: "#/components/schemas/DateTimeConstant"
+          boolean: "#/components/schemas/BooleanConstant"
+
+    StringConstant:
+      allOf:
+        - $ref: "#/components/schemas/Constant"
+        - type: object
+          properties:
+            value:
+              type: string
+
+    NumberConstant:
+      allOf:
+        - $ref: "#/components/schemas/Constant"
+        - type: object
+          properties:
+            value:
+              type: number
+
+    DateTimeConstant:
+      allOf:
+        - $ref: "#/components/schemas/Constant"
+        - type: object
+          properties:
+            value:
+              type: string
+              format: date-time
+
+    BooleanConstant:
+      allOf:
+        - $ref: "#/components/schemas/Constant"
+        - type: object
+          properties:
+            value:
+              type: boolean
 
     Expression:
       type: object

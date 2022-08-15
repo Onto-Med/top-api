@@ -1746,21 +1746,18 @@ components:
     ForkUpdateInstruction:
       type: object
       properties:
-        version:
-          $ref: "#/components/schemas/VersionNumber"
-          description: The version number of originating entity that will be applied to the fork.
         cascade:
           type: boolean
           default: false
-          description: Whether all referenced entities shall be forked too.
+          description: Whether all sub entities shall be forked too.
         history:
           type: boolean
           default: false
           description: Whether all versions shall be copied to the destination. This also applies to entities created by cascade.
-        preserveOrigin:
+        update:
           type: boolean
-          default: true
-          description: Whether a relationship between the fork and its originating entity version shall be created. This also applies to entities created by cascade.
+          default: false
+          description: Whether existing forks shall be updated to the newest version.
 
     VersionNumber:
       description: Reflects the version of the content. The value is generated server-side.

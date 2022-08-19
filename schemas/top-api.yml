@@ -1515,6 +1515,23 @@ components:
               items:
                 $ref: "#/components/schemas/Phenotype"
 
+    ItemType:
+      type: string
+      description: >
+        Only relevant for single phenotypes.
+        This property specifies the class of items the phenotype holding this property belongs to.
+      enum:
+        - allergy_intolerance
+        - clinical_impression
+        - condition
+        - medication_administration
+        - medication_request
+        - medication_statement
+        - observation
+        - procedure
+        - subject_age
+        - subject_sex
+
     PhenotypeGroup:
       allOf:
         - $ref: "#/components/schemas/Category"
@@ -1532,8 +1549,8 @@ components:
           properties:
             dataType:
               $ref: "#/components/schemas/DataType"
-            specialType:
-              type: string
+            itemType:
+              $ref: "#/components/schemas/ItemType"
             restriction:
               $ref: "#/components/schemas/Restriction"
             expression:

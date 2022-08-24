@@ -1931,7 +1931,14 @@ components:
 
     Quantifier:
       type: string
-      enum: ["none", "exists", "some", "all"]
+      enum: 
+        - none
+        - exists
+        - some
+        - all
+        - exact
+        - min
+        - max
 
     Query:
       description: >

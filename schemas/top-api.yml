@@ -1864,8 +1864,8 @@ components:
         negated:
           type: boolean
           default: false
-        quantor:
-          $ref: "#/components/schemas/Quantor"
+        quantifier:
+          $ref: "#/components/schemas/Quantifier"
       discriminator:
         propertyName: type
         mapping:
@@ -1929,7 +1929,7 @@ components:
       type: string
       enum: ["<", "<=", ">", ">="]
 
-    Quantor:
+    Quantifier:
       type: string
       enum: ["none", "exists", "some", "all"]
 

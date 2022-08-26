@@ -1997,10 +1997,6 @@ components:
             Multiple phenotype values in expressions must be aggregated to a single value in order to use them for calculations.
             The aggregation function provided via this property will be used as default aggregation function for cases where none has been set.
           $ref: "#/components/schemas/ExpressionFunction"
-        ageRestrictions:
-          type: array
-          items:
-            $ref: "#/components/schemas/NumberRestriction"
         dateTimeRestrictions:
           type: array
           items:

@@ -388,7 +388,7 @@ paths:
     parameters:
       - $ref: "#/components/parameters/include"
     get:
-      summary: Searches for phenotypes or categories. Use the query parameters to filter the result. Only entites in primary repositories are returned.
+      summary: Searches for phenotypes or categories. Use the query parameters to filter the result. Only entities in primary repositories are returned.
       operationId: getEntities
       tags:
         - entity
@@ -1043,7 +1043,7 @@ paths:
           type: string
       - $ref: "#/components/parameters/include"
     get:
-      summary: Returns all forks of a particular entity and the originationg class of the entity, if present.
+      summary: Returns all forks of a particular entity and the originating class of the entity, if present.
       operationId: getForks
       tags:
         - fork
@@ -1181,7 +1181,7 @@ paths:
           type: string
       - $ref: "#/components/parameters/include"
     get:
-      summary: Returns all sublcasses of a particular phenotype or category in the repository
+      summary: Returns all subclasses of a particular phenotype or category in the repository
       operationId: getSubclassesById
       tags:
         - entity
@@ -1342,7 +1342,7 @@ components:
     page:
       name: page
       in: query
-      description: The desired page, if the resultset is paged.
+      description: The desired page, if the result set is paged.
       schema:
         type: integer
         format: int32
@@ -1645,7 +1645,7 @@ components:
 
     ExpressionValue:
       type: object
-      description: An expression value can be a constant (from a predefined set of constants) or a userdefined value.
+      description: An expression value can be a constant (from a predefined set of constants) or a user-defined value.
       properties:
         constant:
           $ref: "#/components/schemas/Constant"
@@ -1720,7 +1720,7 @@ components:
             - postfix
           default: prefix
           description: >
-            This property defines the prefered notation of a function.
+            This property defines the preferred notation of a function.
             If the property is missing or undefined, it should be treated as prefix.
         minArgumentNumber:
           type: integer

@@ -2006,10 +2006,8 @@ components:
             Multiple phenotype values in expressions must be aggregated to a single value in order to use them for calculations.
             The aggregation function provided via this property will be used as default aggregation function for cases where none has been set.
           $ref: "#/components/schemas/ExpressionFunction"
-        dateTimeRestrictions:
-          type: array
-          items:
-            $ref: "#/components/schemas/DateTimeRestriction"
+        dateTimeRestriction:
+          $ref: "#/components/schemas/DateTimeRestriction"
 
     Projection:
       description: Represents the projection to be performed on a result set.

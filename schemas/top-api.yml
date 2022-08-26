@@ -1936,10 +1936,7 @@ components:
 
     Quantifier:
       type: string
-      enum: 
-        - none
-        - exists
-        - some
+      enum:
         - all
         - exact
         - min

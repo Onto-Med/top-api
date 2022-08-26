@@ -1864,8 +1864,13 @@ components:
         negated:
           type: boolean
           default: false
-        quantor:
-          $ref: "#/components/schemas/Quantor"
+        quantifier:
+          $ref: "#/components/schemas/Quantifier"
+        cardinality:
+          description: This value can be used in combination with a quantifier to specify how many matches are required to fulfil this restriction.
+          type: integer
+          format: int32
+          minimum: 0
       discriminator:
         propertyName: type
         mapping:
@@ -1929,9 +1934,13 @@ components:
       type: string
       enum: ["<", "<=", ">", ">="]
 
-    Quantor:
+    Quantifier:
       type: string
-      enum: ["none", "exists", "some", "all"]
+      enum:
+        - all
+        - exact
+        - min
+        - max
 
     Query:
       description: >

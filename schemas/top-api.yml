@@ -38,33 +38,6 @@ paths:
         default:
           $ref: "#/components/responses/UnexpectedError"
 
-  /authentication_token:
-    post:
-      summary: Get JWT token
-      operationId: getAuthenticationToken
-      security:
-        - BearerAuth: []
-        - BasicAuth: []
-      requestBody:
-        description: Login data
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/LoginRequest"
-
-      responses:
-        200:
-          description: Generated JWT token
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/AuthenticationToken"
-        401:
-          $ref: "#/components/responses/Unauthorized"
-        default:
-          $ref: "#/components/responses/UnexpectedError"
-
   /statistic:
     summary: Get statistics about available content. Returned data may be cached.
     get:
@@ -79,126 +52,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Statistic"
-        default:
-          $ref: "#/components/responses/UnexpectedError"
-
-  /user_account:
-    parameters:
-      - $ref: "#/components/parameters/include"
-    get:
-      summary: Searches for user accounts. Use the query parameters to filter the result.
-      operationId: getUserAccounts
-      tags:
-        - userAccount
-      parameters:
-        - name: username
-          description: Filter user accounts by name.
-          in: query
-          schema:
-            type: string
-        - $ref: "#/components/parameters/page"
-      responses:
-        200:
-          description: List of user accounts
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/UserAccount"
-        401:
-          $ref: "#/components/responses/Unauthorized"
-        default:
-          $ref: "#/components/responses/UnexpectedError"
-    post:
-      summary: Creates new user account and returns the result
-      operationId: createUserAccount
-      tags:
-        - userAccount
-      requestBody:
-        description: User account details
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/UserAccount"
-      responses:
-        201:
-          description: Created user account
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/UserAccount"
-        401:
-          $ref: "#/components/responses/Unauthorized"
-        default:
-          $ref: "#/components/responses/UnexpectedError"
-
-  /user_account/{userAccountId}:
-    summary: Represents a user account
-    parameters:
-      - name: userAccountId
-        in: path
-        required: true
-        schema:
-          type: integer
-          format: int32
-      - $ref: "#/components/parameters/include"
-    get:
-      summary: Returns a particular user account
-      operationId: getUserAccountByUserAccountId
-      tags:
-        - userAccount
-      responses:
-        200:
-          description: Details about a user account by ID
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/UserAccount"
-        401:
-          $ref: "#/components/responses/Unauthorized"
-        404:
-          $ref: "#/components/responses/NotFound"
-        default:
-          $ref: "#/components/responses/UnexpectedError"
-    patch:
-      summary: Updates a particular user account by ID and returns the resulting user account
-      operationId: updateUserAccountByUserAccountId
-      tags:
-        - userAccount
-      requestBody:
-        description: User account details to be applied
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/UserAccount"
-      responses:
-        200:
-          description: Details about the updated user account
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/UserAccount"
-        401:
-          $ref: "#/components/responses/Unauthorized"
-        404:
-          $ref: "#/components/responses/NotFound"
-        default:
-          $ref: "#/components/responses/UnexpectedError"
-    delete:
-      summary: Deletes a particular user account by ID and returns the deleted user account
-      operationId: deleteUserAccountByUserAccountId
-      tags:
-        - userAccount
-      responses:
-        204:
-          description: User account was deleted successfully.
-        401:
-          $ref: "#/components/responses/Unauthorized"
-        404:
-          $ref: "#/components/responses/NotFound"
         default:
           $ref: "#/components/responses/UnexpectedError"
 
@@ -1061,7 +914,9 @@ paths:
         default:
           $ref: "#/components/responses/UnexpectedError"
     post:
-      summary: Create a new fork from a particular entity.
+      summary: >
+        Create a new fork from a particular entity.
+        Updates to existing forks can be applied via forking instructions.
       operationId: createFork
       tags:
         - fork
@@ -1072,41 +927,14 @@ paths:
           schema:
             $ref: "#/components/schemas/VersionNumber"
       requestBody:
-        description: Fork instructions like destination
+        description: Forking instructions like destination
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/ForkCreateInstruction"
+              $ref: "#/components/schemas/ForkingInstruction"
       responses:
         201:
-          description: List of affected entities (i.e., entities created in the destination repository).
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Entity"
-        401:
-          $ref: "#/components/responses/Unauthorized"
-        404:
-          $ref: "#/components/responses/NotFound"
-        default:
-          $ref: "#/components/responses/UnexpectedError"
-    patch:
-      summary: In case the referred entity is a fork of another entity, create a new version from the current state of the originating entity.
-      operationId: updateFork
-      tags:
-        - fork
-      requestBody:
-        description: Fork update instructions
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/ForkUpdateInstruction"
-      responses:
-        200:
           description: List of affected entities (i.e., entities created in the destination repository).
           content:
             application/json:
@@ -1201,74 +1029,6 @@ paths:
         default:
           $ref: "#/components/responses/UnexpectedError"
 
-  /code_system:
-    get:
-      summary: Searches for code systems
-      operationId: getCodeSystems
-      tags:
-        - code_system
-      parameters:
-        - name: name
-          in: query
-          schema:
-            type: string
-        - name: uri
-          in: query
-          schema:
-            type: string
-            format: uri
-      responses:
-        200:
-          description: List of matching code systems
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/CodeSystem"
-        401:
-          $ref: "#/components/responses/Unauthorized"
-        default:
-          $ref: "#/components/responses/UnexpectedError"
-
-  /code:
-    get:
-      summary: Searches for codes
-      operationId: getCodes
-      tags:
-        - code
-      parameters:
-        - name: name
-          in: query
-          schema:
-            type: string
-        - name: code
-          in: query
-          schema:
-            type: string
-        - name: codeSystemName
-          in: query
-          schema:
-            type: string
-        - name: codeSystemUri
-          in: query
-          schema:
-            type: string
-            format: uri
-      responses:
-        200:
-          description: List of matching codes
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Code"
-        401:
-          $ref: "#/components/responses/Unauthorized"
-        default:
-          $ref: "#/components/responses/UnexpectedError"
-
   /expression_function:
     parameters:
       - name: type
@@ -1360,30 +1120,6 @@ components:
           pattern: '^\w*$'
 
   schemas:
-    UserAccount:
-      type: object
-      required:
-        - username
-        - email
-      properties:
-        userAccountId:
-          type: integer
-          format: int32
-        username:
-          type: string
-        email:
-          type: string
-        password:
-          type: string
-          format: password
-        isAdmin:
-          description: Whether the user account is an administrator
-          type: boolean
-          default: false
-        createdAt:
-          type: string
-          format: date-time
-
     Repository:
       type: object
       required:
@@ -1577,6 +1313,7 @@ components:
       type: object
       required:
         - id
+        - dataType
       properties:
         id:
           type: string
@@ -1735,20 +1472,26 @@ components:
             Determines how many arguments are allowed for this function at max.
             If this property is missing, the maximum argument number is unrestricted.
 
-    ForkCreateInstruction:
-      allOf:
-        - $ref: "#/components/schemas/ForkUpdateInstruction"
-        - type: object
-          required:
-            - organisationId
-            - repositoryId
-          properties:
-            organisationId:
-              type: string
-              description: Destination organisation where fork will be created.
-            repositoryId:
-              type: string
-              description: Destination repository where fork will be created.
+    ForkingInstruction:
+      type: object
+      required:
+        - organisationId
+        - repositoryId
+      properties:
+        organisationId:
+          type: string
+          description: Destination organisation where fork will be created.
+        repositoryId:
+          type: string
+          description: Destination repository where fork will be created.
+        cascade:
+          type: boolean
+          default: false
+          description: Whether all sub entities shall be forked too.
+        update:
+          type: boolean
+          default: false
+          description: Whether existing forks shall be updated to the newest version.
 
     ForkingStats:
       type: object
@@ -1759,22 +1502,6 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/Entity"
-
-    ForkUpdateInstruction:
-      type: object
-      properties:
-        cascade:
-          type: boolean
-          default: false
-          description: Whether all sub entities shall be forked too.
-        history:
-          type: boolean
-          default: false
-          description: Whether all versions shall be copied to the destination. This also applies to entities created by cascade.
-        update:
-          type: boolean
-          default: false
-          description: Whether existing forks shall be updated to the newest version.
 
     VersionNumber:
       description: Reflects the version of the content. The value is generated server-side.
@@ -1804,7 +1531,7 @@ components:
         version:
           $ref: "#/components/schemas/VersionNumber"
         author:
-          $ref: "#/components/schemas/UserAccount"
+          type: string
         createdAt:
           type: string
           format: date-time
@@ -2056,28 +1783,6 @@ components:
           format: int32
         message:
           type: string
-
-    LoginRequest:
-      type: object
-      required:
-        - username
-        - password
-      properties:
-        username:
-          type: string
-        password:
-          type: string
-          format: password
-
-    AuthenticationToken:
-      type: object
-      required:
-        - token
-      properties:
-        token:
-          description: The JWT token
-          type: string
-          readOnly: true
 
     Statistic:
       description:

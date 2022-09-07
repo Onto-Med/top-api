@@ -1422,7 +1422,7 @@ components:
           properties:
             value:
               type: string
-              format: date-time
+              format: x-local-date-time
 
     BooleanValue:
       allOf:

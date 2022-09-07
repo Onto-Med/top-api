@@ -112,6 +112,9 @@
 								<booleanGetterPrefix>is</booleanGetterPrefix>
 								<useTags>true</useTags>
 							</configOptions>
+							<typeMappings>
+								<typeMapping>x-local-date-time=java.time.LocalDateTime</typeMapping>
+							</typeMappings>
 						</configuration>
 					</execution>
 					<execution>
@@ -124,6 +127,7 @@
 							<generatorName>typescript-axios</generatorName>
 							<output>target/generated-sources/openapi/axios</output>
 							<typeMappings>
+								<typeMapping>x-local-date-time=Date</typeMapping>
 								<typeMapping>DateTime=Date</typeMapping>
 							</typeMappings>
 							<configOptions>

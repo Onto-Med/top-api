@@ -1582,9 +1582,6 @@ components:
       properties:
         type:
           $ref: "#/components/schemas/DataType"
-        negated:
-          type: boolean
-          default: false
         quantifier:
           $ref: "#/components/schemas/Quantifier"
         cardinality:

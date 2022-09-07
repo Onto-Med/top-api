@@ -1350,7 +1350,7 @@ components:
           properties:
             value:
               type: string
-              format: date-time
+              format: x-local-date-time
 
     BooleanConstant:
       allOf:
@@ -1649,7 +1649,7 @@ components:
               description: In case there are operators, the first two values are used as values for those operators
               items:
                 type: string
-                format: date-time
+                format: x-local-date-time
 
     RestrictionOperator:
       type: string

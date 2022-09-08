@@ -55,6 +55,32 @@ paths:
         default:
           $ref: "#/components/responses/UnexpectedError"
 
+  /document:
+    get:
+      summary: Searches for documents
+      operationId: getDocuments
+      tags:
+        - document
+      parameters:
+        - name: id
+          in: query
+          description: Filter documents by their id.
+          schema:
+            type: string
+      responses:
+        200:
+          description: List of documents
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Document"
+        401:
+          $ref: "#/components/responses/Unauthorized"
+        default:
+          $ref: "#/components/responses/UnexpectedError"
+
   /organisation:
     parameters:
       - $ref: "#/components/parameters/include"
@@ -1806,6 +1832,16 @@ components:
           description: Number of phenotypes
           type: integer
           format: int64
+
+    Document:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: string
+        text:
+          type: string
 
   securitySchemes:
     BearerAuth:

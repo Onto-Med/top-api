@@ -1059,7 +1059,7 @@ paths:
     parameters:
       - name: type
         in: query
-        description: The type (math or boolean) for which functions are queried.
+        description: Optional parameter to restrict the result set to a specific function type (to be defined).
         schema:
           type: string
     get:
@@ -1081,15 +1081,15 @@ paths:
         default:
           $ref: "#/components/responses/UnexpectedError"
 
-  /constant:
+  /expression_constant:
     get:
-      summary: Get all supported derived-expression constants
-      operationId: getConstants
+      summary: Get all supported expression constants
+      operationId: getExpressionConstants
       tags:
         - expression_constant
       responses:
         200:
-          description: List of supported derived-expression constants
+          description: List of supported expression constants
           content:
             application/json:
               schema:
@@ -1253,11 +1253,9 @@ components:
           category: "#/components/schemas/Category"
           phenotype_group: "#/components/schemas/PhenotypeGroup"
           single_phenotype: "#/components/schemas/Phenotype"
-          combined_phenotype: "#/components/schemas/Phenotype"
-          derived_phenotype: "#/components/schemas/Phenotype"
+          composite_phenotype: "#/components/schemas/Phenotype"
           single_restriction: "#/components/schemas/Phenotype"
-          combined_restriction: "#/components/schemas/Phenotype"
-          derived_restriction: "#/components/schemas/Phenotype"
+          composite_restriction: "#/components/schemas/Phenotype"
 
     Category:
       allOf:
@@ -1319,8 +1317,6 @@ components:
               $ref: "#/components/schemas/Expression"
             unit:
               $ref: "#/components/schemas/Unit"
-            score:
-              type: number
             superPhenotype:
               $ref: "#/components/schemas/Phenotype"
             phenotypeGroups:
@@ -1380,7 +1376,7 @@ components:
           properties:
             value:
               type: string
-              format: date-time
+              format: x-local-date-time
 
     BooleanConstant:
       allOf:
@@ -1452,7 +1448,7 @@ components:
           properties:
             value:
               type: string
-              format: date-time
+              format: x-local-date-time
 
     BooleanValue:
       allOf:
@@ -1541,11 +1537,9 @@ components:
         - category
         - phenotype_group
         - single_phenotype
-        - combined_phenotype
-        - derived_phenotype
+        - composite_phenotype
         - single_restriction
-        - combined_restriction
-        - derived_restriction
+        - composite_restriction
 
     DataType:
       type: string
@@ -1614,9 +1608,6 @@ components:
       properties:
         type:
           $ref: "#/components/schemas/DataType"
-        negated:
-          type: boolean
-          default: false
         quantifier:
           $ref: "#/components/schemas/Quantifier"
         cardinality:
@@ -1681,7 +1672,7 @@ components:
               description: In case there are operators, the first two values are used as values for those operators
               items:
                 type: string
-                format: date-time
+                format: x-local-date-time
 
     RestrictionOperator:
       type: string

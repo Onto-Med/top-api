@@ -107,6 +107,26 @@ paths:
         default:
           $ref: "#/components/responses/UnexpectedError"
 
+  /data_source:
+    get:
+      summary: Returns a available and accessible data sources.
+      operationId: getDataSources
+      tags:
+        - data_source
+      responses:
+        200:
+          description: List of data sources.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/DataSource"
+        401:
+          $ref: "#/components/responses/Unauthorized"
+        default:
+          $ref: "#/components/responses/UnexpectedError"
+
   /{organisationId}:
     summary: Represents an organisation
     parameters:
@@ -1694,6 +1714,19 @@ components:
       additionalProperties:
         $ref: "#/components/schemas/Phenotype"
 
+    DataSource:
+      description: A data source is a data storage (e.g. database) on which queries can be returned.
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: string
+          description: ID of the data source.
+        title:
+          type: string
+          description: Human-readable title of the data source.
+
     QueryConfiguration:
       description: Configurations to execute query on data sources.
       type: object
@@ -1703,7 +1736,7 @@ components:
         sources:
           type: array
           items:
-            type: string
+            $ref: "#/components/schemas/DataSource"
 
     QueryCriterion:
       description: A single criterion of a search query. Criteria can be inclusions or exclusions.

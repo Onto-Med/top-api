@@ -421,20 +421,93 @@ paths:
       operationId: deleteRepositoryById
       tags:
         - repository
-      parameters:
-        - name: repositoryId
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: organisationId
-          in: path
-          required: true
-          schema:
-            type: string
       responses:
         204:
           description: The repository was deleted successfully.
+        401:
+          $ref: "#/components/responses/Unauthorized"
+        404:
+          $ref: "#/components/responses/NotFound"
+        default:
+          $ref: "#/components/responses/UnexpectedError"
+
+  /{organisationId}/{repositoryId}/query:
+    parameters:
+      - name: organisationId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: repositoryId
+        in: path
+        required: true
+        schema:
+          type: string
+    post:
+      summary: >
+        Enqueue a new query. You can get the query result with a GET request to the getQueryResult path.
+        The id property of the provided query object is used as identifier throughout the life-cycle of the query.
+      operationId: enqueueQuery
+      tags:
+        - query
+      responses:
+        201:
+          description: The query was enqueued successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Query"
+        401:
+          $ref: "#/components/responses/Unauthorized"
+        404:
+          $ref: "#/components/responses/NotFound"
+        default:
+          $ref: "#/components/responses/UnexpectedError"
+
+  /{organisationId}/{repositoryId}/query/{queryId}:
+    parameters:
+      - name: organisationId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: repositoryId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: queryId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+    get:
+      summary: Returns the result of a particular query by id.
+      operationId: getQueryResult
+      tags:
+        - query
+      responses:
+        200:
+          description: Details of the query result.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QueryResult"
+        401:
+          $ref: "#/components/responses/Unauthorized"
+        404:
+          $ref: "#/components/responses/NotFound"
+        default:
+          $ref: "#/components/responses/UnexpectedError"
+    delete:
+      summary: Deletes a particular query by id.
+      operationId: deleteQuery
+      tags:
+        - query
+      responses:
+        204:
+          description: The query was deleted successfully.
         401:
           $ref: "#/components/responses/Unauthorized"
         404:
@@ -1685,7 +1758,12 @@ components:
         Represents a search query for subjects/individuals.
         A query has basic configurations for data source connections as well as in/exclusions and projections.
       type: object
+      required:
+        - id
       properties:
+        id:
+          type: string
+          format: uuid
         name:
           description: Name of this query. For example, you could allow users to save a query for later use and use the name as identifier.
           type: string
@@ -1701,6 +1779,37 @@ components:
           $ref: "#/components/schemas/Projection"
         dependentSubjects:
           $ref: "#/components/schemas/DependentSubjectsMap"
+
+    QueryResult:
+      description: Result of a query. It might indicate that the query has not finished yet or has failed.
+      type: object
+      required:
+        - id
+        - createdAt
+      properties:
+        id:
+          type: string
+          format: uuid
+        createdAt:
+          type: string
+          format: date-time
+        count:
+          description: Total count of subjects in the query result.
+          type: integer
+          format: int64
+        finishedAt:
+          type: string
+          format: date-time
+        state:
+          $ref: "#/components/schemas/QueryState"
+
+    QueryState:
+      type: string
+      enum:
+        - failed
+        - finished
+        - queued
+        - running
 
     DependentSubjectsMap:
       description: Map of additional subjects that hold information, required to execute the query.

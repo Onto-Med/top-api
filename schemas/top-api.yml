@@ -450,6 +450,13 @@ paths:
       operationId: enqueueQuery
       tags:
         - query
+      requestBody:
+        description: Details of the query to be enqueued.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Query"
       responses:
         201:
           description: The query was enqueued successfully.

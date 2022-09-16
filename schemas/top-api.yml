@@ -1685,7 +1685,12 @@ components:
         Represents a search query for subjects/individuals.
         A query has basic configurations for data source connections as well as in/exclusions and projections.
       type: object
+      required:
+        - id
       properties:
+        id:
+          type: string
+          format: uuid
         name:
           description: Name of this query. For example, you could allow users to save a query for later use and use the name as identifier.
           type: string

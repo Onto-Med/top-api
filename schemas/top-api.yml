@@ -1707,6 +1707,37 @@ components:
         dependentSubjects:
           $ref: "#/components/schemas/DependentSubjectsMap"
 
+    QueryResult:
+      description: Result of a query. It might indicate that the query has not finished yet or has failed.
+      type: object
+      required:
+        - id
+        - createdAt
+      properties:
+        id:
+          type: string
+          format: uuid
+        createdAt:
+          type: string
+          format: date-time
+        count:
+          description: Total count of subjects in the query result.
+          type: integer
+          format: int64
+        finishedAt:
+          type: string
+          format: date-time
+        state:
+          $ref: "#/components/schemas/QueryState"
+
+    QueryState:
+      type: string
+      enum:
+        - failed
+        - finished
+        - queued
+        - running
+
     DependentSubjectsMap:
       description: Map of additional subjects that hold information, required to execute the query.
       type: object

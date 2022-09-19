@@ -1831,7 +1831,7 @@ components:
         $ref: "#/components/schemas/Phenotype"
 
     DataSource:
-      description: A data source is a data storage (e.g. database) on which queries can be returned.
+      description: A data source is a data storage (e.g. database) on which queries can be executed.
       type: object
       required:
         - id

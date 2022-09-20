@@ -1275,24 +1275,24 @@ components:
           $ref: "#/components/schemas/Organisation"
 
     Ontology:
+      type: object
+      x-class-extra-annotation: "@javax.persistence.Entity"
+      required:
+        - id
+      properties:
+        id:
+          type: string
+          x-field-extra-annotation: "@org.springframework.data.annotation.Id"
+        name:
+          type: string
+        description:
+          type: string
+        repository:
+          $ref: "#/components/schemas/Repository"
+        organisation:
+          $ref: "#/components/schemas/Organisation"
       allOf:
         - $ref: "#/components/schemas/VersionedContent"
-        - type: object
-          x-class-extra-annotation: "@javax.persistence.Entity"
-          required:
-            - id
-          properties:
-            id:
-              type: string
-              x-field-extra-annotation: "@org.springframework.data.annotation.Id"
-            name:
-              type: string
-            description:
-              type: string
-            repository:
-              $ref: "#/components/schemas/Repository"
-            organisation:
-              $ref: "#/components/schemas/Organisation"
 
     Organisation:
       type: object
@@ -1320,45 +1320,45 @@ components:
 
     Entity:
       description: Either category or phenotype
+      type: object
+      x-class-extra-annotation: "@javax.persistence.Entity"
+      required:
+        - entityType
+      properties:
+        entityType:
+          $ref: "#/components/schemas/EntityType"
+        id:
+          type: string
+          x-field-extra-annotation: "@org.springframework.data.annotation.Id"
+        titles:
+          type: array
+          description: There should only be one title per language
+          items:
+            $ref: "#/components/schemas/LocalisableText"
+        synonyms:
+          type: array
+          items:
+            $ref: "#/components/schemas/LocalisableText"
+        descriptions:
+          type: array
+          items:
+            $ref: "#/components/schemas/LocalisableText"
+        index:
+          type: integer
+          format: int32
+          minimum: 1
+        codes:
+          type: array
+          items:
+            $ref: "#/components/schemas/Code"
+        repository:
+          $ref: "#/components/schemas/Repository"
+        equivalentEntities:
+          type: array
+          items:
+            $ref: "#/components/schemas/Entity"
       allOf:
         - $ref: "#/components/schemas/VersionedContent"
-        - type: object
-          x-class-extra-annotation: "@javax.persistence.Entity"
-          required:
-            - entityType
-          properties:
-            entityType:
-              $ref: "#/components/schemas/EntityType"
-            id:
-              type: string
-              x-field-extra-annotation: "@org.springframework.data.annotation.Id"
-            titles:
-              type: array
-              description: There should only be one title per language
-              items:
-                $ref: "#/components/schemas/LocalisableText"
-            synonyms:
-              type: array
-              items:
-                $ref: "#/components/schemas/LocalisableText"
-            descriptions:
-              type: array
-              items:
-                $ref: "#/components/schemas/LocalisableText"
-            index:
-              type: integer
-              format: int32
-              minimum: 1
-            codes:
-              type: array
-              items:
-                $ref: "#/components/schemas/Code"
-            repository:
-              $ref: "#/components/schemas/Repository"
-            equivalentEntities:
-              type: array
-              items:
-                $ref: "#/components/schemas/Entity"
       discriminator:
         propertyName: entityType
         mapping:
@@ -1369,22 +1369,22 @@ components:
           composite_restriction: "#/components/schemas/Phenotype"
 
     Category:
+      type: object
+      properties:
+        superCategories:
+          type: array
+          items:
+            $ref: "#/components/schemas/Category"
+        subCategories:
+          type: array
+          items:
+            $ref: "#/components/schemas/Category"
+        phenotypes:
+          type: array
+          items:
+            $ref: "#/components/schemas/Phenotype"
       allOf:
         - $ref: "#/components/schemas/Entity"
-        - type: object
-          properties:
-            superCategories:
-              type: array
-              items:
-                $ref: "#/components/schemas/Category"
-            subCategories:
-              type: array
-              items:
-                $ref: "#/components/schemas/Category"
-            phenotypes:
-              type: array
-              items:
-                $ref: "#/components/schemas/Phenotype"
 
     ItemType:
       type: string
@@ -1404,22 +1404,22 @@ components:
         - subject_sex
 
     Phenotype:
+      type: object
+      properties:
+        dataType:
+          $ref: "#/components/schemas/DataType"
+        itemType:
+          $ref: "#/components/schemas/ItemType"
+        restriction:
+          $ref: "#/components/schemas/Restriction"
+        expression:
+          $ref: "#/components/schemas/Expression"
+        unit:
+          $ref: "#/components/schemas/Unit"
+        superPhenotype:
+          $ref: "#/components/schemas/Phenotype"
       allOf:
         - $ref: "#/components/schemas/Category"
-        - type: object
-          properties:
-            dataType:
-              $ref: "#/components/schemas/DataType"
-            itemType:
-              $ref: "#/components/schemas/ItemType"
-            restriction:
-              $ref: "#/components/schemas/Restriction"
-            expression:
-              $ref: "#/components/schemas/Expression"
-            unit:
-              $ref: "#/components/schemas/Unit"
-            superPhenotype:
-              $ref: "#/components/schemas/Phenotype"
 
     Unit:
       type: object
@@ -1451,37 +1451,37 @@ components:
           boolean: "#/components/schemas/BooleanConstant"
 
     StringConstant:
+      type: object
+      properties:
+        value:
+          type: string
       allOf:
         - $ref: "#/components/schemas/Constant"
-        - type: object
-          properties:
-            value:
-              type: string
 
     NumberConstant:
+      type: object
+      properties:
+        value:
+          type: number
       allOf:
         - $ref: "#/components/schemas/Constant"
-        - type: object
-          properties:
-            value:
-              type: number
 
     DateTimeConstant:
+      type: object
+      properties:
+        value:
+          type: string
+          format: x-local-date-time
       allOf:
         - $ref: "#/components/schemas/Constant"
-        - type: object
-          properties:
-            value:
-              type: string
-              format: x-local-date-time
 
     BooleanConstant:
+      type: object
+      properties:
+        value:
+          type: boolean
       allOf:
         - $ref: "#/components/schemas/Constant"
-        - type: object
-          properties:
-            value:
-              type: boolean
 
     Expression:
       type: object
@@ -1523,37 +1523,37 @@ components:
           boolean: "#/components/schemas/BooleanValue"
 
     StringValue:
+      type: object
+      properties:
+        value:
+          type: string
       allOf:
         - $ref: "#/components/schemas/Value"
-        - type: object
-          properties:
-            value:
-              type: string
 
     NumberValue:
+      type: object
+      properties:
+        value:
+          type: number
       allOf:
         - $ref: "#/components/schemas/Value"
-        - type: object
-          properties:
-            value:
-              type: number
 
     DateTimeValue:
+      type: object
+      properties:
+        value:
+          type: string
+          format: x-local-date-time
       allOf:
         - $ref: "#/components/schemas/Value"
-        - type: object
-          properties:
-            value:
-              type: string
-              format: x-local-date-time
 
     BooleanValue:
+      type: object
+      properties:
+        value:
+          type: boolean
       allOf:
         - $ref: "#/components/schemas/Value"
-        - type: object
-          properties:
-            value:
-              type: boolean
 
     ExpressionFunction:
       type: object
@@ -1725,55 +1725,55 @@ components:
           boolean: "#/components/schemas/BooleanRestriction"
 
     StringRestriction:
+      type: object
+      properties:
+        values:
+          type: array
+          items:
+            type: string
       allOf:
         - $ref: "#/components/schemas/Restriction"
-        - type: object
-          properties:
-            values:
-              type: array
-              items:
-                type: string
 
     BooleanRestriction:
+      type: object
+      properties:
+        values:
+          type: array
+          items:
+            type: boolean
       allOf:
         - $ref: "#/components/schemas/Restriction"
-        - type: object
-          properties:
-            values:
-              type: array
-              items:
-                type: boolean
 
     NumberRestriction:
+      type: object
+      properties:
+        minOperator:
+          $ref: "#/components/schemas/RestrictionOperator"
+        maxOperator:
+          $ref: "#/components/schemas/RestrictionOperator"
+        values:
+          type: array
+          description: In case there are operators, the first two values are used as values for those operators
+          items:
+            type: number
       allOf:
         - $ref: "#/components/schemas/Restriction"
-        - type: object
-          properties:
-            minOperator:
-              $ref: "#/components/schemas/RestrictionOperator"
-            maxOperator:
-              $ref: "#/components/schemas/RestrictionOperator"
-            values:
-              type: array
-              description: In case there are operators, the first two values are used as values for those operators
-              items:
-                type: number
 
     DateTimeRestriction:
+      type: object
+      properties:
+        minOperator:
+          $ref: "#/components/schemas/RestrictionOperator"
+        maxOperator:
+          $ref: "#/components/schemas/RestrictionOperator"
+        values:
+          type: array
+          description: In case there are operators, the first two values are used as values for those operators
+          items:
+            type: string
+            format: x-local-date-time
       allOf:
         - $ref: "#/components/schemas/Restriction"
-        - type: object
-          properties:
-            minOperator:
-              $ref: "#/components/schemas/RestrictionOperator"
-            maxOperator:
-              $ref: "#/components/schemas/RestrictionOperator"
-            values:
-              type: array
-              description: In case there are operators, the first two values are used as values for those operators
-              items:
-                type: string
-                format: x-local-date-time
 
     RestrictionOperator:
       type: string

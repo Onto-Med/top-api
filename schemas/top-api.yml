@@ -1248,11 +1248,13 @@ components:
   schemas:
     Repository:
       type: object
+      x-class-extra-annotation: "@javax.persistence.Entity"
       required:
         - id
       properties:
         id:
           type: string
+          x-field-extra-annotation: "@org.springframework.data.annotation.Id"
         name:
           type: string
         description:
@@ -1264,9 +1266,11 @@ components:
         createdAt:
           type: string
           format: date-time
+          x-field-extra-annotation: "@org.springframework.data.annotation.CreatedDate"
         updatedAt:
           type: string
           format: date-time
+          x-field-extra-annotation: "@org.springframework.data.annotation.LastModifiedDate"
         organisation:
           $ref: "#/components/schemas/Organisation"
 
@@ -1274,11 +1278,13 @@ components:
       allOf:
         - $ref: "#/components/schemas/VersionedContent"
         - type: object
+          x-class-extra-annotation: "@javax.persistence.Entity"
           required:
             - id
           properties:
             id:
               type: string
+              x-field-extra-annotation: "@org.springframework.data.annotation.Id"
             name:
               type: string
             description:
@@ -1290,11 +1296,13 @@ components:
 
     Organisation:
       type: object
+      x-class-extra-annotation: "@javax.persistence.Entity"
       required:
         - id
       properties:
         id:
           type: string
+          x-field-extra-annotation: "@org.springframework.data.annotation.Id"
         name:
           type: string
         description:
@@ -1302,9 +1310,11 @@ components:
         createdAt:
           type: string
           format: date-time
+          x-field-extra-annotation: "@org.springframework.data.annotation.CreatedDate"
         updatedAt:
           type: string
           format: date-time
+          x-field-extra-annotation: "@org.springframework.data.annotation.LastModifiedDate"
         superOrganisation:
           $ref: "#/components/schemas/Organisation"
 
@@ -1313,6 +1323,7 @@ components:
       allOf:
         - $ref: "#/components/schemas/VersionedContent"
         - type: object
+          x-class-extra-annotation: "@javax.persistence.Entity"
           required:
             - entityType
           properties:
@@ -1320,6 +1331,7 @@ components:
               $ref: "#/components/schemas/EntityType"
             id:
               type: string
+              x-field-extra-annotation: "@org.springframework.data.annotation.Id"
             titles:
               type: array
               description: There should only be one title per language
@@ -1351,7 +1363,6 @@ components:
         propertyName: entityType
         mapping:
           category: "#/components/schemas/Category"
-          phenotype_group: "#/components/schemas/PhenotypeGroup"
           single_phenotype: "#/components/schemas/Phenotype"
           composite_phenotype: "#/components/schemas/Phenotype"
           single_restriction: "#/components/schemas/Phenotype"
@@ -1392,16 +1403,6 @@ components:
         - subject_age
         - subject_sex
 
-    PhenotypeGroup:
-      allOf:
-        - $ref: "#/components/schemas/Category"
-        - type: object
-          properties:
-            phenotypes:
-              type: array
-              items:
-                $ref: "#/components/schemas/Phenotype"
-
     Phenotype:
       allOf:
         - $ref: "#/components/schemas/Category"
@@ -1419,10 +1420,6 @@ components:
               $ref: "#/components/schemas/Unit"
             superPhenotype:
               $ref: "#/components/schemas/Phenotype"
-            phenotypeGroups:
-              type: array
-              items:
-                $ref: "#/components/schemas/PhenotypeGroup"
 
     Unit:
       type: object
@@ -1628,6 +1625,7 @@ components:
     VersionNumber:
       description: Reflects the version of the content. The value is generated server-side.
       type: integer
+      x-field-extra-annotation: "@org.springframework.data.annotation.Version"
       format: int32
       minimum: 0
 
@@ -1652,12 +1650,15 @@ components:
           $ref: "#/components/schemas/VersionNumber"
         author:
           type: string
+          x-field-extra-annotation: "@org.springframework.data.annotation.CreatedBy"
         createdAt:
           type: string
           format: date-time
+          x-field-extra-annotation: "@org.springframework.data.annotation.CreatedDate"
         refer:
           type: string
           format: uri
+          x-field-extra-annotation: "@org.springframework.data.annotation.LastModifiedDate"
 
     LocalisableText:
       description: A text in a specific language
@@ -1791,11 +1792,13 @@ components:
         Represents a search query for subjects/individuals.
         A query has basic configurations for data source connections as well as in/exclusions and projections.
       type: object
+      x-class-extra-annotation: "@javax.persistence.Entity"
       required:
         - id
       properties:
         id:
           type: string
+          x-field-extra-annotation: "@org.springframework.data.annotation.Id"
           format: uuid
         name:
           description: Name of this query. For example, you could allow users to save a query for later use and use the name as identifier.

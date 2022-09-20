@@ -10,8 +10,12 @@ This repository contains the OpenAPI 3 specification of the TOP framework. The s
 We recommend to use a [Visual Studie Code](https://code.visualstudio.com) [devcontainer](https://code.visualstudio.com/docs/remote/containers) to modify the specification file.
 The container has the [OpenAPI (Swagger) Editor](https://marketplace.visualstudio.com/items?itemName=42Crunch.vscode-openapi) extension preinstalled.
 
-Creating a release will automaticaly build and publish a new Spring Boot skeleton package, generated with [https://github.com/OpenAPITools/openapi-generator/tree/master/modules/openapi-generator-maven-plugin](openapi-generator-maven-plugin).
-Please update the version number in the [pom.xml](pom.xml) and [schemas/top-api.yml](schemas/top-api.yml) files before drafting a new release.
+Create new releases via GitHub Workflow [publish-snapshots.yml](.github/workflows/publish-snapshots.yml). Doing so will automaticaly build and publish a new Spring Boot skeleton package, generated with [https://github.com/OpenAPITools/openapi-generator/tree/master/modules/openapi-generator-maven-plugin](openapi-generator-maven-plugin).
+Please update the version number in the [pom.xml](pom.xml) and [schemas/top-api.yml](schemas/top-api.yml) files **after** publishing a release.
+
+### Versioning
+
+There will always be a snapshot version available with latest changes pushed to the main branch. Snapshots have a higher version number than the last release.
 
 ## Spring Boot Skeleton
 

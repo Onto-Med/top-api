@@ -1248,13 +1248,11 @@ components:
   schemas:
     Repository:
       type: object
-      x-class-extra-annotation: "@javax.persistence.Entity"
       required:
         - id
       properties:
         id:
           type: string
-          x-field-extra-annotation: "@org.springframework.data.annotation.Id"
         name:
           type: string
         description:
@@ -1266,11 +1264,9 @@ components:
         createdAt:
           type: string
           format: date-time
-          x-field-extra-annotation: "@org.springframework.data.annotation.CreatedDate"
         updatedAt:
           type: string
           format: date-time
-          x-field-extra-annotation: "@org.springframework.data.annotation.LastModifiedDate"
         organisation:
           $ref: "#/components/schemas/Organisation"
 
@@ -1296,13 +1292,11 @@ components:
 
     Organisation:
       type: object
-      x-class-extra-annotation: "@javax.persistence.Entity"
       required:
         - id
       properties:
         id:
           type: string
-          x-field-extra-annotation: "@org.springframework.data.annotation.Id"
         name:
           type: string
         description:
@@ -1310,11 +1304,9 @@ components:
         createdAt:
           type: string
           format: date-time
-          x-field-extra-annotation: "@org.springframework.data.annotation.CreatedDate"
         updatedAt:
           type: string
           format: date-time
-          x-field-extra-annotation: "@org.springframework.data.annotation.LastModifiedDate"
         superOrganisation:
           $ref: "#/components/schemas/Organisation"
 
@@ -1625,7 +1617,6 @@ components:
     VersionNumber:
       description: Reflects the version of the content. The value is generated server-side.
       type: integer
-      x-field-extra-annotation: "@org.springframework.data.annotation.Version"
       format: int32
       minimum: 0
 
@@ -1633,7 +1624,6 @@ components:
       type: string
       enum:
         - category
-        - phenotype_group
         - single_phenotype
         - composite_phenotype
         - single_restriction
@@ -1650,15 +1640,12 @@ components:
           $ref: "#/components/schemas/VersionNumber"
         author:
           type: string
-          x-field-extra-annotation: "@org.springframework.data.annotation.CreatedBy"
         createdAt:
           type: string
           format: date-time
-          x-field-extra-annotation: "@org.springframework.data.annotation.CreatedDate"
         refer:
           type: string
           format: uri
-          x-field-extra-annotation: "@org.springframework.data.annotation.LastModifiedDate"
 
     LocalisableText:
       description: A text in a specific language
@@ -1792,13 +1779,11 @@ components:
         Represents a search query for subjects/individuals.
         A query has basic configurations for data source connections as well as in/exclusions and projections.
       type: object
-      x-class-extra-annotation: "@javax.persistence.Entity"
       required:
         - id
       properties:
         id:
           type: string
-          x-field-extra-annotation: "@org.springframework.data.annotation.Id"
           format: uuid
         name:
           description: Name of this query. For example, you could allow users to save a query for later use and use the name as identifier.

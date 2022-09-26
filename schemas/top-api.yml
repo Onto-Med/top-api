@@ -1784,8 +1784,10 @@ components:
         name:
           description: Name of this query. For example, you could allow users to save a query for later use and use the name as identifier.
           type: string
-        configuration:
-          $ref: "#/components/schemas/QueryConfiguration"
+        dataSources:
+          type: array
+          items:
+            $ref: "#/components/schemas/DataSource"
         criteria:
           description: List of in- and exclusion criteria.
           type: array
@@ -1852,17 +1854,6 @@ components:
         title:
           type: string
           description: Human-readable title of the data source.
-
-    QueryConfiguration:
-      description: Configurations to execute query on data sources.
-      type: object
-      required:
-        - sources
-      properties:
-        sources:
-          type: array
-          items:
-            $ref: "#/components/schemas/DataSource"
 
     QueryCriterion:
       description: A single criterion of a search query. Criteria can be inclusions or exclusions.

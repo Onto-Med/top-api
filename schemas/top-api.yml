@@ -1272,13 +1272,11 @@ components:
 
     Ontology:
       type: object
-      x-class-extra-annotation: "@javax.persistence.Entity"
       required:
         - id
       properties:
         id:
           type: string
-          x-field-extra-annotation: "@org.springframework.data.annotation.Id"
         name:
           type: string
         description:
@@ -1313,7 +1311,6 @@ components:
     Entity:
       description: Either category or phenotype
       type: object
-      x-class-extra-annotation: "@javax.persistence.Entity"
       required:
         - entityType
       properties:
@@ -1321,7 +1318,6 @@ components:
           $ref: "#/components/schemas/EntityType"
         id:
           type: string
-          x-field-extra-annotation: "@org.springframework.data.annotation.Id"
         titles:
           type: array
           description: There should only be one title per language

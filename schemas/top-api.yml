@@ -1403,18 +1403,12 @@ components:
         expression:
           $ref: "#/components/schemas/Expression"
         unit:
-          $ref: "#/components/schemas/Unit"
+          type: string
+          minLength: 1
         superPhenotype:
           $ref: "#/components/schemas/Phenotype"
       allOf:
         - $ref: "#/components/schemas/Category"
-
-    Unit:
-      type: object
-      properties:
-        unit:
-          type: string
-          minLength: 1
 
     Constant:
       type: object

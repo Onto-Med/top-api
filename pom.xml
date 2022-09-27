@@ -4,7 +4,7 @@
 
 	<groupId>care.smith.top</groupId>
 	<artifactId>top-api</artifactId>
-	<version>0.4.4</version>
+	<version>0.5.0</version>
 
 	<name>TOP API</name>
 	<description>REST API of the TOP framework</description>
@@ -103,7 +103,7 @@
 							<inputSpec>${project.basedir}/schemas/top-api.yml</inputSpec>
 							<generatorName>spring</generatorName>
 							<output>target/generated-sources/openapi/spring</output>
-							<modelPackage>care.smith.top.backend.model</modelPackage>
+							<modelPackage>care.smith.top.model</modelPackage>
 							<apiPackage>care.smith.top.backend.api</apiPackage>
 							<supportingFilesToGenerate>ApiUtil.java</supportingFilesToGenerate>
 							<configOptions>

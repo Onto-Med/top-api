@@ -69,6 +69,16 @@ paths:
           in: query
           schema:
             type: string
+        - name: page
+          description: Get specific Page of a Pageable
+          in: query
+          schema:
+            type: integer
+        - name: pageSize
+          description: Specify number of elements of a Page of a Pageable
+          in: query
+          schema:
+            type: integer
       responses:
         200:
           description: List of documents
@@ -1953,6 +1963,10 @@ components:
           type: string
         text:
           type: string
+        phrases:
+          type: array
+          items:
+            type: string
 
   securitySchemes:
     BearerAuth:

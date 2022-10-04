@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: TOP API
-  version: 0.5.0
+  version: 0.5.1
   description: API to manage phenotypes, repositories, ontologies and organisations
 
 servers:
@@ -1468,27 +1468,33 @@ components:
     Expression:
       type: object
       properties:
-        function:
+        functionId:
           type: string
-          description: A string identifying a valid expression function. See ExpressionFunction for a detailed description.
+          description: ID of a valid expression function. See ExpressionFunction for a detailed description.
         entityId:
           type: string
           description: In case this expression holds an entity, this property contains the id of that entity.
+        constantId:
+          type: string
+          description: ID of a valid constant. See Constant for a detailed description.
         value:
-          $ref: "#/components/schemas/ExpressionValue"
+          $ref: "#/components/schemas/Value"
         arguments:
           type: array
           items:
             $ref: "#/components/schemas/Expression"
-
-    ExpressionValue:
-      type: object
-      description: An expression value can be a constant (from a predefined set of constants) or a user-defined value.
-      properties:
-        constant:
-          $ref: "#/components/schemas/Constant"
-        value:
-          $ref: "#/components/schemas/Value"
+        values:
+          type: array
+          description: >
+            This property is for internal use only and will be ignored, if sent to a backend.
+            Items of this array property can hold results of function calls contained in expressions.
+          items:
+            $ref: "#/components/schemas/Value"
+        restriction:
+          description: >
+            This property is for internal use only and will be ignored, if sent to a backend.
+            Restrictions can be stored in this property to simplify the construction of phenotypic queries.
+          $ref: "#/components/schemas/Restriction"
 
     Value:
       required:

@@ -1860,15 +1860,15 @@ components:
       type: object
       required:
         - subject
-        - exclusion
+        - inclusion
         - defaultAggregationFunction
       properties:
         subject:
           description: The subject this criterion refers to.
           $ref: "#/components/schemas/Phenotype"
-        exclusion:
+        inclusion:
           type: boolean
-          default: false
+          default: true
         defaultAggregationFunction:
           description: >
             Multiple phenotype values in expressions must be aggregated to a single value in order to use them for calculations.

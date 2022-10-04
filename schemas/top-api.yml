@@ -1483,6 +1483,13 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/Expression"
+        values:
+          type: array
+          description: >
+            This property is for internal use only and will be ignored, if sent to a backend.
+            Items of this array property can hold results of function calls contained in expressions.
+          items:
+            $ref: "#/components/schemas/Value"
 
     Value:
       required:

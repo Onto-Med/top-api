@@ -1468,9 +1468,9 @@ components:
     Expression:
       type: object
       properties:
-        function:
+        functionId:
           type: string
-          description: A string identifying a valid expression function. See ExpressionFunction for a detailed description.
+          description: ID of a valid expression function. See ExpressionFunction for a detailed description.
         entityId:
           type: string
           description: In case this expression holds an entity, this property contains the id of that entity.

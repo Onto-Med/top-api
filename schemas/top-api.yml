@@ -1490,6 +1490,11 @@ components:
             Items of this array property can hold results of function calls contained in expressions.
           items:
             $ref: "#/components/schemas/Value"
+        restriction:
+          description: >
+            This property is for internal use only and will be ignored, if sent to a backend.
+            Restrictions can be stored in this property to simplify the construction of phenotypic queries.
+          $ref: "#/components/schemas/Restriction"
 
     Value:
       required:

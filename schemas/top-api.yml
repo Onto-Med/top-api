@@ -1474,21 +1474,15 @@ components:
         entityId:
           type: string
           description: In case this expression holds an entity, this property contains the id of that entity.
+        constantId:
+          type: string
+          description: ID of a valid constant. See Constant for a detailed description.
         value:
-          $ref: "#/components/schemas/ExpressionValue"
+          $ref: "#/components/schemas/Value"
         arguments:
           type: array
           items:
             $ref: "#/components/schemas/Expression"
-
-    ExpressionValue:
-      type: object
-      description: An expression value can be a constant (from a predefined set of constants) or a user-defined value.
-      properties:
-        constant:
-          $ref: "#/components/schemas/Constant"
-        value:
-          $ref: "#/components/schemas/Value"
 
     Value:
       required:

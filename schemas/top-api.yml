@@ -469,6 +469,29 @@ paths:
         required: true
         schema:
           type: string
+    get:
+      summary: Returns a list of all queries for the specified repository.
+      operationId: getQueries
+      tags:
+        - query
+      parameters:
+        - $ref: "#/components/parameters/page"
+      responses:
+        200:
+          description:
+            List of queries.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Query"
+        401:
+          $ref: "#/components/responses/Unauthorized"
+        404:
+          $ref: "#/components/responses/NotFound"
+        default:
+          $ref: "#/components/responses/UnexpectedError"
     post:
       summary: >
         Enqueue a new query. You can get the query result with a GET request to the getQueryResult path.

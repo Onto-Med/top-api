@@ -469,6 +469,29 @@ paths:
         required: true
         schema:
           type: string
+    get:
+      summary: Returns a list of all queries for the specified repository.
+      operationId: getQueries
+      tags:
+        - query
+      parameters:
+        - $ref: "#/components/parameters/page"
+      responses:
+        200:
+          description:
+            List of queries.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Query"
+        401:
+          $ref: "#/components/responses/Unauthorized"
+        404:
+          $ref: "#/components/responses/NotFound"
+        default:
+          $ref: "#/components/responses/UnexpectedError"
     post:
       summary: >
         Enqueue a new query. You can get the query result with a GET request to the getQueryResult path.
@@ -1794,8 +1817,12 @@ components:
           items:
             $ref: "#/components/schemas/QueryCriterion"
         projection:
-          description: The projection to be performed on the result set.
-          $ref: "#/components/schemas/Projection"
+          description: >
+            The projection to be performed on the result set.
+            This property holds an ordered list of subjects with sorting directions.
+          type: array
+          items:
+            $ref: "#/components/schemas/ProjectionEntry"
         dependentSubjects:
           $ref: "#/components/schemas/DependentSubjectsMap"
 
@@ -1859,53 +1886,38 @@ components:
       description: A single criterion of a search query. Criteria can be inclusions or exclusions.
       type: object
       required:
-        - subject
+        - subjectId
         - inclusion
         - defaultAggregationFunction
       properties:
-        subject:
-          description: The subject this criterion refers to.
-          $ref: "#/components/schemas/Phenotype"
+        subjectId:
+          type: string
+          description: ID of the subject this criterion refers to.
         inclusion:
           type: boolean
           default: true
-        defaultAggregationFunction:
+        defaultAggregationFunctionId:
+          type: string
           description: >
             Multiple phenotype values in expressions must be aggregated to a single value in order to use them for calculations.
             The aggregation function provided via this property will be used as default aggregation function for cases where none has been set.
-          $ref: "#/components/schemas/ExpressionFunction"
         dateTimeRestriction:
           $ref: "#/components/schemas/DateTimeRestriction"
 
-    Projection:
-      description: Represents the projection to be performed on a result set.
-      type: object
-      properties:
-        select:
-          description: Ordered list of subjects with sorting directions.
-          type: array
-          items:
-            $ref: "#/components/schemas/ProjectionSelectEntry"
-
-    ProjectionSelectEntry:
+    ProjectionEntry:
       description: Single entry of a projection select list.
       type: object
       required:
-        - subject
+        - subjectId
         - sorting
       properties:
-        subject:
-          $ref: "#/components/schemas/Phenotype"
+        subjectId:
+          type: string
+          description: ID of a subject this projection entry refers to.
         sorting:
           $ref: "#/components/schemas/Sorting"
-        ageRestrictions:
-          type: array
-          items:
-            $ref: "#/components/schemas/NumberRestriction"
-        dateTimeRestrictions:
-          type: array
-          items:
-            $ref: "#/components/schemas/DateTimeRestriction"
+        dateTimeRestriction:
+          $ref: "#/components/schemas/DateTimeRestriction"
 
     Sorting:
       type: string

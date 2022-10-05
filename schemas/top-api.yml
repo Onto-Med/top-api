@@ -93,6 +93,39 @@ paths:
         default:
           $ref: "#/components/responses/UnexpectedError"
 
+  /phrase:
+    parameters:
+      - $ref: "#/components/parameters/include"
+    get:
+      summary: Searches for phrases
+      operationId: getPhrases
+      tags:
+        - phrase
+      parameters:
+        - name: id
+          description: Search phrase by id.
+          in: query
+          schema:
+            type: string
+        - name: text
+          description: Search phrase by text
+          in: query
+          schema:
+            type: string
+      responses:
+        200:
+          description: List of phrases
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Phrase"
+        401:
+          $ref: "#/components/responses/Unauthorized"
+        default:
+          $ref: "#/components/responses/UnexpectedError"
+
   /organisation:
     parameters:
       - $ref: "#/components/parameters/include"
@@ -1980,6 +2013,10 @@ components:
           description: Number of phenotypes
           type: integer
           format: int64
+        documents:
+          description: Number of documents
+          type: integer
+          format: int64
 
     Document:
       type: object
@@ -1991,6 +2028,22 @@ components:
         text:
           type: string
         phrases:
+          type: array
+          items:
+            type: string
+
+    Phrase:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: string
+        text:
+          type: string
+        isExemplar:
+          type: boolean
+        attributes:
           type: array
           items:
             type: string

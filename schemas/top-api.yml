@@ -112,6 +112,11 @@ paths:
           in: query
           schema:
             type: string
+        - name: concept
+          description: Search phrase by concept
+          in: query
+          schema:
+            type: string
       responses:
         200:
           description: List of phrases

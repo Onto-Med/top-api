@@ -126,6 +126,39 @@ paths:
         default:
           $ref: "#/components/responses/UnexpectedError"
 
+  /concept:
+      parameters:
+        - $ref: "#/components/parameters/include"
+      get:
+        summary: Searches for concepts
+        operationId: getConcepts
+        tags:
+          - concept
+        parameters:
+          - name: id
+            description: Search concept by id.
+            in: query
+            schema:
+              type: string
+          - name: phrase
+            description: Search concept by phrase
+            in: query
+            schema:
+              type: string
+        responses:
+          200:
+            description: List of concepts
+            content:
+              application/json:
+                schema:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/Concept"
+          401:
+            $ref: "#/components/responses/Unauthorized"
+          default:
+            $ref: "#/components/responses/UnexpectedError"
+
   /organisation:
     parameters:
       - $ref: "#/components/parameters/include"
@@ -2047,6 +2080,16 @@ components:
           type: array
           items:
             type: string
+
+    Concept:
+          type: object
+          required:
+            - id
+          properties:
+            id:
+              type: string
+            text:
+              type: string
 
   securitySchemes:
     BearerAuth:

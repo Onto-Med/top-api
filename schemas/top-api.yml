@@ -1525,6 +1525,12 @@ components:
       properties:
         dataType:
           $ref: "#/components/schemas/DataType"
+        dateTime:
+          description: >
+            This property is for internal use only and will be ignored, if sent to a backend.
+            This property specifies when a value has been observed.
+          type: string
+          format: x-local-date-time
       discriminator:
         propertyName: dataType
         mapping:

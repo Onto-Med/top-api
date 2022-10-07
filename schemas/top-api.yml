@@ -2066,7 +2066,7 @@ components:
           properties:
             id:
               type: string
-            text:
+            labels:
               type: string
 
   securitySchemes:

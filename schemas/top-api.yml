@@ -1852,6 +1852,9 @@ components:
         finishedAt:
           type: string
           format: date-time
+        message:
+          description: Optional message about the query or query result. (e.g. error message)
+          type: string
         state:
           $ref: "#/components/schemas/QueryState"
 

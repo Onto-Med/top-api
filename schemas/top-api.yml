@@ -2,17 +2,20 @@ openapi: 3.0.0
 info:
   title: TOP API
   version: 0.5.1
-  description: API to manage phenotypes, repositories, ontologies and organisations
+  description: API to manage phenotypes, repositories, ontologies and organisations and to execute phenotypic queries.
 
 servers:
+  - url: https://top.imise.uni-leipzig.de/api
+    description: Public demo server.
   - url: http://localhost:8080
+    description: Local development instance.
   - url: http://host.docker.internal:8080
-    description: In case the server is running on the Docker host
+    description: In case the server is running on the Docker host.
 
 paths:
   /metadata:
     get:
-      summary: OpenAPI description of this API
+      summary: Get OpenAPI description of this API.
       operationId: getMetadata
       security:
         - BearerAuth: []
@@ -27,14 +30,14 @@ paths:
 
   /ping:
     get:
-      summary: Checks if the server is running
+      summary: Checks if the server is running.
       operationId: ping
       security:
         - BearerAuth: []
         - BasicAuth: []
       responses:
         200:
-          description: Server is up and running
+          description: Server is up and running.
         default:
           $ref: "#/components/responses/UnexpectedError"
 
@@ -47,7 +50,7 @@ paths:
         - BasicAuth: []
       responses:
         200:
-          description: Object holding statistics
+          description: Object holding statistics.
           content:
             application/json:
               schema:
@@ -57,19 +60,19 @@ paths:
 
   /document:
     get:
-      summary: Searches for documents
+      summary: Searches for documents.
       operationId: getDocuments
       tags:
         - document
       parameters:
         - name: id
           in: query
-          description: Filter documents by their id.
+          description: Filter documents by ID.
           schema:
             type: string
       responses:
         200:
-          description: List of documents
+          description: List of documents.
           content:
             application/json:
               schema:
@@ -85,7 +88,7 @@ paths:
     parameters:
       - $ref: "#/components/parameters/include"
     get:
-      summary: Searches for organisations. Use the query parameters to filter the result.
+      summary: Search for organisations. Use the query parameters to filter the result.
       operationId: getOrganisations
       tags:
         - organisation
@@ -98,7 +101,7 @@ paths:
         - $ref: "#/components/parameters/page"
       responses:
         200:
-          description: List of organisations
+          description: List of organisations.
           content:
             application/json:
               schema:
@@ -110,12 +113,12 @@ paths:
         default:
           $ref: "#/components/responses/UnexpectedError"
     post:
-      summary: Creates new organisation
+      summary: Creates a new organisation.
       operationId: createOrganisation
       tags:
         - organisation
       requestBody:
-        description: Organisation details
+        description: Organisation details.
         required: true
         content:
           application/json:
@@ -123,7 +126,7 @@ paths:
               $ref: "#/components/schemas/Organisation"
       responses:
         201:
-          description: Created organisation
+          description: Created organisation.
           content:
             application/json:
               schema:
@@ -135,7 +138,7 @@ paths:
 
   /data_source:
     get:
-      summary: Returns a available and accessible data sources.
+      summary: Returns all available and accessible data sources.
       operationId: getDataSources
       tags:
         - data_source
@@ -154,7 +157,7 @@ paths:
           $ref: "#/components/responses/UnexpectedError"
 
   /{organisationId}:
-    summary: Represents an organisation
+    summary: Represents an organisation.
     parameters:
       - name: organisationId
         in: path
@@ -163,13 +166,13 @@ paths:
           type: string
       - $ref: "#/components/parameters/include"
     get:
-      summary: Returns a particular organisation
+      summary: Returns a particular organisation by ID.
       operationId: getOrganisationById
       tags:
         - organisation
       responses:
         200:
-          description: Details of the organisation
+          description: Details of the organisation.
           content:
             application/json:
               schema:
@@ -181,12 +184,12 @@ paths:
         default:
           $ref: "#/components/responses/UnexpectedError"
     patch:
-      summary: Updates a particular organisation by id and returns the result
+      summary: Updates a particular organisation by ID and returns the result.
       operationId: updateOrganisationById
       tags:
         - organisation
       requestBody:
-        description: Organisation details to be applied
+        description: Organisation details to be applied.
         required: true
         content:
           application/json:
@@ -194,7 +197,7 @@ paths:
               $ref: "#/components/schemas/Organisation"
       responses:
         200:
-          description: Details about the updated organisation
+          description: Details about the updated organisation.
           content:
             application/json:
               schema:
@@ -206,7 +209,7 @@ paths:
         default:
           $ref: "#/components/responses/UnexpectedError"
     delete:
-      summary: Deletes a particular organisation by id and returns the deleted organisation
+      summary: Deletes a particular organisation by ID.
       operationId: deleteOrganisationById
       tags:
         - organisation
@@ -224,7 +227,7 @@ paths:
     parameters:
       - $ref: "#/components/parameters/include"
     get:
-      summary: Searches for repositories. Use the query parameters to filter the result.
+      summary: Search for repositories. Use the query parameters to filter the result.
       operationId: getRepositories
       tags:
         - repository
@@ -242,7 +245,7 @@ paths:
         - $ref: "#/components/parameters/page"
       responses:
         200:
-          description: List of repositories
+          description: List of repositories.
           content:
             application/json:
               schema:
@@ -258,7 +261,7 @@ paths:
     parameters:
       - $ref: "#/components/parameters/include"
     get:
-      summary: Searches for ontologies. Use the query parameters to filter the result.
+      summary: Search for ontologies. Use the query parameters to filter the result.
       operationId: getOntologies
       tags:
         - ontology
@@ -271,7 +274,7 @@ paths:
         - $ref: "#/components/parameters/page"
       responses:
         200:
-          description: List of ontologies
+          description: List of ontologies.
           content:
             application/json:
               schema:
@@ -287,7 +290,9 @@ paths:
     parameters:
       - $ref: "#/components/parameters/include"
     get:
-      summary: Searches for phenotypes or categories. Use the query parameters to filter the result. Only entities in primary repositories are returned.
+      summary: >
+        Search for phenotypes or categories. Use the query parameters to filter the result.
+        Only entities in primary repositories are returned.
       operationId: getEntities
       tags:
         - entity
@@ -305,14 +310,14 @@ paths:
             items:
               $ref: "#/components/schemas/EntityType"
         - name: dataType
-          description: Filter phenotypes or categories by data type
+          description: Filter phenotypes or categories by data type.
           in: query
           schema:
             $ref: "#/components/schemas/DataType"
         - $ref: "#/components/parameters/page"
       responses:
         200:
-          description: List of phenotypes or categories
+          description: List of phenotypes or categories.
           content:
             application/json:
               schema:
@@ -333,7 +338,7 @@ paths:
           type: string
       - $ref: "#/components/parameters/include"
     get:
-      summary: Searches for repositories in organisation. Use the query parameters to filter the result.
+      summary: Search for repositories in an organisation. Use the query parameters to filter the result.
       operationId: getRepositoriesByOrganisationId
       tags:
         - repository
@@ -346,7 +351,7 @@ paths:
         - $ref: "#/components/parameters/page"
       responses:
         200:
-          description: List of repositories
+          description: List of repositories.
           content:
             application/json:
               schema:
@@ -360,12 +365,12 @@ paths:
         default:
           $ref: "#/components/responses/UnexpectedError"
     post:
-      summary: Creates new repository in organisation
+      summary: Creates new repository in organisation.
       operationId: createRepository
       tags:
         - repository
       requestBody:
-        description: Repository details
+        description: Repository details.
         required: true
         content:
           application/json:
@@ -373,7 +378,7 @@ paths:
               $ref: "#/components/schemas/Repository"
       responses:
         201:
-          description: Created repository
+          description: Created repository.
           content:
             application/json:
               schema:
@@ -386,7 +391,7 @@ paths:
           $ref: "#/components/responses/UnexpectedError"
 
   /{organisationId}/{repositoryId}:
-    summary: Represents a repository in an organisation
+    summary: Represents a repository in an organisation.
     parameters:
       - name: organisationId
         in: path
@@ -400,13 +405,13 @@ paths:
           type: string
       - $ref: "#/components/parameters/include"
     get:
-      summary: Returns a particular repository in organisation
+      summary: Returns a particular repository in an organisation.
       operationId: getRepositoryById
       tags:
         - repository
       responses:
         200:
-          description: Details of the repository
+          description: Details of the repository.
           content:
             application/json:
               schema:
@@ -418,12 +423,12 @@ paths:
         default:
           $ref: "#/components/responses/UnexpectedError"
     patch:
-      summary: Updates a particular repository by id in the organisation and returns the resulting repository
+      summary: Updates a particular repository by ID in the organisation and returns the resulting repository.
       operationId: updateRepositoryById
       tags:
         - repository
       requestBody:
-        description: Repository details to be applied
+        description: Repository details to be applied.
         required: true
         content:
           application/json:
@@ -431,7 +436,7 @@ paths:
               $ref: "#/components/schemas/Repository"
       responses:
         200:
-          description: Details about the updated repository
+          description: Details about the updated repository.
           content:
             application/json:
               schema:
@@ -443,7 +448,7 @@ paths:
         default:
           $ref: "#/components/responses/UnexpectedError"
     delete:
-      summary: Deletes a particular repository by id in the organisation and returns the deleted repository
+      summary: Deletes a particular repository by ID in the organisation.
       operationId: deleteRepositoryById
       tags:
         - repository
@@ -478,8 +483,7 @@ paths:
         - $ref: "#/components/parameters/page"
       responses:
         200:
-          description:
-            List of queries.
+          description: List of queries.
           content:
             application/json:
               schema:
@@ -495,7 +499,7 @@ paths:
     post:
       summary: >
         Enqueue a new query. You can get the query result with a GET request to the getQueryResult path.
-        The id property of the provided query object is used as identifier throughout the life-cycle of the query.
+        The ID property of the provided query object is used as identifier throughout the life-cycle of the query.
       operationId: enqueueQuery
       tags:
         - query
@@ -539,7 +543,7 @@ paths:
           type: string
           format: uuid
     get:
-      summary: Returns the result of a particular query by id.
+      summary: Returns the result of a particular query by ID.
       operationId: getQueryResult
       tags:
         - query
@@ -557,7 +561,7 @@ paths:
         default:
           $ref: "#/components/responses/UnexpectedError"
     delete:
-      summary: Deletes a particular query by id.
+      summary: Deletes a particular query by ID.
       operationId: deleteQuery
       tags:
         - query
@@ -585,7 +589,7 @@ paths:
           type: string
       - $ref: "#/components/parameters/include"
     get:
-      summary: Searches for ontologies in repository. Use the query parameters to filter the result.
+      summary: Searches for ontologies in a repository. Use the query parameters to filter the result.
       operationId: getOntologiesByRepositoryId
       tags:
         - ontology
@@ -598,7 +602,7 @@ paths:
         - $ref: "#/components/parameters/page"
       responses:
         200:
-          description: List of ontologies
+          description: List of ontologies.
           content:
             application/json:
               schema:
@@ -612,12 +616,12 @@ paths:
         default:
           $ref: "#/components/responses/UnexpectedError"
     post:
-      summary: Creates new ontology in repository
+      summary: Creates a new ontology in a repository.
       operationId: createOntology
       tags:
         - ontology
       requestBody:
-        description: Ontology details
+        description: Ontology details.
         required: true
         content:
           application/json:
@@ -625,7 +629,7 @@ paths:
               $ref: "#/components/schemas/Ontology"
       responses:
         201:
-          description: Created ontology
+          description: Created ontology.
           content:
             application/json:
               schema:
@@ -638,7 +642,7 @@ paths:
           $ref: "#/components/responses/UnexpectedError"
 
   /{organisationId}/{repositoryId}/ontology/{ontologyId}/{version}:
-    summary: Represents an ontology in a repository
+    summary: Represents an ontology in a repository.
     parameters:
       - name: organisationId
         in: path
@@ -662,13 +666,13 @@ paths:
           $ref: "#/components/schemas/VersionNumber"
       - $ref: "#/components/parameters/include"
     get:
-      summary: Returns a particular ontology in the repository
+      summary: Returns a particular ontology in a repository.
       operationId: getOntologyByName
       tags:
         - ontology
       responses:
         200:
-          description: Details of the ontology
+          description: Details of the ontology.
           content:
             application/json:
               schema:
@@ -680,12 +684,12 @@ paths:
         default:
           $ref: "#/components/responses/UnexpectedError"
     put:
-      summary: Updates a particular ontology by id in the repository and returns the result
+      summary: Updates a particular ontology by id in a repository and returns the result.
       operationId: updateOntologyById
       tags:
         - ontology
       requestBody:
-        description: Ontology details to be applied
+        description: Ontology details to be applied.
         required: true
         content:
           application/json:
@@ -693,7 +697,7 @@ paths:
               $ref: "#/components/schemas/Ontology"
       responses:
         200:
-          description: Details about the updated ontology
+          description: Details about the updated ontology.
           content:
             application/json:
               schema:
@@ -705,13 +709,13 @@ paths:
         default:
           $ref: "#/components/responses/UnexpectedError"
     patch:
-      summary: Build a new release for the ontology
+      summary: Build a new release for the ontology.
       operationId: releaseOntology
       tags:
         - ontology
       responses:
         200:
-          description: Details about the released ontology
+          description: Details about the released ontology.
           content:
             application/json:
               schema:
@@ -723,7 +727,7 @@ paths:
         default:
           $ref: "#/components/schemas/ErrorResponse"
     delete:
-      summary: Deletes a particular ontology by id in the repository and returns the deleted ontology
+      summary: Deletes a particular ontology by ID in a repository.
       operationId: deleteOntologyById
       tags:
         - ontology
@@ -751,7 +755,7 @@ paths:
           type: string
       - $ref: "#/components/parameters/include"
     get:
-      summary: Searches for phenotypes or categories. Use the query parameters to filter the result.
+      summary: Search for phenotypes or categories. Use the query parameters to filter the result.
       operationId: getEntitiesByRepositoryId
       tags:
         - entity
@@ -769,14 +773,14 @@ paths:
             items:
               $ref: "#/components/schemas/EntityType"
         - name: dataType
-          description: Filter phenotypes or categories by data type
+          description: Filter phenotypes or categories by data type.
           in: query
           schema:
             $ref: "#/components/schemas/DataType"
         - $ref: "#/components/parameters/page"
       responses:
         200:
-          description: List of phenotypes or categories
+          description: List of phenotypes or categories.
           content:
             application/json:
               schema:
@@ -790,12 +794,12 @@ paths:
         default:
           $ref: "#/components/responses/UnexpectedError"
     post:
-      summary: Creates a new phenotype or category in the repository and returns the result
+      summary: Creates a new phenotype or category in a repository and returns the result.
       operationId: createEntity
       tags:
         - entity
       requestBody:
-        description: Phenotype or category details to be applied
+        description: Phenotype or category details to be applied.
         required: true
         content:
           application/json:
@@ -803,7 +807,7 @@ paths:
               $ref: "#/components/schemas/Entity"
       responses:
         200:
-          description: Details about the created phenotype or category
+          description: Details about the created phenotype or category.
           content:
             application/json:
               schema:
@@ -829,7 +833,7 @@ paths:
           type: string
       - $ref: "#/components/parameters/include"
     get:
-      summary: Searches for root phenotypes or categories. Use the query parameters to filter the result.
+      summary: Search for root phenotypes or categories. Use the query parameters to filter the result.
       operationId: getRootEntitiesByRepositoryId
       tags:
         - entity
@@ -847,14 +851,14 @@ paths:
             items:
               $ref: "#/components/schemas/EntityType"
         - name: dataType
-          description: Filter phenotypes or categories by data type
+          description: Filter phenotypes or categories by data type.
           in: query
           schema:
             $ref: "#/components/schemas/DataType"
         - $ref: "#/components/parameters/page"
       responses:
         200:
-          description: List of root phenotypes or categories
+          description: List of root phenotypes or categories.
           content:
             application/json:
               schema:
@@ -869,7 +873,7 @@ paths:
           $ref: "#/components/responses/UnexpectedError"
 
   /{organisationId}/{repositoryId}/{id}:
-    summary: Represents an entity (i.e. phenotype or category) in a repository
+    summary: Represents an entity (i.e. phenotype or category) in a repository.
     parameters:
       - name: organisationId
         in: path
@@ -893,13 +897,13 @@ paths:
           $ref: "#/components/schemas/VersionNumber"
       - $ref: "#/components/parameters/include"
     get:
-      summary: Returns a particular phenotype or category in the repository
+      summary: Returns a particular phenotype or category in a repository.
       operationId: getEntityById
       tags:
         - entity
       responses:
         200:
-          description: Details of the phenotype or category
+          description: Details of the phenotype or category.
           content:
             application/json:
               schema:
@@ -911,12 +915,12 @@ paths:
         default:
           $ref: "#/components/responses/UnexpectedError"
     put:
-      summary: Updates a particular phenotype or category by id in the repository and returns the result
+      summary: Updates a particular phenotype or category by id in a repository and returns the result.
       operationId: updateEntityById
       tags:
         - entity
       requestBody:
-        description: Phenotype or category details to be applied
+        description: Phenotype or category details to be applied.
         required: true
         content:
           application/json:
@@ -924,7 +928,7 @@ paths:
               $ref: "#/components/schemas/Entity"
       responses:
         200:
-          description: Details about the updated phenotype or category
+          description: Details about the updated phenotype or category.
           content:
             application/json:
               schema:
@@ -937,7 +941,7 @@ paths:
           $ref: "#/components/responses/UnexpectedError"
     delete:
       summary:
-        Deletes a particular phenotype or category by id in the repository.
+        Deletes a particular phenotype or category by ID in the repository.
         One can delete the whole entity or a version by specifying the version parameter.
         The current version of an entity cannot be deleted.
       operationId: deleteEntityById
@@ -979,7 +983,7 @@ paths:
           $ref: "#/components/responses/UnexpectedError"
 
   /{organisationId}/{repositoryId}/{id}/export:
-    summary: Export entity in the requested format.
+    summary: Export an entity in the requested format.
     parameters:
       - name: organisationId
         in: path
@@ -1076,7 +1080,7 @@ paths:
           schema:
             $ref: "#/components/schemas/VersionNumber"
       requestBody:
-        description: Forking instructions like destination
+        description: Forking instructions like destination.
         required: true
         content:
           application/json:
@@ -1084,7 +1088,7 @@ paths:
               $ref: "#/components/schemas/ForkingInstruction"
       responses:
         201:
-          description: List of affected entities (i.e., entities created in the destination repository).
+          description: List of affected entities (i.e., entities created or updated in the destination repository).
           content:
             application/json:
               schema:
@@ -1099,7 +1103,7 @@ paths:
           $ref: "#/components/responses/UnexpectedError"
 
   /{organisationId}/{repositoryId}/{id}/history:
-    summary: Represents the version history of an entity (i.e. phenotype or category) in a repository
+    summary: Represents the version history of an entity (i.e. phenotype or category) in a repository.
     parameters:
       - name: organisationId
         in: path
@@ -1118,13 +1122,13 @@ paths:
           type: string
       - $ref: "#/components/parameters/include"
     get:
-      summary: Returns all versions of a particular phenotype or category in the repository
+      summary: Returns all versions of a particular phenotype or category in a repository.
       operationId: getEntityVersionsById
       tags:
         - entity
       responses:
         200:
-          description: List of versions
+          description: List of versions.
           content:
             application/json:
               schema:
@@ -1139,7 +1143,7 @@ paths:
           $ref: "#/components/responses/UnexpectedError"
 
   /{organisationId}/{repositoryId}/{id}/subclasses:
-    summary: Represents subclasses (categories, abstract or restricted phenotypes) of an entity in a repository
+    summary: Represents subclasses (categories, abstract or restricted phenotypes) of an entity in a repository.
     parameters:
       - name: organisationId
         in: path
@@ -1158,13 +1162,13 @@ paths:
           type: string
       - $ref: "#/components/parameters/include"
     get:
-      summary: Returns all subclasses of a particular phenotype or category in the repository
+      summary: Returns all subclasses of a particular phenotype or category in the repository.
       operationId: getSubclassesById
       tags:
         - entity
       responses:
         200:
-          description: List of subclasses
+          description: List of subclasses.
           content:
             application/json:
               schema:
@@ -1182,17 +1186,19 @@ paths:
     parameters:
       - name: type
         in: query
-        description: Optional parameter to restrict the result set to a specific function type (to be defined).
+        description: >
+          Optional parameter to restrict the result set to a specific function type.
+          Currently, 'math' and 'boolean' are supported.
         schema:
           type: string
     get:
-      summary: Get all supported expression functions
+      summary: Get all supported expression functions.
       operationId: getExpressionFunctions
       tags:
         - expression_function
       responses:
         200:
-          description: List of supported expression functions
+          description: List of supported expression functions.
           content:
             application/json:
               schema:
@@ -1206,13 +1212,13 @@ paths:
 
   /expression_constant:
     get:
-      summary: Get all supported expression constants
+      summary: Get all supported expression constants.
       operationId: getExpressionConstants
       tags:
         - expression_constant
       responses:
         200:
-          description: List of supported expression constants
+          description: List of supported expression constants.
           content:
             application/json:
               schema:
@@ -1227,21 +1233,21 @@ paths:
 components:
   responses:
     NotFound:
-      description: The specified resource was not found
+      description: The specified resource was not found.
       content:
         application/json:
           schema:
             $ref: "#/components/schemas/ErrorResponse"
 
     Unauthorized:
-      description: Unauthorized, Access token is missing or invalid
+      description: Unauthorized, Access token is missing or invalid.
       content:
         application/json:
           schema:
             $ref: "#/components/schemas/ErrorResponse"
 
     UnexpectedError:
-      description: Unexpected error
+      description: Unexpected error.
       content:
         application/json:
           schema:
@@ -1281,7 +1287,7 @@ components:
         description:
           type: string
         primary:
-          description: Determines whether this repository is a primary (aka. public) repository
+          description: Determines whether this repository is a primary (aka. public) repository.
           type: boolean
           default: false
         createdAt:
@@ -1332,7 +1338,7 @@ components:
           $ref: "#/components/schemas/Organisation"
 
     Entity:
-      description: Either category or phenotype
+      description: Either category or phenotype.
       type: object
       required:
         - entityType
@@ -1343,7 +1349,7 @@ components:
           type: string
         titles:
           type: array
-          description: There should only be one title per language
+          description: There should only be one title per language.
           items:
             $ref: "#/components/schemas/LocalisableText"
         synonyms:
@@ -1359,6 +1365,7 @@ components:
           format: int32
           minimum: 1
         codes:
+          description: E.g. LOINC or ICD-10 codes.
           type: array
           items:
             $ref: "#/components/schemas/Code"
@@ -1509,13 +1516,13 @@ components:
         values:
           type: array
           description: >
-            This property is for internal use only and will be ignored, if sent to a backend.
+            This property is for internal use only and will be ignored, if sent to a server.
             Items of this array property can hold results of function calls contained in expressions.
           items:
             $ref: "#/components/schemas/Value"
         restriction:
           description: >
-            This property is for internal use only and will be ignored, if sent to a backend.
+            This property is for internal use only and will be ignored, if sent to a server.
             Restrictions can be stored in this property to simplify the construction of phenotypic queries.
           $ref: "#/components/schemas/Restriction"
 
@@ -1527,7 +1534,7 @@ components:
           $ref: "#/components/schemas/DataType"
         dateTime:
           description: >
-            This property is for internal use only and will be ignored, if sent to a backend.
+            This property is for internal use only and will be ignored, if sent to a server.
             This property specifies when a value has been observed.
           type: string
           format: x-local-date-time
@@ -1673,18 +1680,18 @@ components:
           format: uri
 
     LocalisableText:
-      description: A text in a specific language
+      description: A text in a specific language.
       type: object
       required:
         - lang
         - text
       properties:
         lang:
-          description: ICU Locale code
+          description: ICU Locale code.
           type: string
           pattern: '^[a-z]{2}(-[A-Z\-]+)?$'
         text:
-          description: The actual localised text
+          description: The actual localised text.
           type: string
 
     CodeSystem:
@@ -1700,7 +1707,7 @@ components:
           type: string
 
     Code:
-      description: Code of a code system
+      description: Code of a code system.
       type: object
       required:
         - codeSystem
@@ -1714,7 +1721,7 @@ components:
           type: string
 
     Restriction:
-      description: Represents restriction of an abstract phenotype
+      description: Represents restriction of an abstract phenotype.
       type: object
       required:
         - type
@@ -1724,7 +1731,9 @@ components:
         quantifier:
           $ref: "#/components/schemas/Quantifier"
         cardinality:
-          description: This value can be used in combination with a quantifier to specify how many matches are required to fulfil this restriction.
+          description: >
+            This value can be used in combination with a quantifier to specify
+            how many matches are required to fulfil this restriction.
           type: integer
           format: int32
           minimum: 0
@@ -1765,7 +1774,11 @@ components:
           $ref: "#/components/schemas/RestrictionOperator"
         values:
           type: array
-          description: In case there are operators, the first two values are used as values for those operators
+          description: >
+            In case there are operators, the first two values are used as values for these operators.
+            Convention:
+            The first array item will always be treated as minimum and the second one as maximum.
+            In case there is only a maximum value, the first array item is null.
           items:
             type: number
       allOf:
@@ -1780,7 +1793,11 @@ components:
           $ref: "#/components/schemas/RestrictionOperator"
         values:
           type: array
-          description: In case there are operators, the first two values are used as values for those operators
+          description: >
+            In case there are operators, the first two values are used as values for these operators.
+            Convention:
+            The first array item will always be treated as minimum and the second one as maximum.
+            In case there is only a maximum value, the first array item is null.
           items:
             type: string
             format: x-local-date-time
@@ -1811,7 +1828,9 @@ components:
           type: string
           format: uuid
         name:
-          description: Name of this query. For example, you could allow users to save a query for later use and use the name as identifier.
+          description: >
+            Name of this query. For example, you could allow users to save a query
+            for later use and use the name as identifier.
           type: string
         dataSources:
           type: array
@@ -1908,8 +1927,10 @@ components:
         defaultAggregationFunctionId:
           type: string
           description: >
-            Multiple phenotype values in expressions must be aggregated to a single value in order to use them for calculations.
-            The aggregation function provided via this property will be used as default aggregation function for cases where none has been set.
+            Multiple phenotype values in expressions must be aggregated to
+            a single value in order to use them for calculations.
+            The aggregation function provided via this property will be used as
+            default aggregation function for cases where none has been set.
         dateTimeRestriction:
           $ref: "#/components/schemas/DateTimeRestriction"
 
@@ -1953,19 +1974,19 @@ components:
       type: object
       properties:
         organisations:
-          description: Number of organisations
+          description: Number of organisations.
           type: integer
           format: int64
         repositories:
-          description: Number of repositories
+          description: Number of repositories.
           type: integer
           format: int64
         categories:
-          description: Number of phenotype categories
+          description: Number of phenotype categories.
           type: integer
           format: int64
         phenotypes:
-          description: Number of phenotypes
+          description: Number of phenotypes.
           type: integer
           format: int64
 

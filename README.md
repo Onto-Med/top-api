@@ -13,6 +13,14 @@ The container has the [OpenAPI (Swagger) Editor](https://marketplace.visualstudi
 Create new releases via GitHub Workflow [publish-snapshots.yml](.github/workflows/publish-snapshots.yml). Doing so will automaticaly build and publish a new Spring Boot skeleton package, generated with [https://github.com/OpenAPITools/openapi-generator/tree/master/modules/openapi-generator-maven-plugin](openapi-generator-maven-plugin).
 Please update the version number in the [pom.xml](pom.xml) and [schemas/top-api.yml](schemas/top-api.yml) files **after** publishing a release.
 
+### Format Schema File
+
+You can use the npm package [openapi-format](https://www.npmjs.com/package/openapi-format) to automatically format the OpenApi schema file.
+
+```
+npx openapi-format schemas/top-api.yml --output schemas/top-api.yml
+```
+
 ### Versioning
 
 There will always be a snapshot version available with latest changes pushed to the main branch. Snapshots have a higher version number than the last release.

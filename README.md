@@ -4,6 +4,7 @@ This repository contains the OpenAPI 3 specification of the TOP framework. The s
 
 [![Publish snapshots](https://github.com/Onto-Med/top-api/actions/workflows/publish-snapshots.yml/badge.svg)](https://github.com/Onto-Med/top-api/actions/workflows/publish-snapshots.yml)
 [![Publish packages and create release](https://github.com/Onto-Med/top-api/actions/workflows/release.yml/badge.svg)](https://github.com/Onto-Med/top-api/actions/workflows/release.yml)
+[![Postman](https://img.shields.io/badge/Postman-FF6C37?style=flat&logo=postman&logoColor=white)](https://documenter.getpostman.com/view/23852272/2s83zpHzmd)
 
 ## Usage
 

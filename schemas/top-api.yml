@@ -1730,9 +1730,10 @@ components:
             Name of this query. For example, you could allow users to save a query for later use and use the name as identifier.
           type: string
         dataSources:
+          description: List of data source IDs.
           type: array
           items:
-            $ref: '#/components/schemas/DataSource'
+            type: string
         criteria:
           description: List of in- and exclusion criteria.
           type: array

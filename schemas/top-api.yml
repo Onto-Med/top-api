@@ -1297,10 +1297,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/LocalisableText'
-        index:
-          type: integer
-          format: int32
-          minimum: 1
         codes:
           description: E.g. LOINC or ICD-10 codes.
           type: array
@@ -1341,28 +1337,11 @@ components:
             $ref: '#/components/schemas/Phenotype'
       allOf:
         - $ref: '#/components/schemas/Entity'
-    ItemType:
-      description: |
-        Only relevant for single phenotypes. This property specifies the class of items the phenotype holding this property belongs to.
-      type: string
-      enum:
-        - allergy_intolerance
-        - clinical_impression
-        - condition
-        - medication_administration
-        - medication_request
-        - medication_statement
-        - observation
-        - procedure
-        - subject_age
-        - subject_sex
     Phenotype:
       type: object
       properties:
         dataType:
           $ref: '#/components/schemas/DataType'
-        itemType:
-          $ref: '#/components/schemas/ItemType'
         restriction:
           $ref: '#/components/schemas/Restriction'
         expression:

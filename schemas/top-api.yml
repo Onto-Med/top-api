@@ -64,21 +64,26 @@ paths:
       tags:
         - document
       parameters:
-        - name: id
-          description: Filter document by id.
+        - name: phraseText
+          description: Filter document by containing phrase.
           in: query
           schema:
             type: string
-        - name: page
-          description: Get specific Page of a Pageable
+        - name: conceptText
+          description: Filter document by containing concept.
           in: query
           schema:
-            type: integer
-        - name: pageSize
-          description: Specify number of elements of a Page of a Pageable
+            type: string
+        - name: phraseId
+          description: Filter document by containing phrase id.
           in: query
           schema:
-            type: integer
+            type: string
+        - name: conceptId
+          description: Filter document by containing concept id.
+          in: query
+          schema:
+            type: string
       responses:
         200:
           description: List of documents
@@ -93,27 +98,120 @@ paths:
         default:
           $ref: "#/components/responses/UnexpectedError"
 
-  /phrase:
+  /{conceptId}/document:
     parameters:
+      - name: conceptId
+        in: path
+        required: true
+        schema:
+          type: string
       - $ref: "#/components/parameters/include"
+    get:
+      summary: Searches for documents from a specific concept cluster. Use the query parameters to filter the result.
+      operationId: getDocumentByConceptId
+      tags:
+        - document
+      parameters:
+        - name: name
+          description: Filter documents by name.
+          in: query
+          schema:
+            type: string
+        - $ref: "#/components/parameters/page"
+      responses:
+        200:
+          description: List of documents
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Document"
+        401:
+          $ref: "#/components/responses/Unauthorized"
+        404:
+          $ref: "#/components/responses/NotFound"
+        default:
+          $ref: "#/components/responses/UnexpectedError"
+
+  /{phraseId}/document:
+    parameters:
+      - name: phraseId
+        in: path
+        required: true
+        schema:
+          type: string
+      - $ref: "#/components/parameters/include"
+    get:
+      summary: Searches for documents that contain a specific phrase. Use the query parameters to filter the result.
+      operationId: getDocumentByPhraseId
+      tags:
+        - document
+      parameters:
+        - name: name
+          description: Filter documents by name.
+          in: query
+          schema:
+            type: string
+        - $ref: "#/components/parameters/page"
+      responses:
+        200:
+          description: List of documents
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Document"
+        401:
+          $ref: "#/components/responses/Unauthorized"
+        404:
+          $ref: "#/components/responses/NotFound"
+        default:
+          $ref: "#/components/responses/UnexpectedError"
+
+  /{documentId}:
+    summary: Represents a document
+    parameters:
+      - name: documentId
+        in: path
+        required: true
+        schema:
+          type: string
+      - $ref: "#/components/parameters/include"
+    get:
+      summary: Returns a particular document
+      operationId: getDocumentById
+      tags:
+        - document
+      responses:
+        200:
+          description: Details of the Document
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Document"
+        401:
+          $ref: "#/components/responses/Unauthorized"
+        404:
+          $ref: "#/components/responses/NotFound"
+        default:
+          $ref: "#/components/responses/UnexpectedError"
+
+  /phrase:
     get:
       summary: Searches for phrases
       operationId: getPhrases
       tags:
         - phrase
       parameters:
-        - name: id
-          description: Search phrase by id.
-          in: query
-          schema:
-            type: string
         - name: text
           description: Search phrase by text
           in: query
           schema:
             type: string
-        - name: concept
-          description: Search phrase by concept
+        - name: conceptText
+          description: Search phrase by concept text
           in: query
           schema:
             type: string
@@ -131,21 +229,114 @@ paths:
         default:
           $ref: "#/components/responses/UnexpectedError"
 
-  /concept:
+  /{conceptId}/phrase:
+    parameters:
+      - name: conceptId
+        in: path
+        required: true
+        schema:
+          type: string
+      - $ref: "#/components/parameters/include"
+    get:
+      summary: Searches for phrases that are contained in a specific concept. Use the query parameters to filter the result.
+      operationId: getPhraseByConceptId
+      tags:
+        - phrase
       parameters:
-        - $ref: "#/components/parameters/include"
+        - name: name
+          description: Filter phrases by name.
+          in: query
+          schema:
+            type: string
+        - $ref: "#/components/parameters/page"
+      responses:
+        200:
+          description: List of phrases
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Phrase"
+        401:
+          $ref: "#/components/responses/Unauthorized"
+        404:
+          $ref: "#/components/responses/NotFound"
+        default:
+          $ref: "#/components/responses/UnexpectedError"
+
+  /{documentId}/phrase:
+    parameters:
+      - name: documentId
+        in: path
+        required: true
+        schema:
+          type: string
+      - $ref: "#/components/parameters/include"
+    get:
+      summary: Searches for phrases that are contained in a specific document. Use the query parameters to filter the result.
+      operationId: getPhraseByDocumentId
+      tags:
+        - phrase
+      parameters:
+        - name: name
+          description: Filter phrases by name.
+          in: query
+          schema:
+            type: string
+        - $ref: "#/components/parameters/page"
+      responses:
+        200:
+          description: List of phrases
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Phrase"
+        401:
+          $ref: "#/components/responses/Unauthorized"
+        404:
+          $ref: "#/components/responses/NotFound"
+        default:
+          $ref: "#/components/responses/UnexpectedError"
+
+  /{phraseId}:
+    summary: Represents a Phrase
+    parameters:
+      - name: phraseId
+        in: path
+        required: true
+        schema:
+          type: string
+      - $ref: "#/components/parameters/include"
+    get:
+      summary: Returns a particular Phrase
+      operationId: getPhraseById
+      tags:
+        - phrase
+      responses:
+        200:
+          description: Details of the Phrase
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Phrase"
+        401:
+          $ref: "#/components/responses/Unauthorized"
+        404:
+          $ref: "#/components/responses/NotFound"
+        default:
+          $ref: "#/components/responses/UnexpectedError"
+
+  /concept:
       get:
         summary: Searches for concepts
         operationId: getConcepts
         tags:
           - concept
         parameters:
-          - name: id
-            description: Search concept by id.
-            in: query
-            schema:
-              type: string
-          - name: phrase
+          - name: phraseText
             description: Search concept by phrase
             in: query
             schema:
@@ -163,6 +354,106 @@ paths:
             $ref: "#/components/responses/Unauthorized"
           default:
             $ref: "#/components/responses/UnexpectedError"
+
+  /{phraseId}/concept:
+    parameters:
+      - name: phraseId
+        in: path
+        required: true
+        schema:
+          type: string
+      - $ref: "#/components/parameters/include"
+    get:
+      summary: Searches for concepts that contain a specific phrase. Use the query parameters to filter the result.
+      operationId: getConceptByPhraseId
+      tags:
+        - concept
+      parameters:
+        - name: name
+          description: Filter concepts by name.
+          in: query
+          schema:
+            type: string
+        - $ref: "#/components/parameters/page"
+      responses:
+        200:
+          description: List of concepts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Concept"
+        401:
+          $ref: "#/components/responses/Unauthorized"
+        404:
+          $ref: "#/components/responses/NotFound"
+        default:
+          $ref: "#/components/responses/UnexpectedError"
+
+  /{documentId}/concept:
+    parameters:
+      - name: documentId
+        in: path
+        required: true
+        schema:
+          type: string
+      - $ref: "#/components/parameters/include"
+    get:
+      summary: Searches for concepts that are contained in a specific document. Use the query parameters to filter the result.
+      operationId: getConceptByDocumentId
+      tags:
+        - concept
+      parameters:
+        - name: name
+          description: Filter concepts by name.
+          in: query
+          schema:
+            type: string
+        - $ref: "#/components/parameters/page"
+      responses:
+        200:
+          description: List of concepts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Concept"
+        401:
+          $ref: "#/components/responses/Unauthorized"
+        404:
+          $ref: "#/components/responses/NotFound"
+        default:
+          $ref: "#/components/responses/UnexpectedError"
+
+  /{conceptId}:
+    summary: Represents a concept
+    parameters:
+      - name: conceptId
+        in: path
+        required: true
+        schema:
+          type: string
+      - $ref: "#/components/parameters/include"
+    get:
+      summary: Returns a particular concept
+      operationId: getConceptById
+      tags:
+        - concept
+      responses:
+        200:
+          description: Details of the Concept
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Concept"
+        401:
+          $ref: "#/components/responses/Unauthorized"
+        404:
+          $ref: "#/components/responses/NotFound"
+        default:
+          $ref: "#/components/responses/UnexpectedError"
 
   /organisation:
     parameters:

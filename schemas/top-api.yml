@@ -98,7 +98,7 @@ paths:
         default:
           $ref: "#/components/responses/UnexpectedError"
 
-  /{conceptId}/document:
+  /document/concept/{conceptId}:
     parameters:
       - name: conceptId
         in: path
@@ -134,7 +134,7 @@ paths:
         default:
           $ref: "#/components/responses/UnexpectedError"
 
-  /{phraseId}/document:
+  /document/phrase/{phraseId}:
     parameters:
       - name: phraseId
         in: path
@@ -170,7 +170,7 @@ paths:
         default:
           $ref: "#/components/responses/UnexpectedError"
 
-  /{documentId}:
+  /document/{documentId}:
     summary: Represents a document
     parameters:
       - name: documentId
@@ -229,7 +229,7 @@ paths:
         default:
           $ref: "#/components/responses/UnexpectedError"
 
-  /{conceptId}/phrase:
+  /phrase/concept/{conceptId}:
     parameters:
       - name: conceptId
         in: path
@@ -265,7 +265,7 @@ paths:
         default:
           $ref: "#/components/responses/UnexpectedError"
 
-  /{documentId}/phrase:
+  /phrase/document/{documentId}:
     parameters:
       - name: documentId
         in: path
@@ -301,7 +301,7 @@ paths:
         default:
           $ref: "#/components/responses/UnexpectedError"
 
-  /{phraseId}:
+  /phrase/{phraseId}:
     summary: Represents a Phrase
     parameters:
       - name: phraseId
@@ -355,7 +355,7 @@ paths:
           default:
             $ref: "#/components/responses/UnexpectedError"
 
-  /{phraseId}/concept:
+  /concept/phrase/{phraseId}:
     parameters:
       - name: phraseId
         in: path
@@ -391,7 +391,7 @@ paths:
         default:
           $ref: "#/components/responses/UnexpectedError"
 
-  /{documentId}/concept:
+  /concept/document/{documentId}:
     parameters:
       - name: documentId
         in: path
@@ -427,7 +427,7 @@ paths:
         default:
           $ref: "#/components/responses/UnexpectedError"
 
-  /{conceptId}:
+  /concept/{conceptId}:
     summary: Represents a concept
     parameters:
       - name: conceptId

@@ -105,10 +105,15 @@ paths:
         required: true
         schema:
           type: string
+      - name: idOnly
+        in: query
+        schema:
+          type: boolean
+          default: true
       - $ref: "#/components/parameters/include"
     get:
       summary: Searches for documents from a specific concept cluster. Use the query parameters to filter the result.
-      operationId: getDocumentByConceptId
+      operationId: getDocumentsByConceptId
       tags:
         - document
       parameters:

@@ -107,24 +107,27 @@ paths:
           type: array
           items:
             type: string
-      - name: idOnly
-        in: query
-        schema:
-          type: boolean
-          default: true
-      - $ref: "#/components/parameters/include"
     get:
       summary: Searches for documents from specific concept clusters. Use the query parameters to filter the result.
       operationId: getDocumentsByConceptIds
       tags:
         - document
       parameters:
+        - name: idOnly
+          in: query
+          schema:
+            type: boolean
+            default: true
+        - name: gatheringMode
+          in: query
+          schema:
+            type: string
+            default: exclusive
         - name: name
           description: Filter documents by name.
           in: query
           schema:
             type: string
-        - $ref: "#/components/parameters/page"
       responses:
         200:
           description: List of documents

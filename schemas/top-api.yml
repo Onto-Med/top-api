@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: TOP API
-  version: 0.5.1
+  version: 0.6.0
   description: API to manage phenotypes, repositories, ontologies and organisations
 
 servers:
@@ -623,6 +623,11 @@ paths:
           in: query
           schema:
             type: boolean
+        - name: type
+          description: Filter repositories by type.
+          in: query
+          schema:
+            $ref: "#/components/schemas/RepositoryType"
         - $ref: "#/components/parameters/page"
       responses:
         200:
@@ -727,6 +732,11 @@ paths:
           in: query
           schema:
             type: string
+        - name: type
+          description: Filter repositories by type.
+          in: query
+          schema:
+            $ref: "#/components/schemas/RepositoryType"
         - $ref: "#/components/parameters/page"
       responses:
         200:
@@ -1676,6 +1686,16 @@ components:
           format: date-time
         organisation:
           $ref: "#/components/schemas/Organisation"
+        repositoryType:
+          $ref: "#/components/schemas/RepositoryType"
+
+    RepositoryType:
+      type: string
+      description: >
+        The type of a repository. It determines the content a repository can hold.
+      enum:
+        - phenotype_repository
+        - concept_repository
 
     Ontology:
       type: object

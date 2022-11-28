@@ -824,7 +824,7 @@ paths:
                 $ref: '#/components/schemas/Entity'
         required: true
       responses:
-        '200':
+        '201':
           description: Entities have been created.
         '401':
           $ref: '#/components/responses/Unauthorized'

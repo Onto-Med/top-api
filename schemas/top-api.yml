@@ -798,6 +798,42 @@ paths:
           $ref: '#/components/responses/UnexpectedError'
       tags:
         - entity
+  '/{organisationId}/{repositoryId}/entity/bulk':
+    parameters:
+      - name: organisationId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: repositoryId
+        in: path
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/include'
+    post:
+      operationId: bulkUploadEntities
+      summary: Creates multiple new phenotypes or categories in a repository.
+      requestBody:
+        description: List of phenotypes or categories to be created.
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Entity'
+        required: true
+      responses:
+        '200':
+          description: Entities have been created.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+      tags:
+        - entity
   '/{organisationId}/{repositoryId}/root':
     parameters:
       - name: organisationId

@@ -80,6 +80,8 @@ paths:
           in: query
           schema:
             type: string
+      tags:
+        - document
       responses:
         200:
           description: List of documents
@@ -613,12 +615,12 @@ paths:
           description: Filter repositories by primary state.
           schema:
             type: boolean
-        - $ref: '#/components/parameters/page'
         - name: type
           description: Filter repositories by type.
           in: query
           schema:
             $ref: "#/components/schemas/RepositoryType"
+        - $ref: '#/components/parameters/page'
       responses:
         '200':
           description: List of repositories.
@@ -720,12 +722,12 @@ paths:
           description: Filter repositories by name.
           schema:
             type: string
-        - $ref: '#/components/parameters/page'
         - name: type
           description: Filter repositories by type.
           in: query
           schema:
             $ref: "#/components/schemas/RepositoryType"
+        - $ref: '#/components/parameters/page'
       responses:
         '200':
           description: List of repositories.

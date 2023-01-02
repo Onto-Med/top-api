@@ -675,9 +675,14 @@ paths:
               $ref: '#/components/schemas/EntityType'
         - name: dataType
           in: query
-          description: Filter phenotypes or categories by data type.
+          description: Filter phenotypes by data type.
           schema:
             $ref: '#/components/schemas/DataType'
+        - name: itemType
+          in: query
+          description: Filter phenotypes by item type.
+          schema:
+            $ref: '#/components/schemas/ItemType'
         - $ref: '#/components/parameters/page'
       responses:
         '200':
@@ -1135,9 +1140,14 @@ paths:
               $ref: '#/components/schemas/EntityType'
         - name: dataType
           in: query
-          description: Filter phenotypes or categories by data type.
+          description: Filter phenotypes by data type.
           schema:
             $ref: '#/components/schemas/DataType'
+        - name: itemType
+          in: query
+          description: Filter phenotypes by item type.
+          schema:
+            $ref: '#/components/schemas/ItemType'
         - $ref: '#/components/parameters/page'
       responses:
         '200':
@@ -1248,9 +1258,14 @@ paths:
               $ref: '#/components/schemas/EntityType'
         - name: dataType
           in: query
-          description: Filter phenotypes or categories by data type.
+          description: Filter phenotypes by data type.
           schema:
             $ref: '#/components/schemas/DataType'
+        - name: itemType
+          in: query
+          description: Filter phenotypes by item type.
+          schema:
+            $ref: '#/components/schemas/ItemType'
         - $ref: '#/components/parameters/page'
       responses:
         '200':
@@ -1770,6 +1785,8 @@ components:
       properties:
         dataType:
           $ref: '#/components/schemas/DataType'
+        itemType:
+          $ref: '#/components/schemas/ItemType'
         restriction:
           $ref: '#/components/schemas/Restriction'
         expression:
@@ -1859,6 +1876,21 @@ components:
           description: |
             This property is for internal use only and will be ignored, if sent to a server. Restrictions can be stored in this property to simplify the construction of phenotypic queries.
           $ref: '#/components/schemas/Restriction'
+    ItemType:
+      description: |
+        Only relevant for single phenotypes. This property specifies the class of items the phenotype holding this property belongs to.
+      type: string
+      enum:
+        - allergy_intolerance
+        - clinical_impression
+        - condition
+        - medication_administration
+        - medication_request
+        - medication_statement
+        - observation
+        - procedure
+        - subject_age
+        - subject_sex
     Value:
       properties:
         dataType:

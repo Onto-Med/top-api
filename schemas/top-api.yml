@@ -912,9 +912,18 @@ paths:
         required: true
         schema:
           type: string
-    get:
+    post:
       operationId: importRepository
       summary: Imports data in the specified format to a repository.
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
       responses:
         '201':
           description: Import was successful.

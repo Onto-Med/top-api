@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: TOP API
-  version: 0.6.0
+  version: 0.6.2
   description: 'API to manage phenotypes, repositories, ontologies and organisations and to execute phenotypic queries.'
 servers:
   - url: 'https://top.imise.uni-leipzig.de/api'
@@ -835,6 +835,97 @@ paths:
           $ref: '#/components/responses/UnexpectedError'
       tags:
         - repository
+  /format:
+    get:
+      operationId: getFormats
+      summary: Query for available import/export formats.
+      parameters:
+        - name: purpose
+          in: query
+          schema:
+            $ref: '#/components/schemas/Purpose'
+      responses:
+        '200':
+          description: List of available formats matching the criteria.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Format'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+  '/{organisationId}/{repositoryId}/export':
+    parameters:
+      - name: organisationId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: repositoryId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: format
+        in: query
+        description: The export format. You can query available formats via /format?purpose=export.
+        required: true
+        schema:
+          type: string
+    get:
+      operationId: exportRepository
+      summary: Exports a repository in the specified format.
+      responses:
+        '200':
+          description: Export result.
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+      tags:
+        - repository
+  '/{organisationId}/{repositoryId}/import':
+    parameters:
+      - name: organisationId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: repositoryId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: format
+        in: query
+        description: The import format. You can query available formats via /format?purpose=import.
+        required: true
+        schema:
+          type: string
+    get:
+      operationId: importRepository
+      summary: Imports data in the specified format to a repository.
+      responses:
+        '201':
+          description: Import was successful.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+      tags:
+        - repository
   '/{organisationId}/{repositoryId}/query':
     parameters:
       - name: organisationId
@@ -1382,52 +1473,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Entity'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        default:
-          $ref: '#/components/responses/UnexpectedError'
-      tags:
-        - entity
-  '/{organisationId}/{repositoryId}/{id}/export':
-    summary: Export an entity in the requested format.
-    parameters:
-      - name: organisationId
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: repositoryId
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: version
-        in: query
-        description: Defaults to the latest version number.
-        schema:
-          $ref: '#/components/schemas/VersionNumber'
-      - name: format
-        in: query
-        description: The export format.
-        required: true
-        schema:
-          type: string
-    get:
-      operationId: exportEntity
-      responses:
-        '200':
-          description: The entity in the requested export format.
-          content:
-            text/plain:
-              schema:
-                type: string
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
@@ -2352,6 +2397,23 @@ components:
           type: string
       required:
         - id
+    Purpose:
+      type: string
+      enum:
+        - import
+        - export
+    Format:
+      type: object
+      required:
+        - id
+        - purposes
+      properties:
+        id:
+          type: string
+        purposes:
+          type: array
+          items:
+            $ref: '#/components/schemas/Purpose'
   responses:
     NotFound:
       description: The specified resource was not found.

@@ -916,6 +916,7 @@ paths:
       operationId: importRepository
       summary: Imports data in the specified format to a repository.
       requestBody:
+        required: true
         content:
           multipart/form-data:
             schema:

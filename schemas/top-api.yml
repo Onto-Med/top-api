@@ -1195,7 +1195,7 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
         default:
-          $ref: '#/components/schemas/ErrorResponse'
+          $ref: '#/components/responses/UnexpectedError'
       tags:
         - ontology
     delete:

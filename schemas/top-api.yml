@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: TOP API
-  version: 0.6.4
+  version: 0.6.5
   description: 'API to manage phenotypes, repositories, ontologies and organisations and to execute phenotypic queries.'
 servers:
   - url: 'https://top.imise.uni-leipzig.de/api'
@@ -1917,21 +1917,15 @@ components:
         constantId:
           description: ID of a valid constant. See Constant for a detailed description.
           type: string
-        value:
-          $ref: '#/components/schemas/Value'
         arguments:
           type: array
           items:
             $ref: '#/components/schemas/Expression'
         values:
-          description: |
-            This property is for internal use only and will be ignored, if sent to a server. Items of this array property can hold results of function calls contained in expressions.
           type: array
           items:
             $ref: '#/components/schemas/Value'
         restriction:
-          description: |
-            This property is for internal use only and will be ignored, if sent to a server. Restrictions can be stored in this property to simplify the construction of phenotypic queries.
           $ref: '#/components/schemas/Restriction'
     ItemType:
       description: |

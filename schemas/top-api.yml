@@ -869,15 +869,15 @@ paths:
         required: true
         schema:
           type: string
-      - name: format
+      - name: converter
         in: query
-        description: The export format. You can query available formats via /format?purpose=export.
+        description: The converter. You can query available converters via /converter?purpose=export.
         required: true
         schema:
           type: string
     get:
       operationId: exportRepository
-      summary: Exports a repository in the specified format.
+      summary: Exports a repository with the specified converter.
       responses:
         '200':
           description: Export result.
@@ -906,15 +906,15 @@ paths:
         required: true
         schema:
           type: string
-      - name: format
+      - name: converter
         in: query
-        description: The import format. You can query available formats via /format?purpose=import.
+        description: The converter. You can query available converters via /converter?purpose=import.
         required: true
         schema:
           type: string
     post:
       operationId: importRepository
-      summary: Imports data in the specified format to a repository.
+      summary: Imports data with the specified converter to a repository.
       requestBody:
         required: true
         content:

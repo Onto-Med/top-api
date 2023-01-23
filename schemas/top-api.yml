@@ -835,10 +835,10 @@ paths:
           $ref: '#/components/responses/UnexpectedError'
       tags:
         - repository
-  /format:
+  /converter:
     get:
-      operationId: getFormats
-      summary: Query for available import/export formats.
+      operationId: getConverters
+      summary: Query for available entity converters.
       parameters:
         - name: purpose
           in: query
@@ -846,13 +846,13 @@ paths:
             $ref: '#/components/schemas/Purpose'
       responses:
         '200':
-          description: List of available formats matching the criteria.
+          description: List of available converters matching the criteria.
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Format'
+                  $ref: '#/components/schemas/Converter'
         '401':
           $ref: '#/components/responses/Unauthorized'
         default:
@@ -2414,18 +2414,18 @@ components:
       enum:
         - import
         - export
-    Format:
+    Converter:
       type: object
       required:
         - id
-        - purposes
+        - purpose
       properties:
         id:
           type: string
-        purposes:
-          type: array
-          items:
-            $ref: '#/components/schemas/Purpose'
+        purpose:
+          $ref: '#/components/schemas/Purpose'
+        fileExtension:
+          type: string
   responses:
     NotFound:
       description: The specified resource was not found.

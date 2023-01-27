@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: TOP API
-  version: 0.6.5
+  version: 0.6.6
   description: 'API to manage phenotypes, repositories, ontologies and organisations and to execute phenotypic queries.'
 servers:
   - url: 'https://top.imise.uni-leipzig.de/api'
@@ -1647,7 +1647,7 @@ paths:
       - name: type
         in: query
         description: |
-          Optional parameter to restrict the result set to a specific function type. Currently, 'math' and 'boolean' are supported.
+          Optional parameter to restrict the result set to a specific function type.
         schema:
           type: string
     get:
@@ -2000,6 +2000,10 @@ components:
           description: Human-readable title of the function.
           type: string
           example: +
+        type:
+          description: The type of the function. This can be something like a scope in which the function can be used.
+          type: string
+          example: arithmetic
         notation:
           description: |
             This property defines the preferred notation of a function. If the property is missing or undefined, it should be treated as prefix.

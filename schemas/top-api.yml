@@ -123,6 +123,11 @@ paths:
           description: Filter documents by name.
           schema:
             type: string
+        - name: exemplarOnly
+          in: query
+          schema:
+            type: boolean
+            default: false
       responses:
         '200':
           description: List of documents.

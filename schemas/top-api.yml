@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: TOP API
-  version: 0.6.6
+  version: 0.6.7
   description: 'API to manage phenotypes, repositories, ontologies and organisations and to execute phenotypic queries.'
 servers:
   - url: 'https://top.imise.uni-leipzig.de/api'
@@ -659,34 +659,51 @@ paths:
     get:
       operationId: getEntities
       summary: |
-        Search for phenotypes or categories. Use the query parameters to filter the result. Only entities in primary repositories are returned.
+        Search for entities (phenotypes, categories or concepts). Use the query parameters to filter the result.
+        Only entities in primary repositories are returned.
       parameters:
         - name: name
           in: query
-          description: Filter phenotypes or categories by name.
+          description: Filter entities by name.
           schema:
             type: string
         - name: type
           in: query
-          description: Filter phenotypes or categories by type.
+          description: Filter entities by type.
           schema:
             type: array
             items:
               $ref: '#/components/schemas/EntityType'
         - name: dataType
           in: query
-          description: Filter phenotypes by data type.
+          description: Filter entities by data type.
           schema:
             $ref: '#/components/schemas/DataType'
         - name: itemType
           in: query
-          description: Filter phenotypes by item type.
+          description: Filter entities by item type.
           schema:
             $ref: '#/components/schemas/ItemType'
+        - name: repositoryIds
+          in: query
+          description: Filter entities by repository IDs.
+          schema:
+            type: array
+            items:
+              type: string
+        - name: includePrimary
+          in: query
+          description: |
+            Include all primary repositories in search. You can use this option in conjunction
+            with "repositoryIds" query parameter, which will add all primary repositories to the
+            list of searched repositories.
+          schema:
+            type: boolean
+            default: false
         - $ref: '#/components/parameters/page'
       responses:
         '200':
-          description: List of phenotypes or categories.
+          description: List of entities.
           content:
             application/json:
               schema:
@@ -916,17 +933,17 @@ paths:
       operationId: importRepository
       summary: Imports data with the specified converter to a repository.
       requestBody:
-        required: true
         content:
           multipart/form-data:
             schema:
               type: object
-              required:
-                - file
               properties:
                 file:
                   type: string
                   format: binary
+              required:
+                - file
+        required: true
       responses:
         '201':
           description: Import was successful.
@@ -2414,9 +2431,6 @@ components:
         - export
     Converter:
       type: object
-      required:
-        - id
-        - purpose
       properties:
         id:
           type: string
@@ -2424,6 +2438,9 @@ components:
           $ref: '#/components/schemas/Purpose'
         fileExtension:
           type: string
+      required:
+        - id
+        - purpose
   responses:
     NotFound:
       description: The specified resource was not found.

@@ -108,11 +108,6 @@ paths:
       operationId: getDocumentsByConceptIds
       summary: Searches for documents from specific concept clusters. Use the query parameters to filter the result.
       parameters:
-        - name: idOnly
-          in: query
-          schema:
-            type: boolean
-            default: true
         - name: gatheringMode
           in: query
           schema:
@@ -2656,10 +2651,8 @@ components:
           type: string
         text:
           type: string
-        phrases:
-          type: array
-          items:
-            type: string
+        name:
+          type: string
     Phrase:
       type: object
       properties:

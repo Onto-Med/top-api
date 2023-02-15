@@ -64,22 +64,9 @@ paths:
           in: query
           description: Filter document by containing phrase.
           schema:
-            type: string
-        - name: conceptText
-          in: query
-          description: Filter document by containing concept.
-          schema:
-            type: string
-        - name: phraseId
-          in: query
-          description: Filter document by containing phrase id.
-          schema:
-            type: string
-        - name: conceptId
-          in: query
-          description: Filter document by containing concept id.
-          schema:
-            type: string
+            type: array
+            items:
+              type: string
       responses:
         '200':
           description: List of documents
@@ -2380,6 +2367,8 @@ components:
         text:
           type: string
         name:
+          type: string
+        highlightedText:
           type: string
     Phrase:
       type: object

@@ -809,6 +809,46 @@ paths:
           $ref: '#/components/responses/UnexpectedError'
       tags:
         - organisation
+    post:
+      operationId: createOrganisationMembership
+      summary: Create or replace an organisation membership.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrganisationMembership'
+      responses:
+        '201':
+          description: Organisation membership has been created.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+      tags:
+        - organisation
+    delete:
+      operationId: deleteOrganisationMembership
+      summary: Delete an organisation membership.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrganisationMembership'
+      responses:
+        '204':
+          description: Organisation membership has been deleted.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+      tags:
+        - organisation
   '/{organisationId}/{repositoryId}':
     summary: Represents a repository in an organisation.
     parameters:
@@ -1882,6 +1922,9 @@ components:
         - id
     OrganisationMembership:
       type: object
+      required:
+        - user
+        - organisation
       properties:
         user:
           $ref: '#/components/schemas/User'

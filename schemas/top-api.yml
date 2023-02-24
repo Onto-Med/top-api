@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: TOP API
-  version: 0.6.7
+  version: 0.6.8
   description: 'API to manage phenotypes, repositories, ontologies and organisations and to execute phenotypic queries.'
 servers:
   - url: 'https://top.imise.uni-leipzig.de/api'
@@ -781,6 +781,74 @@ paths:
           $ref: '#/components/responses/UnexpectedError'
       tags:
         - repository
+  '/{organisationId}/membership':
+    summary: Manage organisation memberships.
+    parameters:
+      - name: organisationId
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      operationId: getOrganisationMemberships
+      summary: Get all memberships of an organisation.
+      responses:
+        '200':
+          description: List of memberships.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OrganisationMembership'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+      tags:
+        - organisation
+    post:
+      operationId: createOrganisationMembership
+      summary: Create or replace an organisation membership.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrganisationMembership'
+      responses:
+        '201':
+          description: Organisation membership has been created.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+      tags:
+        - organisation
+    delete:
+      operationId: deleteOrganisationMembership
+      summary: Delete an organisation membership.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrganisationMembership'
+      responses:
+        '204':
+          description: Organisation membership has been deleted.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+      tags:
+        - organisation
   '/{organisationId}/{repositoryId}':
     summary: Represents a repository in an organisation.
     parameters:
@@ -1704,6 +1772,65 @@ paths:
           $ref: '#/components/responses/UnexpectedError'
       tags:
         - expression_constant
+  /user:
+    summary: Represents users that can be members of organisations and have specific permissions.
+    get:
+      operationId: getUsers
+      summary: Search for users by name or organisation membership.
+      parameters:
+        - name: name
+          in: query
+          schema:
+            type: string
+        - name: organisationIds
+          in: query
+          description: 'The organisations to filter users for. If you provide an empty array or leave out this parameter, no organisation filter will be applied.'
+          schema:
+            type: array
+            items:
+              type: string
+        - $ref: '#/components/parameters/page'
+      responses:
+        '200':
+          description: List of users that match the search criteria.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+      tags:
+        - user
+  '/user/{userId}':
+    summary: Manage a specific user.
+    parameters:
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      operationId: getUserById
+      summary: Get a user by ID.
+      responses:
+        '200':
+          description: Details of the user.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+      tags:
+        - user
 components:
   parameters:
     include:
@@ -1793,6 +1920,24 @@ components:
           $ref: '#/components/schemas/Organisation'
       required:
         - id
+    OrganisationMembership:
+      type: object
+      required:
+        - user
+        - organisation
+      properties:
+        user:
+          $ref: '#/components/schemas/User'
+        organisation:
+          $ref: '#/components/schemas/Organisation'
+        permission:
+          $ref: '#/components/schemas/Permission'
+    Permission:
+      type: string
+      enum:
+        - READ
+        - WRITE
+        - MANAGE
     Entity:
       description: Either category or phenotype.
       type: object
@@ -1959,6 +2104,18 @@ components:
         - procedure
         - subject_age
         - subject_sex
+    User:
+      properties:
+        id:
+          type: string
+        username:
+          type: string
+        organisations:
+          type: array
+          items:
+            $ref: '#/components/schemas/Organisation'
+      required:
+        - id
     Value:
       properties:
         dataType:

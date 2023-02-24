@@ -2103,6 +2103,7 @@ components:
         - observation
         - procedure
         - subject_age
+        - subject_birth_date
         - subject_sex
     User:
       properties:

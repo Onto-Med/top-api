@@ -92,7 +92,7 @@ paths:
           items:
             type: string
     get:
-      operationId: getDocumentIdsByConceptIds
+      operationId: getDocumentsByConceptIds
       summary: Searches for documents from specific concept clusters. Use the query parameters to filter the result.
       parameters:
         - name: gatheringMode
@@ -136,7 +136,7 @@ paths:
           type: string
       - $ref: '#/components/parameters/include'
     get:
-      operationId: getDocumentByPhraseId
+      operationId: getDocumentsByPhraseIds
       summary: Searches for documents that contain a specific phrase. Use the query parameters to filter the result.
       parameters:
         - name: name
@@ -164,10 +164,18 @@ paths:
         required: true
         schema:
           type: string
-      - $ref: '#/components/parameters/include'
     get:
       operationId: getDocumentById
       summary: Returns a particular document
+      parameters:
+        - name: conceptIds
+          in: query
+          description: highlights the phrases of the selected concepts
+          schema:
+            type: array
+            items:
+              type: string
+        - $ref: '#/components/parameters/include'
       responses:
         '200':
           description: Details of the Document
@@ -222,7 +230,7 @@ paths:
           type: string
       - $ref: '#/components/parameters/include'
     get:
-      operationId: getPhraseByConceptId
+      operationId: getPhrasesByConceptIds
       summary: Searches for phrases that are contained in a specific concept. Use the query parameters to filter the result.
       parameters:
         - name: name
@@ -251,7 +259,7 @@ paths:
           type: string
       - $ref: '#/components/parameters/include'
     get:
-      operationId: getPhraseByDocumentId
+      operationId: getPhrasesByDocumentId
       summary: Searches for phrases that are contained in a specific document. Use the query parameters to filter the result.
       parameters:
         - name: name
@@ -332,7 +340,7 @@ paths:
           type: string
       - $ref: '#/components/parameters/include'
     get:
-      operationId: getConceptByPhraseId
+      operationId: getConceptsByPhraseId
       summary: Searches for concepts that contain a specific phrase. Use the query parameters to filter the result.
       parameters:
         - name: name
@@ -361,7 +369,7 @@ paths:
           type: string
       - $ref: '#/components/parameters/include'
     get:
-      operationId: getConceptByDocumentId
+      operationId: getConceptsByDocumentId
       summary: Searches for concepts that are contained in a specific document. Use the query parameters to filter the result.
       parameters:
         - name: name

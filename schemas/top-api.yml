@@ -91,7 +91,7 @@ paths:
           items:
             type: string
     get:
-      operationId: getDocumentIdsByConceptIds
+      operationId: getDocumentsByConceptIds
       summary: Searches for documents from specific concept clusters. Use the query parameters to filter the result.
       parameters:
         - name: gatheringMode

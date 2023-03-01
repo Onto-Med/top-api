@@ -160,13 +160,7 @@ paths:
         - $ref: '#/components/parameters/page'
       responses:
         '200':
-          description: List of documents
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Document'
+          $ref: '#/components/responses/DocumentPageResponse'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
@@ -252,13 +246,7 @@ paths:
         - $ref: '#/components/parameters/page'
       responses:
         '200':
-          description: List of phrases
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Phrase'
+          $ref: '#/components/responses/PhrasePageResponse'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
@@ -287,13 +275,7 @@ paths:
         - $ref: '#/components/parameters/page'
       responses:
         '200':
-          description: List of phrases
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Phrase'
+          $ref: '#/components/responses/PhrasePageResponse'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
@@ -374,13 +356,7 @@ paths:
         - $ref: '#/components/parameters/page'
       responses:
         '200':
-          description: List of concepts
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Concept'
+          $ref: '#/components/responses/ConceptPageResponse'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
@@ -409,13 +385,7 @@ paths:
         - $ref: '#/components/parameters/page'
       responses:
         '200':
-          description: List of concepts
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Concept'
+          $ref: '#/components/responses/ConceptPageResponse'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
@@ -466,13 +436,7 @@ paths:
         - $ref: '#/components/parameters/page'
       responses:
         '200':
-          description: List of organisations.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Organisation'
+          $ref: '#/components/responses/OrganisationPageResponse'
         '401':
           $ref: '#/components/responses/Unauthorized'
         default:
@@ -484,11 +448,11 @@ paths:
       summary: Creates a new organisation.
       requestBody:
         description: Organisation details.
+        required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/Organisation'
-        required: true
       responses:
         '201':
           description: Created organisation.
@@ -553,11 +517,11 @@ paths:
       summary: Updates a particular organisation by ID and returns the result.
       requestBody:
         description: Organisation details to be applied.
+        required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/Organisation'
-        required: true
       responses:
         '200':
           description: Details about the updated organisation.
@@ -612,13 +576,7 @@ paths:
         - $ref: '#/components/parameters/page'
       responses:
         '200':
-          description: List of repositories.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Repository'
+          $ref: '#/components/responses/RepositoryPageResponse'
         '401':
           $ref: '#/components/responses/Unauthorized'
         default:
@@ -640,13 +598,7 @@ paths:
         - $ref: '#/components/parameters/page'
       responses:
         '200':
-          description: List of ontologies.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Ontology'
+          $ref: '#/components/responses/OntologyPageResponse'
         '401':
           $ref: '#/components/responses/Unauthorized'
         default:
@@ -703,13 +655,7 @@ paths:
         - $ref: '#/components/parameters/page'
       responses:
         '200':
-          description: List of entities.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Entity'
+          $ref: '#/components/responses/EntityPageResponse'
         '401':
           $ref: '#/components/responses/Unauthorized'
         default:
@@ -741,13 +687,7 @@ paths:
         - $ref: '#/components/parameters/page'
       responses:
         '200':
-          description: List of repositories.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Repository'
+          $ref: '#/components/responses/RepositoryPageResponse'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
@@ -761,11 +701,11 @@ paths:
       summary: Creates new repository in organisation.
       requestBody:
         description: Repository details.
+        required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/Repository'
-        required: true
       responses:
         '201':
           description: Created repository.
@@ -886,11 +826,11 @@ paths:
       summary: Updates a particular repository by ID in the organisation and returns the resulting repository.
       requestBody:
         description: Repository details to be applied.
+        required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/Repository'
-        required: true
       responses:
         '200':
           description: Details about the updated repository.
@@ -1001,6 +941,7 @@ paths:
       operationId: importRepository
       summary: Imports data with the specified converter to a repository.
       requestBody:
+        required: true
         content:
           multipart/form-data:
             schema:
@@ -1011,7 +952,6 @@ paths:
                   format: binary
               required:
                 - file
-        required: true
       responses:
         '201':
           description: Import was successful.
@@ -1042,13 +982,7 @@ paths:
         - $ref: '#/components/parameters/page'
       responses:
         '200':
-          description: List of queries.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Query'
+          $ref: '#/components/responses/QueryPageResponse'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
@@ -1063,11 +997,11 @@ paths:
         Enqueue a new query. You can get the query result with a GET request to the getQueryResult path. The ID property of the provided query object is used as identifier throughout the life-cycle of the query.
       requestBody:
         description: Details of the query to be enqueued.
+        required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/Query'
-        required: true
       responses:
         '201':
           description: The query was enqueued successfully.
@@ -1158,13 +1092,7 @@ paths:
         - $ref: '#/components/parameters/page'
       responses:
         '200':
-          description: List of ontologies.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Ontology'
+          $ref: '#/components/responses/OntologyPageResponse'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
@@ -1178,11 +1106,11 @@ paths:
       summary: Creates a new ontology in a repository.
       requestBody:
         description: Ontology details.
+        required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/Ontology'
-        required: true
       responses:
         '201':
           description: Created ontology.
@@ -1245,11 +1173,11 @@ paths:
       summary: Updates a particular ontology by id in a repository and returns the result.
       requestBody:
         description: Ontology details to be applied.
+        required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/Ontology'
-        required: true
       responses:
         '200':
           description: Details about the updated ontology.
@@ -1339,13 +1267,7 @@ paths:
         - $ref: '#/components/parameters/page'
       responses:
         '200':
-          description: List of phenotypes or categories.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Entity'
+          $ref: '#/components/responses/EntityPageResponse'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
@@ -1359,11 +1281,11 @@ paths:
       summary: Creates a new phenotype or category in a repository and returns the result.
       requestBody:
         description: Phenotype or category details to be applied.
+        required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/Entity'
-        required: true
       responses:
         '200':
           description: Details about the created phenotype or category.
@@ -1397,13 +1319,13 @@ paths:
       summary: Creates multiple new phenotypes or categories in a repository.
       requestBody:
         description: List of phenotypes or categories to be created.
+        required: true
         content:
           application/json:
             schema:
               type: array
               items:
                 $ref: '#/components/schemas/Entity'
-        required: true
       responses:
         '201':
           description: Entities have been created.
@@ -1457,13 +1379,7 @@ paths:
         - $ref: '#/components/parameters/page'
       responses:
         '200':
-          description: List of root phenotypes or categories.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Entity'
+          $ref: '#/components/responses/EntityPageResponse'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
@@ -1519,11 +1435,11 @@ paths:
       summary: Updates a particular phenotype or category by id in a repository and returns the result.
       requestBody:
         description: Phenotype or category details to be applied.
+        required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/Entity'
-        required: true
       responses:
         '200':
           description: Details about the updated phenotype or category.
@@ -1627,11 +1543,11 @@ paths:
             $ref: '#/components/schemas/VersionNumber'
       requestBody:
         description: Forking instructions like destination.
+        required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/ForkingInstruction'
-        required: true
       responses:
         '201':
           description: 'List of affected entities (i.e., entities created or updated in the destination repository).'
@@ -1792,13 +1708,7 @@ paths:
         - $ref: '#/components/parameters/page'
       responses:
         '200':
-          description: List of users that match the search criteria.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/User'
+          $ref: '#/components/responses/UserPageResponse'
         '401':
           $ref: '#/components/responses/Unauthorized'
         default:
@@ -1852,6 +1762,140 @@ components:
         default: 1
         minimum: 1
   schemas:
+    Page:
+      type: object
+      properties:
+        number:
+          type: integer
+          format: int32
+        size:
+          type: integer
+          format: int32
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int32
+        type:
+          type: string
+      discriminator:
+        propertyName: type
+        mapping:
+          concept: '#/components/responses/ConceptPage'
+          document: '#/components/responses/DocumentPage'
+          entity: '#/components/responses/EntityPage'
+          ontology: '#/components/responses/OntologyPage'
+          organisation: '#/components/responses/OrganisationPage'
+          phrase: '#/components/responses/PhrasePage'
+          query: '#/components/responses/QueryPage'
+          repository: '#/components/responses/RepositoryPage'
+          user: '#/components/responses/UserPage'
+      required:
+        - number
+        - size
+        - totalElements
+        - totalPages
+        - type
+    ConceptPage:
+      type: object
+      properties:
+        content:
+          items:
+            $ref: '#/components/schemas/Concept'
+          type: array
+      allOf:
+        - $ref: '#/components/schemas/Page'
+      required:
+        - content
+    DocumentPage:
+      type: object
+      properties:
+        content:
+          items:
+            $ref: '#/components/schemas/Document'
+          type: array
+      allOf:
+        - $ref: '#/components/schemas/Page'
+      required:
+        - content
+    EntityPage:
+      type: object
+      properties:
+        content:
+          items:
+            $ref: '#/components/schemas/Entity'
+          type: array
+      allOf:
+        - $ref: '#/components/schemas/Page'
+      required:
+        - content
+    OntologyPage:
+      type: object
+      properties:
+        content:
+          items:
+            $ref: '#/components/schemas/Ontology'
+          type: array
+      allOf:
+        - $ref: '#/components/schemas/Page'
+      required:
+        - content
+    OrganisationPage:
+      type: object
+      properties:
+        content:
+          items:
+            $ref: '#/components/schemas/Organisation'
+          type: array
+      allOf:
+        - $ref: '#/components/schemas/Page'
+      required:
+        - content
+    PhrasePage:
+      type: object
+      properties:
+        content:
+          items:
+            $ref: '#/components/schemas/Phrase'
+          type: array
+      allOf:
+        - $ref: '#/components/schemas/Page'
+      required:
+        - content
+    QueryPage:
+      type: object
+      properties:
+        content:
+          items:
+            $ref: '#/components/schemas/Query'
+          type: array
+      allOf:
+        - $ref: '#/components/schemas/Page'
+      required:
+        - content
+    RepositoryPage:
+      type: object
+      properties:
+        content:
+          items:
+            $ref: '#/components/schemas/Repository'
+          type: array
+      allOf:
+        - $ref: '#/components/schemas/Page'
+      required:
+        - content
+    UserPage:
+      type: object
+      properties:
+        content:
+          items:
+            $ref: '#/components/schemas/User'
+          type: array
+      allOf:
+        - $ref: '#/components/schemas/Page'
+      required:
+        - content
     Repository:
       type: object
       properties:
@@ -1922,9 +1966,6 @@ components:
         - id
     OrganisationMembership:
       type: object
-      required:
-        - user
-        - organisation
       properties:
         user:
           $ref: '#/components/schemas/User'
@@ -1932,6 +1973,9 @@ components:
           $ref: '#/components/schemas/Organisation'
         permission:
           $ref: '#/components/schemas/Permission'
+      required:
+        - user
+        - organisation
     Permission:
       type: string
       enum:
@@ -2618,6 +2662,60 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
+    ConceptPageResponse:
+      description: A page of concepts.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ConceptPage'
+    DocumentPageResponse:
+      description: A page of documents.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/DocumentPage'
+    EntityPageResponse:
+      description: A page of entities.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EntityPage'
+    OntologyPageResponse:
+      description: A page of ontologies.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OntologyPage'
+    OrganisationPageResponse:
+      description: A page of organisations.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OrganisationPage'
+    PhrasePageResponse:
+      description: A page of phrases.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PhrasePage'
+    QueryPageResponse:
+      description: A page of queries.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/QueryPage'
+    RepositoryPageResponse:
+      description: A page of repositories.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RepositoryPage'
+    UserPageResponse:
+      description: A page of users.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UserPage'
   securitySchemes:
     BearerAuth:
       type: http

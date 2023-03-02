@@ -1376,10 +1376,15 @@ paths:
           description: Filter phenotypes by item type.
           schema:
             $ref: '#/components/schemas/ItemType'
-        - $ref: '#/components/parameters/page'
       responses:
         '200':
-          $ref: '#/components/responses/EntityPageResponse'
+          description: List of root entities.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Entity'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':

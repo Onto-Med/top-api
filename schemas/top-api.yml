@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: TOP API
-  version: 0.6.6
+  version: 0.7.0
   description: 'API to manage phenotypes, repositories, ontologies and organisations and to execute phenotypic queries.'
 servers:
   - url: 'https://top.imise.uni-leipzig.de/api'
@@ -147,13 +147,7 @@ paths:
         - $ref: '#/components/parameters/page'
       responses:
         '200':
-          description: List of documents
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Document'
+          $ref: '#/components/responses/DocumentPageResponse'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
@@ -247,13 +241,7 @@ paths:
         - $ref: '#/components/parameters/page'
       responses:
         '200':
-          description: List of phrases
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Phrase'
+          $ref: '#/components/responses/PhrasePageResponse'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
@@ -282,13 +270,7 @@ paths:
         - $ref: '#/components/parameters/page'
       responses:
         '200':
-          description: List of phrases
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Phrase'
+          $ref: '#/components/responses/PhrasePageResponse'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
@@ -369,13 +351,7 @@ paths:
         - $ref: '#/components/parameters/page'
       responses:
         '200':
-          description: List of concepts
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Concept'
+          $ref: '#/components/responses/ConceptPageResponse'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
@@ -404,13 +380,7 @@ paths:
         - $ref: '#/components/parameters/page'
       responses:
         '200':
-          description: List of concepts
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Concept'
+          $ref: '#/components/responses/ConceptPageResponse'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
@@ -461,13 +431,7 @@ paths:
         - $ref: '#/components/parameters/page'
       responses:
         '200':
-          description: List of organisations.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Organisation'
+          $ref: '#/components/responses/OrganisationPageResponse'
         '401':
           $ref: '#/components/responses/Unauthorized'
         default:
@@ -479,11 +443,11 @@ paths:
       summary: Creates a new organisation.
       requestBody:
         description: Organisation details.
+        required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/Organisation'
-        required: true
       responses:
         '201':
           description: Created organisation.
@@ -548,11 +512,11 @@ paths:
       summary: Updates a particular organisation by ID and returns the result.
       requestBody:
         description: Organisation details to be applied.
+        required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/Organisation'
-        required: true
       responses:
         '200':
           description: Details about the updated organisation.
@@ -607,13 +571,7 @@ paths:
         - $ref: '#/components/parameters/page'
       responses:
         '200':
-          description: List of repositories.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Repository'
+          $ref: '#/components/responses/RepositoryPageResponse'
         '401':
           $ref: '#/components/responses/Unauthorized'
         default:
@@ -635,13 +593,7 @@ paths:
         - $ref: '#/components/parameters/page'
       responses:
         '200':
-          description: List of ontologies.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Ontology'
+          $ref: '#/components/responses/OntologyPageResponse'
         '401':
           $ref: '#/components/responses/Unauthorized'
         default:
@@ -654,40 +606,51 @@ paths:
     get:
       operationId: getEntities
       summary: |
-        Search for phenotypes or categories. Use the query parameters to filter the result. Only entities in primary repositories are returned.
+        Search for entities (phenotypes, categories or concepts). Use the query parameters to filter the result.
+        Only entities in primary repositories are returned.
       parameters:
         - name: name
           in: query
-          description: Filter phenotypes or categories by name.
+          description: Filter entities by name.
           schema:
             type: string
         - name: type
           in: query
-          description: Filter phenotypes or categories by type.
+          description: Filter entities by type.
           schema:
             type: array
             items:
               $ref: '#/components/schemas/EntityType'
         - name: dataType
           in: query
-          description: Filter phenotypes by data type.
+          description: Filter entities by data type.
           schema:
             $ref: '#/components/schemas/DataType'
         - name: itemType
           in: query
-          description: Filter phenotypes by item type.
+          description: Filter entities by item type.
           schema:
             $ref: '#/components/schemas/ItemType'
+        - name: repositoryIds
+          in: query
+          description: Filter entities by repository IDs.
+          schema:
+            type: array
+            items:
+              type: string
+        - name: includePrimary
+          in: query
+          description: |
+            Include all primary repositories in search. You can use this option in conjunction
+            with "repositoryIds" query parameter, which will add all primary repositories to the
+            list of searched repositories.
+          schema:
+            type: boolean
+            default: false
         - $ref: '#/components/parameters/page'
       responses:
         '200':
-          description: List of phenotypes or categories.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Entity'
+          $ref: '#/components/responses/EntityPageResponse'
         '401':
           $ref: '#/components/responses/Unauthorized'
         default:
@@ -719,13 +682,7 @@ paths:
         - $ref: '#/components/parameters/page'
       responses:
         '200':
-          description: List of repositories.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Repository'
+          $ref: '#/components/responses/RepositoryPageResponse'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
@@ -739,11 +696,11 @@ paths:
       summary: Creates new repository in organisation.
       requestBody:
         description: Repository details.
+        required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/Repository'
-        required: true
       responses:
         '201':
           description: Created repository.
@@ -759,6 +716,74 @@ paths:
           $ref: '#/components/responses/UnexpectedError'
       tags:
         - repository
+  '/{organisationId}/membership':
+    summary: Manage organisation memberships.
+    parameters:
+      - name: organisationId
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      operationId: getOrganisationMemberships
+      summary: Get all memberships of an organisation.
+      responses:
+        '200':
+          description: List of memberships.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OrganisationMembership'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+      tags:
+        - organisation
+    post:
+      operationId: createOrganisationMembership
+      summary: Create or replace an organisation membership.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrganisationMembership'
+      responses:
+        '201':
+          description: Organisation membership has been created.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+      tags:
+        - organisation
+    delete:
+      operationId: deleteOrganisationMembership
+      summary: Delete an organisation membership.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrganisationMembership'
+      responses:
+        '204':
+          description: Organisation membership has been deleted.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+      tags:
+        - organisation
   '/{organisationId}/{repositoryId}':
     summary: Represents a repository in an organisation.
     parameters:
@@ -796,11 +821,11 @@ paths:
       summary: Updates a particular repository by ID in the organisation and returns the resulting repository.
       requestBody:
         description: Repository details to be applied.
+        required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/Repository'
-        required: true
       responses:
         '200':
           description: Details about the updated repository.
@@ -916,12 +941,12 @@ paths:
           multipart/form-data:
             schema:
               type: object
-              required:
-                - file
               properties:
                 file:
                   type: string
                   format: binary
+              required:
+                - file
       responses:
         '201':
           description: Import was successful.
@@ -952,13 +977,7 @@ paths:
         - $ref: '#/components/parameters/page'
       responses:
         '200':
-          description: List of queries.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Query'
+          $ref: '#/components/responses/QueryPageResponse'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
@@ -973,11 +992,11 @@ paths:
         Enqueue a new query. You can get the query result with a GET request to the getQueryResult path. The ID property of the provided query object is used as identifier throughout the life-cycle of the query.
       requestBody:
         description: Details of the query to be enqueued.
+        required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/Query'
-        required: true
       responses:
         '201':
           description: The query was enqueued successfully.
@@ -1068,13 +1087,7 @@ paths:
         - $ref: '#/components/parameters/page'
       responses:
         '200':
-          description: List of ontologies.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Ontology'
+          $ref: '#/components/responses/OntologyPageResponse'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
@@ -1088,11 +1101,11 @@ paths:
       summary: Creates a new ontology in a repository.
       requestBody:
         description: Ontology details.
+        required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/Ontology'
-        required: true
       responses:
         '201':
           description: Created ontology.
@@ -1155,11 +1168,11 @@ paths:
       summary: Updates a particular ontology by id in a repository and returns the result.
       requestBody:
         description: Ontology details to be applied.
+        required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/Ontology'
-        required: true
       responses:
         '200':
           description: Details about the updated ontology.
@@ -1249,13 +1262,7 @@ paths:
         - $ref: '#/components/parameters/page'
       responses:
         '200':
-          description: List of phenotypes or categories.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Entity'
+          $ref: '#/components/responses/EntityPageResponse'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
@@ -1269,11 +1276,11 @@ paths:
       summary: Creates a new phenotype or category in a repository and returns the result.
       requestBody:
         description: Phenotype or category details to be applied.
+        required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/Entity'
-        required: true
       responses:
         '200':
           description: Details about the created phenotype or category.
@@ -1307,13 +1314,13 @@ paths:
       summary: Creates multiple new phenotypes or categories in a repository.
       requestBody:
         description: List of phenotypes or categories to be created.
+        required: true
         content:
           application/json:
             schema:
               type: array
               items:
                 $ref: '#/components/schemas/Entity'
-        required: true
       responses:
         '201':
           description: Entities have been created.
@@ -1364,10 +1371,9 @@ paths:
           description: Filter phenotypes by item type.
           schema:
             $ref: '#/components/schemas/ItemType'
-        - $ref: '#/components/parameters/page'
       responses:
         '200':
-          description: List of root phenotypes or categories.
+          description: List of root entities.
           content:
             application/json:
               schema:
@@ -1429,11 +1435,11 @@ paths:
       summary: Updates a particular phenotype or category by id in a repository and returns the result.
       requestBody:
         description: Phenotype or category details to be applied.
+        required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/Entity'
-        required: true
       responses:
         '200':
           description: Details about the updated phenotype or category.
@@ -1537,11 +1543,11 @@ paths:
             $ref: '#/components/schemas/VersionNumber'
       requestBody:
         description: Forking instructions like destination.
+        required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/ForkingInstruction'
-        required: true
       responses:
         '201':
           description: 'List of affected entities (i.e., entities created or updated in the destination repository).'
@@ -1682,6 +1688,59 @@ paths:
           $ref: '#/components/responses/UnexpectedError'
       tags:
         - expression_constant
+  /user:
+    summary: Represents users that can be members of organisations and have specific permissions.
+    get:
+      operationId: getUsers
+      summary: Search for users by name or organisation membership.
+      parameters:
+        - name: name
+          in: query
+          schema:
+            type: string
+        - name: organisationIds
+          in: query
+          description: 'The organisations to filter users for. If you provide an empty array or leave out this parameter, no organisation filter will be applied.'
+          schema:
+            type: array
+            items:
+              type: string
+        - $ref: '#/components/parameters/page'
+      responses:
+        '200':
+          $ref: '#/components/responses/UserPageResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+      tags:
+        - user
+  '/user/{userId}':
+    summary: Manage a specific user.
+    parameters:
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      operationId: getUserById
+      summary: Get a user by ID.
+      responses:
+        '200':
+          description: Details of the user.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+      tags:
+        - user
 components:
   parameters:
     include:
@@ -1703,6 +1762,140 @@ components:
         default: 1
         minimum: 1
   schemas:
+    Page:
+      type: object
+      properties:
+        number:
+          type: integer
+          format: int32
+        size:
+          type: integer
+          format: int32
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int32
+        type:
+          type: string
+      discriminator:
+        propertyName: type
+        mapping:
+          concept: '#/components/responses/ConceptPage'
+          document: '#/components/responses/DocumentPage'
+          entity: '#/components/responses/EntityPage'
+          ontology: '#/components/responses/OntologyPage'
+          organisation: '#/components/responses/OrganisationPage'
+          phrase: '#/components/responses/PhrasePage'
+          query: '#/components/responses/QueryPage'
+          repository: '#/components/responses/RepositoryPage'
+          user: '#/components/responses/UserPage'
+      required:
+        - number
+        - size
+        - totalElements
+        - totalPages
+        - type
+    ConceptPage:
+      type: object
+      properties:
+        content:
+          items:
+            $ref: '#/components/schemas/Concept'
+          type: array
+      allOf:
+        - $ref: '#/components/schemas/Page'
+      required:
+        - content
+    DocumentPage:
+      type: object
+      properties:
+        content:
+          items:
+            $ref: '#/components/schemas/Document'
+          type: array
+      allOf:
+        - $ref: '#/components/schemas/Page'
+      required:
+        - content
+    EntityPage:
+      type: object
+      properties:
+        content:
+          items:
+            $ref: '#/components/schemas/Entity'
+          type: array
+      allOf:
+        - $ref: '#/components/schemas/Page'
+      required:
+        - content
+    OntologyPage:
+      type: object
+      properties:
+        content:
+          items:
+            $ref: '#/components/schemas/Ontology'
+          type: array
+      allOf:
+        - $ref: '#/components/schemas/Page'
+      required:
+        - content
+    OrganisationPage:
+      type: object
+      properties:
+        content:
+          items:
+            $ref: '#/components/schemas/Organisation'
+          type: array
+      allOf:
+        - $ref: '#/components/schemas/Page'
+      required:
+        - content
+    PhrasePage:
+      type: object
+      properties:
+        content:
+          items:
+            $ref: '#/components/schemas/Phrase'
+          type: array
+      allOf:
+        - $ref: '#/components/schemas/Page'
+      required:
+        - content
+    QueryPage:
+      type: object
+      properties:
+        content:
+          items:
+            $ref: '#/components/schemas/Query'
+          type: array
+      allOf:
+        - $ref: '#/components/schemas/Page'
+      required:
+        - content
+    RepositoryPage:
+      type: object
+      properties:
+        content:
+          items:
+            $ref: '#/components/schemas/Repository'
+          type: array
+      allOf:
+        - $ref: '#/components/schemas/Page'
+      required:
+        - content
+    UserPage:
+      type: object
+      properties:
+        content:
+          items:
+            $ref: '#/components/schemas/User'
+          type: array
+      allOf:
+        - $ref: '#/components/schemas/Page'
+      required:
+        - content
     Repository:
       type: object
       properties:
@@ -1771,6 +1964,24 @@ components:
           $ref: '#/components/schemas/Organisation'
       required:
         - id
+    OrganisationMembership:
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/User'
+        organisation:
+          $ref: '#/components/schemas/Organisation'
+        permission:
+          $ref: '#/components/schemas/Permission'
+      required:
+        - user
+        - organisation
+    Permission:
+      type: string
+      enum:
+        - READ
+        - WRITE
+        - MANAGE
     Entity:
       description: Either category or phenotype.
       type: object
@@ -1936,7 +2147,20 @@ components:
         - observation
         - procedure
         - subject_age
+        - subject_birth_date
         - subject_sex
+    User:
+      properties:
+        id:
+          type: string
+        username:
+          type: string
+        organisations:
+          type: array
+          items:
+            $ref: '#/components/schemas/Organisation'
+      required:
+        - id
     Value:
       properties:
         dataType:
@@ -2409,9 +2633,6 @@ components:
         - export
     Converter:
       type: object
-      required:
-        - id
-        - purpose
       properties:
         id:
           type: string
@@ -2419,6 +2640,9 @@ components:
           $ref: '#/components/schemas/Purpose'
         fileExtension:
           type: string
+      required:
+        - id
+        - purpose
   responses:
     NotFound:
       description: The specified resource was not found.
@@ -2438,6 +2662,60 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
+    ConceptPageResponse:
+      description: A page of concepts.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ConceptPage'
+    DocumentPageResponse:
+      description: A page of documents.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/DocumentPage'
+    EntityPageResponse:
+      description: A page of entities.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EntityPage'
+    OntologyPageResponse:
+      description: A page of ontologies.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OntologyPage'
+    OrganisationPageResponse:
+      description: A page of organisations.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OrganisationPage'
+    PhrasePageResponse:
+      description: A page of phrases.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PhrasePage'
+    QueryPageResponse:
+      description: A page of queries.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/QueryPage'
+    RepositoryPageResponse:
+      description: A page of repositories.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RepositoryPage'
+    UserPageResponse:
+      description: A page of users.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UserPage'
   securitySchemes:
     BearerAuth:
       type: http

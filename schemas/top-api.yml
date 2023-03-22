@@ -2525,8 +2525,6 @@ components:
     ProjectionEntry:
       description: Single entry of a projection select list.
       type: object
-      discriminator:
-        propertyName: type
       properties:
         subjectId:
           description: ID of a subject this projection entry refers to.
@@ -2543,6 +2541,8 @@ components:
           enum:
             - ProjectionEntry
             - QueryCriterion
+      discriminator:
+        propertyName: type
       required:
         - subjectId
         - type

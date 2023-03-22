@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: TOP API
-  version: 0.7.0
+  version: 0.7.1
   description: 'API to manage phenotypes, repositories, ontologies and organisations and to execute phenotypic queries.'
 servers:
   - url: 'https://top.imise.uni-leipzig.de/api'
@@ -2522,26 +2522,6 @@ components:
           type: string
       required:
         - id
-    QueryCriterion:
-      description: A single criterion of a search query. Criteria can be inclusions or exclusions.
-      type: object
-      properties:
-        subjectId:
-          description: ID of the subject this criterion refers to.
-          type: string
-        inclusion:
-          type: boolean
-          default: true
-        defaultAggregationFunctionId:
-          description: |
-            Multiple phenotype values in expressions must be aggregated to a single value in order to use them for calculations. The aggregation function provided via this property will be used as default aggregation function for cases where none has been set.
-          type: string
-        dateTimeRestriction:
-          $ref: '#/components/schemas/DateTimeRestriction'
-      required:
-        - subjectId
-        - inclusion
-        - defaultAggregationFunction
     ProjectionEntry:
       description: Single entry of a projection select list.
       type: object
@@ -2549,18 +2529,34 @@ components:
         subjectId:
           description: ID of a subject this projection entry refers to.
           type: string
-        sorting:
-          $ref: '#/components/schemas/Sorting'
+        defaultAggregationFunctionId:
+          description: |
+            Multiple phenotype values in expressions must be aggregated to a single value in order to use them for calculations.
+            The aggregation function provided via this property will be used as default aggregation function for cases where none has been set.
+          type: string
         dateTimeRestriction:
           $ref: '#/components/schemas/DateTimeRestriction'
+        type:
+          type: string
+          enum:
+            - ProjectionEntry
+            - QueryCriterion
+      discriminator:
+        propertyName: type
       required:
         - subjectId
-        - sorting
-    Sorting:
-      type: string
-      enum:
-        - asc
-        - desc
+        - type
+    QueryCriterion:
+      description: A single criterion of a search query. Criteria can be inclusions or exclusions.
+      type: object
+      properties:
+        inclusion:
+          type: boolean
+          default: true
+      allOf:
+        - $ref: '#/components/schemas/ProjectionEntry'
+      required:
+        - inclusion
     ErrorResponse:
       type: object
       properties:

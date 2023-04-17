@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: TOP API
-  version: 0.7.3
+  version: 0.7.4
   description: 'API to manage phenotypes, repositories, ontologies and organisations and to execute phenotypic queries.'
 servers:
   - url: 'https://top.imise.uni-leipzig.de/api'
@@ -11,7 +11,7 @@ servers:
   - url: 'http://host.docker.internal:8080'
     description: In case the server is running on the Docker host.
 paths:
-  /metadata:
+  /v3/api-docs:
     get:
       operationId: getMetadata
       summary: Get OpenAPI description of this API.
@@ -1059,6 +1059,43 @@ paths:
       responses:
         '204':
           description: The query was deleted successfully.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+      tags:
+        - query
+  '/{organisationId}/{repositoryId}/query/{queryId}/download':
+    parameters:
+      - name: organisationId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: repositoryId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: queryId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+    get:
+      operationId: downloadQueryResult
+      summary: Download the result of a particular query by ID.
+      responses:
+        '200':
+          description: The query result as ZIP file.
+          content:
+            application/zip:
+              schema:
+                type: string
+                format: binary
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':

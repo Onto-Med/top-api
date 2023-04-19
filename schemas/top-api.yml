@@ -2083,6 +2083,8 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Phenotype'
+        expression:
+          $ref: '#/components/schemas/Expression'
       allOf:
         - $ref: '#/components/schemas/Entity'
     Phenotype:
@@ -2094,8 +2096,6 @@ components:
           $ref: '#/components/schemas/ItemType'
         restriction:
           $ref: '#/components/schemas/Restriction'
-        expression:
-          $ref: '#/components/schemas/Expression'
         unit:
           type: string
           minLength: 1

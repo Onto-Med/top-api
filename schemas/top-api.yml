@@ -2171,6 +2171,11 @@ components:
         functionId:
           description: ID of a valid expression function. See ExpressionFunction for a detailed description.
           type: string
+        type:
+          description: |
+            Determines the result of a text function. For example: 'initial_term_list', 'processed_term_list'
+            Valid values depend on the implementation.
+          type: string
         entityId:
           description: 'In case this expression holds an entity, this property contains the id of that entity.'
           type: string

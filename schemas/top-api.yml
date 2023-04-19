@@ -870,7 +870,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Query'
+              $ref: '#/components/schemas/PhenotypeQuery'
       responses:
         '201':
           description: The query was enqueued successfully.
@@ -1570,7 +1570,7 @@ components:
       properties:
         content:
           items:
-            $ref: '#/components/schemas/Query'
+            $ref: '#/components/schemas/PhenotypeQuery'
           type: array
       allOf:
         - $ref: '#/components/schemas/Page'
@@ -2206,6 +2206,25 @@ components:
           items:
             type: string
             example: example_data_source
+      discriminator:
+        propertyName: type
+        mapping:
+          phenotype: '#/components/schemas/PhenotypeQuery'
+          concept: '#/components/schemas/ConceptQuery'
+      required:
+        - id
+        - type
+    PhenotypeQuery:
+      description: |
+        Represents a phenotypic search query for subjects/individuals.
+        A phenotype query has basic configurations for data source connections as well as in/exclusions and projections.
+      type: object
+      properties:
+        criteria:
+          description: List of in- and exclusion criteria.
+          type: array
+          items:
+            $ref: '#/components/schemas/QueryCriterion'
       discriminator:
         propertyName: type
         mapping:

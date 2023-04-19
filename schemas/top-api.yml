@@ -2062,6 +2062,8 @@ components:
         propertyName: entityType
         mapping:
           category: '#/components/schemas/Category'
+          single_concept: '#/components/schemas/Category'
+          composite_concept: '#/components/schemas/Category'
           single_phenotype: '#/components/schemas/Phenotype'
           composite_phenotype: '#/components/schemas/Phenotype'
           single_restriction: '#/components/schemas/Phenotype'
@@ -2324,6 +2326,8 @@ components:
       type: string
       enum:
         - category
+        - single_concept
+        - composite_concept
         - single_phenotype
         - composite_phenotype
         - single_restriction

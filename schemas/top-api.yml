@@ -1001,7 +1001,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Query'
+              $ref: '#/components/schemas/PhenotypeQuery'
       responses:
         '201':
           description: The query was enqueued successfully.
@@ -1910,7 +1910,7 @@ components:
       properties:
         content:
           items:
-            $ref: '#/components/schemas/Query'
+            $ref: '#/components/schemas/PhenotypeQuery'
           type: array
       allOf:
         - $ref: '#/components/schemas/Page'
@@ -2482,13 +2482,17 @@ components:
         - min
         - max
     Query:
-      description: |
-        Represents a search query for subjects/individuals. A query has basic configurations for data source connections as well as in/exclusions and projections.
+      description: A Query can be used to search for arbitrary data in external data sources.
       type: object
       properties:
         id:
           type: string
           format: uuid
+        type:
+          type: string
+          enum:
+            - phenotype
+            - concept
         name:
           description: |
             Name of this query. For example, you could allow users to save a query for later use and use the name as identifier.
@@ -2498,6 +2502,20 @@ components:
           type: array
           items:
             type: string
+      discriminator:
+        propertyName: type
+        mapping:
+          phenotype: '#/components/schemas/PhenotypeQuery'
+          concept: '#/components/schemas/ConceptQuery'
+      required:
+        - id
+        - type
+    PhenotypeQuery:
+      description: |
+        Represents a phenotypic search query for subjects/individuals.
+        A phenotype query has basic configurations for data source connections as well as in/exclusions and projections.
+      type: object
+      properties:
         criteria:
           description: List of in- and exclusion criteria.
           type: array
@@ -2511,8 +2529,23 @@ components:
             $ref: '#/components/schemas/ProjectionEntry'
         dependentSubjects:
           $ref: '#/components/schemas/DependentSubjectsMap'
+      allOf:
+        - $ref: '#/components/schemas/Query'
       required:
         - id
+    ConceptQuery:
+      description: Represents a concept search query.
+      type: object
+      properties:
+        entityId:
+          description: The ID of the entity this query is performed with.
+          type: string
+        dateTimeRestriction:
+          $ref: '#/components/schemas/DateTimeRestriction'
+      allOf:
+        - $ref: '#/components/schemas/Query'
+      required:
+        - entityId
     QueryResult:
       description: Result of a query. It might indicate that the query has not finished yet or has failed.
       type: object
@@ -2524,7 +2557,7 @@ components:
           type: string
           format: date-time
         count:
-          description: Total count of subjects in the query result.
+          description: Total count of entries in the query result.
           type: integer
           format: int64
         finishedAt:

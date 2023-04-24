@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: TOP API
-  version: 0.7.4
+  version: 0.7.5
   description: 'API to manage phenotypes, repositories, ontologies and organisations and to execute phenotypic queries.'
 servers:
   - url: 'https://top.imise.uni-leipzig.de/api'
@@ -996,7 +996,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Query'
+              $ref: '#/components/schemas/PhenotypeQuery'
       responses:
         '201':
           description: The query was enqueued successfully.
@@ -1905,7 +1905,7 @@ components:
       properties:
         content:
           items:
-            $ref: '#/components/schemas/Query'
+            $ref: '#/components/schemas/PhenotypeQuery'
           type: array
       allOf:
         - $ref: '#/components/schemas/Page'
@@ -2057,6 +2057,8 @@ components:
         propertyName: entityType
         mapping:
           category: '#/components/schemas/Category'
+          single_concept: '#/components/schemas/Category'
+          composite_concept: '#/components/schemas/Category'
           single_phenotype: '#/components/schemas/Phenotype'
           composite_phenotype: '#/components/schemas/Phenotype'
           single_restriction: '#/components/schemas/Phenotype'
@@ -2078,6 +2080,8 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Phenotype'
+        expression:
+          $ref: '#/components/schemas/Expression'
       allOf:
         - $ref: '#/components/schemas/Entity'
     Phenotype:
@@ -2089,8 +2093,6 @@ components:
           $ref: '#/components/schemas/ItemType'
         restriction:
           $ref: '#/components/schemas/Restriction'
-        expression:
-          $ref: '#/components/schemas/Expression'
         unit:
           type: string
           minLength: 1
@@ -2153,6 +2155,11 @@ components:
       properties:
         functionId:
           description: ID of a valid expression function. See ExpressionFunction for a detailed description.
+          type: string
+        type:
+          description: |
+            Determines the result of a text function. For example: 'initial_term_list', 'processed_term_list'
+            Valid values depend on the implementation.
           type: string
         entityId:
           description: 'In case this expression holds an entity, this property contains the id of that entity.'
@@ -2319,6 +2326,8 @@ components:
       type: string
       enum:
         - category
+        - single_concept
+        - composite_concept
         - single_phenotype
         - composite_phenotype
         - single_restriction
@@ -2468,13 +2477,17 @@ components:
         - min
         - max
     Query:
-      description: |
-        Represents a search query for subjects/individuals. A query has basic configurations for data source connections as well as in/exclusions and projections.
+      description: A Query can be used to search for arbitrary data in external data sources.
       type: object
       properties:
         id:
           type: string
           format: uuid
+        type:
+          type: string
+          enum:
+            - phenotype
+            - concept
         name:
           description: |
             Name of this query. For example, you could allow users to save a query for later use and use the name as identifier.
@@ -2484,6 +2497,20 @@ components:
           type: array
           items:
             type: string
+      discriminator:
+        propertyName: type
+        mapping:
+          phenotype: '#/components/schemas/PhenotypeQuery'
+          concept: '#/components/schemas/ConceptQuery'
+      required:
+        - id
+        - type
+    PhenotypeQuery:
+      description: |
+        Represents a phenotypic search query for subjects/individuals.
+        A phenotype query has basic configurations for data source connections as well as in/exclusions and projections.
+      type: object
+      properties:
         criteria:
           description: List of in- and exclusion criteria.
           type: array
@@ -2497,8 +2524,23 @@ components:
             $ref: '#/components/schemas/ProjectionEntry'
         dependentSubjects:
           $ref: '#/components/schemas/DependentSubjectsMap'
+      allOf:
+        - $ref: '#/components/schemas/Query'
       required:
         - id
+    ConceptQuery:
+      description: Represents a concept search query.
+      type: object
+      properties:
+        entityId:
+          description: The ID of the entity this query is performed with.
+          type: string
+        dateTimeRestriction:
+          $ref: '#/components/schemas/DateTimeRestriction'
+      allOf:
+        - $ref: '#/components/schemas/Query'
+      required:
+        - entityId
     QueryResult:
       description: Result of a query. It might indicate that the query has not finished yet or has failed.
       type: object
@@ -2510,7 +2552,7 @@ components:
           type: string
           format: date-time
         count:
-          description: Total count of subjects in the query result.
+          description: Total count of entries in the query result.
           type: integer
           format: int64
         finishedAt:

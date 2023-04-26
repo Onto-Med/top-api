@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: TOP API
-  version: 0.7.4
+  version: 0.7.5
   description: 'API to manage phenotypes, repositories, ontologies and organisations and to execute phenotypic queries.'
 servers:
   - url: 'https://top.imise.uni-leipzig.de/api'
@@ -1500,6 +1500,13 @@ paths:
     delete:
       operationId: deleteEntityById
       summary: Deletes a particular phenotype or category by ID in the repository. One can delete the whole entity or a version by specifying the version parameter. The current version of an entity cannot be deleted.
+      requestBody:
+        description: Options for entity deletion. If this body is missing, default values are applied, as listed here.
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EntityDeleteOptions'
       responses:
         '204':
           description: The entity or version was deleted successfully.
@@ -2024,6 +2031,14 @@ components:
         - READ
         - WRITE
         - MANAGE
+    EntityDeleteOptions:
+      description: Options to be applied to an entity delete operation.
+      type: object
+      properties:
+        cascade:
+          description: Whether sub entities should be deleted to or not. Restrictions are deleted regardless.
+          type: boolean
+          default: false
     Entity:
       description: Either category or phenotype.
       type: object

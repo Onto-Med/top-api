@@ -15,6 +15,9 @@ info:
       -d "grant_type=password" \
       -X POST "https://top.imise.uni-leipzig.de/auth/realms/top-realm/protocol/openid-connect/token"
     ```
+  license:
+    name: GPL-3.0
+    url: https://github.com/Onto-Med/top-api/blob/main/LICENSE
 servers:
   - url: 'https://top.imise.uni-leipzig.de/api'
     description: Public demo server.

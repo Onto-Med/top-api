@@ -24,7 +24,6 @@ paths:
                 type: string
       security:
         - BearerAuth: []
-        - BasicAuth: []
   /ping:
     get:
       operationId: ping
@@ -36,7 +35,6 @@ paths:
           $ref: '#/components/responses/UnexpectedError'
       security:
         - BearerAuth: []
-        - BasicAuth: []
   /statistic:
     summary: Get statistics about available content. Returned data may be cached.
     get:
@@ -52,7 +50,6 @@ paths:
           $ref: '#/components/responses/UnexpectedError'
       security:
         - BearerAuth: []
-        - BasicAuth: []
   /document:
     parameters:
       - $ref: '#/components/parameters/include'
@@ -2774,9 +2771,5 @@ components:
       type: http
       scheme: bearer
       bearerFormat: JWT
-    BasicAuth:
-      type: http
-      scheme: basic
 security:
   - BearerAuth: []
-  - BasicAuth: []

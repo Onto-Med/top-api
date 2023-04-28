@@ -2,7 +2,19 @@ openapi: 3.0.0
 info:
   title: TOP API
   version: 0.7.5
-  description: 'API to manage phenotypes, repositories, ontologies and organisations and to execute phenotypic queries.'
+  description: |-
+    API to manage phenotypes, repositories, ontologies and organisations and to execute phenotypic queries.
+
+    To interact with this API you need a JSON Web Token. You can request one as shown below with a curl example:
+
+    ```sh
+    curl \
+      -d "client_id=top-frontend" \
+      -d "username=<USERNAME>" \
+      -d "password=<PASSWORD>" \
+      -d "grant_type=password" \
+      -X POST "https://top.imise.uni-leipzig.de/auth/realms/top-realm/protocol/openid-connect/token"
+    ```
 servers:
   - url: 'https://top.imise.uni-leipzig.de/api'
     description: Public demo server.

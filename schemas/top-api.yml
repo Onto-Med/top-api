@@ -19,9 +19,9 @@ paths:
         '200':
           description: API metadata
           content:
-            text/plain:
+            application/json:
               schema:
-                type: string
+                type: object
       security:
         - BearerAuth: []
   /ping:

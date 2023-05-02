@@ -1829,15 +1829,19 @@ components:
         number:
           type: integer
           format: int32
+          example: 1
         size:
           type: integer
           format: int32
+          example: 25
         totalElements:
           type: integer
           format: int64
+          example: 1
         totalPages:
           type: integer
           format: int32
+          example: 1
         type:
           type: string
       discriminator:
@@ -1962,10 +1966,13 @@ components:
       properties:
         id:
           type: string
+          example: example_repository
         name:
           type: string
+          example: Example Repository
         description:
           type: string
+          example: This is an example repository.
         primary:
           description: Determines whether this repository is a primary (aka. public) repository.
           type: boolean
@@ -1973,9 +1980,11 @@ components:
         createdAt:
           type: string
           format: date-time
+          example: 2023-04-28T14:48:36.027Z
         updatedAt:
           type: string
           format: date-time
+          example: 2023-04-28T15:42:30.035Z
         organisation:
           $ref: '#/components/schemas/Organisation'
         repositoryType:
@@ -1994,10 +2003,13 @@ components:
       properties:
         id:
           type: string
+          example: example_ontology
         name:
           type: string
+          example: Example Ontology
         description:
           type: string
+          example: This is an example ontology.
         repository:
           $ref: '#/components/schemas/Repository'
         organisation:
@@ -2025,6 +2037,12 @@ components:
           $ref: '#/components/schemas/Organisation'
       required:
         - id
+      example:
+        id: example_organisation
+        name: Example organisation
+        description: This is an example organisation.
+        createdAt: 2023-04-28T14:48:36.027Z
+        updatedAt: 2023-04-28T15:42:30.035Z
     OrganisationMembership:
       type: object
       properties:
@@ -2059,19 +2077,33 @@ components:
           $ref: '#/components/schemas/EntityType'
         id:
           type: string
+          example: entity_id
         titles:
           description: There should only be one title per language.
           type: array
           items:
             $ref: '#/components/schemas/LocalisableText'
+          example:
+            - lang: en
+              text: Example Entity
+            - lang: de
+              text: Beispiel Entität
+            - lang: jp
+              text: 例のエンティティ
         synonyms:
           type: array
           items:
             $ref: '#/components/schemas/LocalisableText'
+          example:
+            - lang: en
+              text: Dummy Entity
         descriptions:
           type: array
           items:
             $ref: '#/components/schemas/LocalisableText'
+          example:
+            - lang: en
+              text: Some description of this entity.
         codes:
           description: E.g. LOINC or ICD-10 codes.
           type: array
@@ -2083,6 +2115,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Entity'
+          example:
       allOf:
         - $ref: '#/components/schemas/VersionedContent'
       discriminator:
@@ -2141,6 +2174,10 @@ components:
           type: string
         dataType:
           $ref: '#/components/schemas/DataType'
+      example:
+        id: today
+        title: today
+        dataType: date_time
       discriminator:
         propertyName: dataType
         mapping:
@@ -2222,8 +2259,10 @@ components:
       properties:
         id:
           type: string
+          example: user_1
         username:
           type: string
+          example: Example User
         organisations:
           type: array
           items:
@@ -2346,7 +2385,7 @@ components:
       description: Reflects the version of the content. The value is generated server-side.
       type: integer
       format: int32
-      minimum: 0
+      minimum: 1
     EntityType:
       type: string
       enum:
@@ -2369,12 +2408,14 @@ components:
           $ref: '#/components/schemas/VersionNumber'
         author:
           type: string
+          example: user_1
         createdAt:
           type: string
           format: date-time
         refer:
           type: string
           format: uri
+          example:
     LocalisableText:
       description: A text in a specific language.
       type: object
@@ -2395,8 +2436,10 @@ components:
         uri:
           type: string
           format: uri
+          example: https://loinc.org/
         name:
           type: string
+          example: LOINC
       required:
         - uri
         - name
@@ -2408,8 +2451,10 @@ components:
           $ref: '#/components/schemas/CodeSystem'
         code:
           type: string
+          example: 3137-7
         name:
           type: string
+          example: Body height
       required:
         - codeSystem
         - code
@@ -2511,11 +2556,13 @@ components:
           description: |
             Name of this query. For example, you could allow users to save a query for later use and use the name as identifier.
           type: string
+          example: Example Query
         dataSources:
           description: List of data source IDs.
           type: array
           items:
             type: string
+            example: example_data_source
         criteria:
           description: List of in- and exclusion criteria.
           type: array
@@ -2545,12 +2592,14 @@ components:
           description: Total count of subjects in the query result.
           type: integer
           format: int64
+          example: 2746
         finishedAt:
           type: string
           format: date-time
         message:
           description: Optional message about the query or query result. (e.g. error message)
           type: string
+          example: Query finished successfully.
         state:
           $ref: '#/components/schemas/QueryState'
       required:
@@ -2563,6 +2612,7 @@ components:
         - finished
         - queued
         - running
+      example: finished
     DependentSubjectsMap:
       description: 'Map of additional subjects that hold information, required to execute the query.'
       type: object
@@ -2574,6 +2624,7 @@ components:
         $ref: '#/components/schemas/Phenotype'
       required:
         - id
+      example:
     DataSource:
       description: A data source is a data storage (e.g. database) on which queries can be executed.
       type: object
@@ -2581,9 +2632,11 @@ components:
         id:
           description: ID of the data source.
           type: string
+          example: example_data_source
         title:
           description: Human-readable title of the data source.
           type: string
+          example: Example Data Source
       required:
         - id
     ProjectionEntry:
@@ -2593,11 +2646,13 @@ components:
         subjectId:
           description: ID of a subject this projection entry refers to.
           type: string
+          example: example_entity
         defaultAggregationFunctionId:
           description: |
             Multiple phenotype values in expressions must be aggregated to a single value in order to use them for calculations.
             The aggregation function provided via this property will be used as default aggregation function for cases where none has been set.
           type: string
+          example: Last
         dateTimeRestriction:
           $ref: '#/components/schemas/DateTimeRestriction'
         type:
@@ -2694,17 +2749,19 @@ components:
     Purpose:
       type: string
       enum:
-        - import
         - export
+        - import
     Converter:
       type: object
       properties:
         id:
           type: string
+          example: Phenotype2Dmn
         purpose:
           $ref: '#/components/schemas/Purpose'
         fileExtension:
           type: string
+          example: dmn
       required:
         - id
         - purpose
@@ -2715,18 +2772,27 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
+          example:
+            status: 404
+            message: Not found
     Unauthorized:
       description: 'Unauthorized, Access token is missing or invalid.'
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
+          example:
+            status: 401
+            message: Unauthorized
     UnexpectedError:
       description: Unexpected error.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
+          example:
+            status: 500
+            message: Unexpected error
     ConceptPageResponse:
       description: A page of concepts.
       content:

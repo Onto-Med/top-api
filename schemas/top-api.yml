@@ -17,7 +17,7 @@ info:
     ```
   license:
     name: GPL-3.0
-    url: https://github.com/Onto-Med/top-api/blob/main/LICENSE
+    url: 'https://github.com/Onto-Med/top-api/blob/main/LICENSE'
 servers:
   - url: 'https://top.imise.uni-leipzig.de/api'
     description: Public demo server.
@@ -25,28 +25,6 @@ servers:
     description: Local development instance.
   - url: 'http://host.docker.internal:8080'
     description: In case the server is running on the Docker host.
-tags:
-  - name: default
-    description: Collection of various unrelated content
-  - name: organisation
-    description: Organisations are used to organise content of the TOP Framework
-  - name: user
-    description: Users can be members of organisations and can receive permissions
-  - name: repository
-    description: Repositories can hold entities and are part of an organisation
-  - name: entity
-    description: Generic content type that is included in repositories
-  - name: query
-    description: Everything about queries and query execution
-    externalDocs:
-      description: Find out more about queries
-      url: https://github.com/Onto-Med/top-phenotypic-query
-  - name: document
-    description: Everything about documents
-  - name: phrase
-    description: Phrases are contained in specific documents and belong to concepts
-  - name: concept
-    description: Concepts are abstract representations of similar phrases
 paths:
   /v3/api-docs:
     get:
@@ -1150,7 +1128,7 @@ paths:
       operationId: deleteEntityById
       summary: Deletes a particular phenotype or category by ID in the repository. One can delete the whole entity or a version by specifying the version parameter. The current version of an entity cannot be deleted.
       requestBody:
-        description: Options for entity deletion. If this body is missing, default values are applied, as listed here.
+        description: 'Options for entity deletion. If this body is missing, default values are applied, as listed here.'
         required: false
         content:
           application/json:
@@ -1657,11 +1635,11 @@ components:
         createdAt:
           type: string
           format: date-time
-          example: 2023-04-28T14:48:36.027Z
+          example: '2023-04-28T14:48:36.027Z'
         updatedAt:
           type: string
           format: date-time
-          example: 2023-04-28T15:42:30.035Z
+          example: '2023-04-28T15:42:30.035Z'
         organisation:
           $ref: '#/components/schemas/Organisation'
         repositoryType:
@@ -1692,14 +1670,14 @@ components:
           format: date-time
         superOrganisation:
           $ref: '#/components/schemas/Organisation'
-      required:
-        - id
       example:
         id: example_organisation
         name: Example organisation
         description: This is an example organisation.
-        createdAt: 2023-04-28T14:48:36.027Z
-        updatedAt: 2023-04-28T15:42:30.035Z
+        createdAt: '2023-04-28T14:48:36.027Z'
+        updatedAt: '2023-04-28T15:42:30.035Z'
+      required:
+        - id
     OrganisationMembership:
       type: object
       properties:
@@ -1772,7 +1750,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Entity'
-          example:
+          example: null
       allOf:
         - $ref: '#/components/schemas/VersionedContent'
       discriminator:
@@ -2072,7 +2050,7 @@ components:
         refer:
           type: string
           format: uri
-          example:
+          example: null
     LocalisableText:
       description: A text in a specific language.
       type: object
@@ -2093,7 +2071,7 @@ components:
         uri:
           type: string
           format: uri
-          example: https://loinc.org/
+          example: 'https://loinc.org/'
         name:
           type: string
           example: LOINC
@@ -2264,12 +2242,12 @@ components:
         - createdAt
     QueryState:
       type: string
+      example: finished
       enum:
         - failed
         - finished
         - queued
         - running
-      example: finished
     DependentSubjectsMap:
       description: 'Map of additional subjects that hold information, required to execute the query.'
       type: object
@@ -2277,11 +2255,11 @@ components:
         id:
           description: ID of the dependent subject.
           type: string
+      example: null
       additionalProperties:
         $ref: '#/components/schemas/Phenotype'
       required:
         - id
-      example:
     DataSource:
       description: A data source is a data storage (e.g. database) on which queries can be executed.
       type: object
@@ -2503,5 +2481,27 @@ components:
       type: http
       scheme: bearer
       bearerFormat: JWT
+tags:
+  - name: default
+    description: Collection of various unrelated content
+  - name: organisation
+    description: Organisations are used to organise content of the TOP Framework
+  - name: user
+    description: Users can be members of organisations and can receive permissions
+  - name: repository
+    description: Repositories can hold entities and are part of an organisation
+  - name: entity
+    description: Generic content type that is included in repositories
+  - name: query
+    description: Everything about queries and query execution
+    externalDocs:
+      description: Find out more about queries
+      url: 'https://github.com/Onto-Med/top-phenotypic-query'
+  - name: document
+    description: Everything about documents
+  - name: phrase
+    description: Phrases are contained in specific documents and belong to concepts
+  - name: concept
+    description: Concepts are abstract representations of similar phrases
 security:
   - BearerAuth: []

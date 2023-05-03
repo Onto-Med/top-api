@@ -597,24 +597,6 @@ paths:
           $ref: '#/components/responses/UnexpectedError'
       tags:
         - repository
-  /ontology:
-    parameters:
-      - $ref: '#/components/parameters/include'
-    get:
-      operationId: getOntologies
-      summary: Search for ontologies. Use the query parameters to filter the result.
-      parameters:
-        - $ref: '#/components/parameters/nameFilter'
-        - $ref: '#/components/parameters/page'
-      responses:
-        '200':
-          $ref: '#/components/responses/OntologyPageResponse'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        default:
-          $ref: '#/components/responses/UnexpectedError'
-      tags:
-        - ontology
   /entity:
     parameters:
       - $ref: '#/components/parameters/include'
@@ -1005,136 +987,6 @@ paths:
           $ref: '#/components/responses/UnexpectedError'
       tags:
         - query
-  '/{organisationId}/{repositoryId}/ontology':
-    parameters:
-      - $ref: '#/components/parameters/organisationId'
-      - $ref: '#/components/parameters/repositoryId'
-      - $ref: '#/components/parameters/include'
-    get:
-      operationId: getOntologiesByRepositoryId
-      summary: Searches for ontologies in a repository. Use the query parameters to filter the result.
-      parameters:
-        - $ref: '#/components/parameters/nameFilter'
-        - $ref: '#/components/parameters/page'
-      responses:
-        '200':
-          $ref: '#/components/responses/OntologyPageResponse'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        default:
-          $ref: '#/components/responses/UnexpectedError'
-      tags:
-        - ontology
-    post:
-      operationId: createOntology
-      summary: Creates a new ontology in a repository.
-      requestBody:
-        description: Ontology details.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Ontology'
-      responses:
-        '201':
-          description: Created ontology.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Ontology'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        default:
-          $ref: '#/components/responses/UnexpectedError'
-      tags:
-        - ontology
-  '/{organisationId}/{repositoryId}/ontology/{ontologyId}/{version}':
-    summary: Represents an ontology in a repository.
-    parameters:
-      - $ref: '#/components/parameters/organisationId'
-      - $ref: '#/components/parameters/repositoryId'
-      - $ref: '#/components/parameters/ontologyId'
-      - $ref: '#/components/parameters/version'
-      - $ref: '#/components/parameters/include'
-    get:
-      operationId: getOntologyByName
-      summary: Returns a particular ontology in a repository.
-      responses:
-        '200':
-          description: Details of the ontology.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Ontology'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        default:
-          $ref: '#/components/responses/UnexpectedError'
-      tags:
-        - ontology
-    put:
-      operationId: updateOntologyById
-      summary: Updates a particular ontology by id in a repository and returns the result.
-      requestBody:
-        description: Ontology details to be applied.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Ontology'
-      responses:
-        '200':
-          description: Details about the updated ontology.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Ontology'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        default:
-          $ref: '#/components/responses/UnexpectedError'
-      tags:
-        - ontology
-    patch:
-      operationId: releaseOntology
-      summary: Build a new release for the ontology.
-      responses:
-        '200':
-          description: Details about the released ontology.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Ontology'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        default:
-          $ref: '#/components/responses/UnexpectedError'
-      tags:
-        - ontology
-    delete:
-      operationId: deleteOntologyById
-      summary: Deletes a particular ontology by ID in a repository.
-      responses:
-        '204':
-          description: The ontology was deleted successfully.
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        default:
-          $ref: '#/components/responses/UnexpectedError'
-      tags:
-        - ontology
   '/{organisationId}/{repositoryId}/entity':
     parameters:
       - $ref: '#/components/parameters/organisationId'
@@ -1687,7 +1539,6 @@ components:
           concept: '#/components/responses/ConceptPage'
           document: '#/components/responses/DocumentPage'
           entity: '#/components/responses/EntityPage'
-          ontology: '#/components/responses/OntologyPage'
           organisation: '#/components/responses/OrganisationPage'
           phrase: '#/components/responses/PhrasePage'
           query: '#/components/responses/QueryPage'
@@ -1727,17 +1578,6 @@ components:
         content:
           items:
             $ref: '#/components/schemas/Entity'
-          type: array
-      allOf:
-        - $ref: '#/components/schemas/Page'
-      required:
-        - content
-    OntologyPage:
-      type: object
-      properties:
-        content:
-          items:
-            $ref: '#/components/schemas/Ontology'
           type: array
       allOf:
         - $ref: '#/components/schemas/Page'
@@ -1835,26 +1675,6 @@ components:
       enum:
         - phenotype_repository
         - concept_repository
-    Ontology:
-      type: object
-      properties:
-        id:
-          type: string
-          example: example_ontology
-        name:
-          type: string
-          example: Example Ontology
-        description:
-          type: string
-          example: This is an example ontology.
-        repository:
-          $ref: '#/components/schemas/Repository'
-        organisation:
-          $ref: '#/components/schemas/Organisation'
-      allOf:
-        - $ref: '#/components/schemas/VersionedContent'
-      required:
-        - id
     Organisation:
       type: object
       properties:
@@ -2648,12 +2468,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/EntityPage'
-    OntologyPageResponse:
-      description: A page of ontologies.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/OntologyPage'
     OrganisationPageResponse:
       description: A page of organisations.
       content:

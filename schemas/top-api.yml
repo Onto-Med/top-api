@@ -25,6 +25,28 @@ servers:
     description: Local development instance.
   - url: 'http://host.docker.internal:8080'
     description: In case the server is running on the Docker host.
+tags:
+  - name: default
+    description: Collection of various unrelated content
+  - name: organisation
+    description: Organisations are used to organise content of the TOP Framework
+  - name: user
+    description: Users can be members of organisations and can receive permissions
+  - name: repository
+    description: Repositories can hold entities and are part of an organisation
+  - name: entity
+    description: Generic content type that is included in repositories
+  - name: query
+    description: Everything about queries and query execution
+    externalDocs:
+      description: Find out more about queries
+      url: https://github.com/Onto-Med/top-phenotypic-query
+  - name: document
+    description: Everything about documents
+  - name: phrase
+    description: Phrases are contained in specific documents and belong to concepts
+  - name: concept
+    description: Concepts are abstract representations of similar phrases
 paths:
   /v3/api-docs:
     get:

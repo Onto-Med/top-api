@@ -462,11 +462,7 @@ paths:
       operationId: getOrganisations
       summary: Search for organisations. Use the query parameters to filter the result.
       parameters:
-        - name: name
-          in: query
-          description: Filter organisations by name.
-          schema:
-            type: string
+        - $ref: '#/components/parameters/nameFilter'
         - $ref: '#/components/parameters/page'
       responses:
         '200':
@@ -522,11 +518,7 @@ paths:
   '/{organisationId}':
     summary: Represents an organisation.
     parameters:
-      - name: organisationId
-        in: path
-        required: true
-        schema:
-          type: string
+      - $ref: '#/components/parameters/organisationId'
       - $ref: '#/components/parameters/include'
     get:
       operationId: getOrganisationById
@@ -592,21 +584,9 @@ paths:
       operationId: getRepositories
       summary: Search for repositories. Use the query parameters to filter the result.
       parameters:
-        - name: name
-          in: query
-          description: Filter repositories by name.
-          schema:
-            type: string
-        - name: primary
-          in: query
-          description: Filter repositories by primary state.
-          schema:
-            type: boolean
-        - name: type
-          in: query
-          description: Filter repositories by type.
-          schema:
-            $ref: '#/components/schemas/RepositoryType'
+        - $ref: '#/components/parameters/nameFilter'
+        - $ref: '#/components/parameters/primaryFilter'
+        - $ref: '#/components/parameters/repositoryTypeFilter'
         - $ref: '#/components/parameters/page'
       responses:
         '200':
@@ -624,11 +604,7 @@ paths:
       operationId: getOntologies
       summary: Search for ontologies. Use the query parameters to filter the result.
       parameters:
-        - name: name
-          in: query
-          description: Filter ontologies by name.
-          schema:
-            type: string
+        - $ref: '#/components/parameters/nameFilter'
         - $ref: '#/components/parameters/page'
       responses:
         '200':
@@ -648,35 +624,11 @@ paths:
         Search for entities (phenotypes, categories or concepts). Use the query parameters to filter the result.
         Only entities in primary repositories are returned.
       parameters:
-        - name: name
-          in: query
-          description: Filter entities by name.
-          schema:
-            type: string
-        - name: type
-          in: query
-          description: Filter entities by type.
-          schema:
-            type: array
-            items:
-              $ref: '#/components/schemas/EntityType'
-        - name: dataType
-          in: query
-          description: Filter entities by data type.
-          schema:
-            $ref: '#/components/schemas/DataType'
-        - name: itemType
-          in: query
-          description: Filter entities by item type.
-          schema:
-            $ref: '#/components/schemas/ItemType'
-        - name: repositoryIds
-          in: query
-          description: Filter entities by repository IDs.
-          schema:
-            type: array
-            items:
-              type: string
+        - $ref: '#/components/parameters/nameFilter'
+        - $ref: '#/components/parameters/entityTypesFilter'
+        - $ref: '#/components/parameters/dataTypeFilter'
+        - $ref: '#/components/parameters/itemTypeFilter'
+        - $ref: '#/components/parameters/repositoryIdsFilter'
         - name: includePrimary
           in: query
           description: |
@@ -698,26 +650,14 @@ paths:
         - entity
   '/{organisationId}/repository':
     parameters:
-      - name: organisationId
-        in: path
-        required: true
-        schema:
-          type: string
+      - $ref: '#/components/parameters/organisationId'
       - $ref: '#/components/parameters/include'
     get:
       operationId: getRepositoriesByOrganisationId
       summary: Search for repositories in an organisation. Use the query parameters to filter the result.
       parameters:
-        - name: name
-          in: query
-          description: Filter repositories by name.
-          schema:
-            type: string
-        - name: type
-          in: query
-          description: Filter repositories by type.
-          schema:
-            $ref: '#/components/schemas/RepositoryType'
+        - $ref: '#/components/parameters/nameFilter'
+        - $ref: '#/components/parameters/repositoryTypeFilter'
         - $ref: '#/components/parameters/page'
       responses:
         '200':
@@ -758,11 +698,7 @@ paths:
   '/{organisationId}/membership':
     summary: Manage organisation memberships.
     parameters:
-      - name: organisationId
-        in: path
-        required: true
-        schema:
-          type: string
+      - $ref: '#/components/parameters/organisationId'
     get:
       operationId: getOrganisationMemberships
       summary: Get all memberships of an organisation.
@@ -826,16 +762,8 @@ paths:
   '/{organisationId}/{repositoryId}':
     summary: Represents a repository in an organisation.
     parameters:
-      - name: organisationId
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: repositoryId
-        in: path
-        required: true
-        schema:
-          type: string
+      - $ref: '#/components/parameters/organisationId'
+      - $ref: '#/components/parameters/repositoryId'
       - $ref: '#/components/parameters/include'
     get:
       operationId: getRepositoryById
@@ -899,10 +827,7 @@ paths:
       operationId: getConverters
       summary: Query for available entity converters.
       parameters:
-        - name: purpose
-          in: query
-          schema:
-            $ref: '#/components/schemas/Purpose'
+        - $ref: '#/components/parameters/converterPurpose'
       responses:
         '200':
           description: List of available converters matching the criteria.
@@ -916,25 +841,13 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         default:
           $ref: '#/components/responses/UnexpectedError'
+      tags:
         - entity
   '/{organisationId}/{repositoryId}/export':
     parameters:
-      - name: organisationId
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: repositoryId
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: converter
-        in: query
-        description: The converter. You can query available converters via /converter?purpose=export.
-        required: true
-        schema:
-          type: string
+      - $ref: '#/components/parameters/organisationId'
+      - $ref: '#/components/parameters/repositoryId'
+      - $ref: '#/components/parameters/converter'
     get:
       operationId: exportRepository
       summary: Exports a repository with the specified converter.
@@ -956,22 +869,9 @@ paths:
         - repository
   '/{organisationId}/{repositoryId}/import':
     parameters:
-      - name: organisationId
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: repositoryId
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: converter
-        in: query
-        description: The converter. You can query available converters via /converter?purpose=import.
-        required: true
-        schema:
-          type: string
+      - $ref: '#/components/parameters/organisationId'
+      - $ref: '#/components/parameters/repositoryId'
+      - $ref: '#/components/parameters/converter'
     post:
       operationId: importRepository
       summary: Imports data with the specified converter to a repository.
@@ -1000,16 +900,8 @@ paths:
         - repository
   '/{organisationId}/{repositoryId}/query':
     parameters:
-      - name: organisationId
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: repositoryId
-        in: path
-        required: true
-        schema:
-          type: string
+      - $ref: '#/components/parameters/organisationId'
+      - $ref: '#/components/parameters/repositoryId'
     get:
       operationId: getQueries
       summary: Returns a list of all queries for the specified repository.
@@ -1054,22 +946,9 @@ paths:
         - query
   '/{organisationId}/{repositoryId}/query/{queryId}':
     parameters:
-      - name: organisationId
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: repositoryId
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: queryId
-        in: path
-        required: true
-        schema:
-          type: string
-          format: uuid
+      - $ref: '#/components/parameters/organisationId'
+      - $ref: '#/components/parameters/repositoryId'
+      - $ref: '#/components/parameters/queryId'
     get:
       operationId: getQueryResult
       summary: Returns the result of a particular query by ID.
@@ -1104,22 +983,9 @@ paths:
         - query
   '/{organisationId}/{repositoryId}/query/{queryId}/download':
     parameters:
-      - name: organisationId
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: repositoryId
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: queryId
-        in: path
-        required: true
-        schema:
-          type: string
-          format: uuid
+      - $ref: '#/components/parameters/organisationId'
+      - $ref: '#/components/parameters/repositoryId'
+      - $ref: '#/components/parameters/queryId'
     get:
       operationId: downloadQueryResult
       summary: Download the result of a particular query by ID.
@@ -1141,26 +1007,14 @@ paths:
         - query
   '/{organisationId}/{repositoryId}/ontology':
     parameters:
-      - name: organisationId
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: repositoryId
-        in: path
-        required: true
-        schema:
-          type: string
+      - $ref: '#/components/parameters/organisationId'
+      - $ref: '#/components/parameters/repositoryId'
       - $ref: '#/components/parameters/include'
     get:
       operationId: getOntologiesByRepositoryId
       summary: Searches for ontologies in a repository. Use the query parameters to filter the result.
       parameters:
-        - name: name
-          in: query
-          description: Filter ontologies by name.
-          schema:
-            type: string
+        - $ref: '#/components/parameters/nameFilter'
         - $ref: '#/components/parameters/page'
       responses:
         '200':
@@ -1201,26 +1055,10 @@ paths:
   '/{organisationId}/{repositoryId}/ontology/{ontologyId}/{version}':
     summary: Represents an ontology in a repository.
     parameters:
-      - name: organisationId
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: repositoryId
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: ontologyId
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: version
-        in: path
-        required: true
-        schema:
-          $ref: '#/components/schemas/VersionNumber'
+      - $ref: '#/components/parameters/organisationId'
+      - $ref: '#/components/parameters/repositoryId'
+      - $ref: '#/components/parameters/ontologyId'
+      - $ref: '#/components/parameters/version'
       - $ref: '#/components/parameters/include'
     get:
       operationId: getOntologyByName
@@ -1299,43 +1137,17 @@ paths:
         - ontology
   '/{organisationId}/{repositoryId}/entity':
     parameters:
-      - name: organisationId
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: repositoryId
-        in: path
-        required: true
-        schema:
-          type: string
+      - $ref: '#/components/parameters/organisationId'
+      - $ref: '#/components/parameters/repositoryId'
       - $ref: '#/components/parameters/include'
     get:
       operationId: getEntitiesByRepositoryId
       summary: Search for phenotypes or categories. Use the query parameters to filter the result.
       parameters:
-        - name: name
-          in: query
-          description: Filter phenotypes or categories by name.
-          schema:
-            type: string
-        - name: type
-          in: query
-          description: Filter phenotypes or categories by type.
-          schema:
-            type: array
-            items:
-              $ref: '#/components/schemas/EntityType'
-        - name: dataType
-          in: query
-          description: Filter phenotypes by data type.
-          schema:
-            $ref: '#/components/schemas/DataType'
-        - name: itemType
-          in: query
-          description: Filter phenotypes by item type.
-          schema:
-            $ref: '#/components/schemas/ItemType'
+        - $ref: '#/components/parameters/nameFilter'
+        - $ref: '#/components/parameters/entityTypesFilter'
+        - $ref: '#/components/parameters/dataTypeFilter'
+        - $ref: '#/components/parameters/itemTypeFilter'
         - $ref: '#/components/parameters/page'
       responses:
         '200':
@@ -1375,16 +1187,8 @@ paths:
         - entity
   '/{organisationId}/{repositoryId}/entity/bulk':
     parameters:
-      - name: organisationId
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: repositoryId
-        in: path
-        required: true
-        schema:
-          type: string
+      - $ref: '#/components/parameters/organisationId'
+      - $ref: '#/components/parameters/repositoryId'
       - $ref: '#/components/parameters/include'
     post:
       operationId: bulkUploadEntities
@@ -1411,43 +1215,17 @@ paths:
         - entity
   '/{organisationId}/{repositoryId}/root':
     parameters:
-      - name: organisationId
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: repositoryId
-        in: path
-        required: true
-        schema:
-          type: string
+      - $ref: '#/components/parameters/organisationId'
+      - $ref: '#/components/parameters/repositoryId'
       - $ref: '#/components/parameters/include'
     get:
       operationId: getRootEntitiesByRepositoryId
       summary: Search for root phenotypes or categories. Use the query parameters to filter the result.
       parameters:
-        - name: name
-          in: query
-          description: Filter phenotypes or categories by name.
-          schema:
-            type: string
-        - name: type
-          in: query
-          description: Filter phenotypes or categories by type.
-          schema:
-            type: array
-            items:
-              $ref: '#/components/schemas/EntityType'
-        - name: dataType
-          in: query
-          description: Filter phenotypes by data type.
-          schema:
-            $ref: '#/components/schemas/DataType'
-        - name: itemType
-          in: query
-          description: Filter phenotypes by item type.
-          schema:
-            $ref: '#/components/schemas/ItemType'
+        - $ref: '#/components/parameters/nameFilter'
+        - $ref: '#/components/parameters/entityTypesFilter'
+        - $ref: '#/components/parameters/dataTypeFilter'
+        - $ref: '#/components/parameters/itemTypeFilter'
       responses:
         '200':
           description: List of root entities.
@@ -1465,29 +1243,13 @@ paths:
           $ref: '#/components/responses/UnexpectedError'
       tags:
         - entity
-  '/{organisationId}/{repositoryId}/{id}':
+  '/{organisationId}/{repositoryId}/{entityId}':
     summary: Represents an entity (i.e. phenotype or category) in a repository.
     parameters:
-      - name: organisationId
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: repositoryId
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: version
-        in: query
-        description: Defaults to the latest version number.
-        schema:
-          $ref: '#/components/schemas/VersionNumber'
+      - $ref: '#/components/parameters/organisationId'
+      - $ref: '#/components/parameters/repositoryId'
+      - $ref: '#/components/parameters/entityId'
+      - $ref: '#/components/parameters/version'
       - $ref: '#/components/parameters/include'
     get:
       operationId: getEntityById
@@ -1557,12 +1319,7 @@ paths:
       operationId: setCurrentEntityVersion
       summary: Reset the state of a particular phenotype or category to the specified version.
       parameters:
-        - name: version
-          in: query
-          description: Defaults to the latest version number.
-          required: true
-          schema:
-            $ref: '#/components/schemas/VersionNumber'
+        - $ref: '#/components/parameters/version'
       responses:
         '200':
           description: The current version of the entity after performing the reset.
@@ -1578,24 +1335,12 @@ paths:
           $ref: '#/components/responses/UnexpectedError'
       tags:
         - entity
-  '/{organisationId}/{repositoryId}/{id}/fork':
+  '/{organisationId}/{repositoryId}/{entityId}/fork':
     summary: 'Manage forks of an entity. E.g. create new forks, list them and apply updates from origin.'
     parameters:
-      - name: organisationId
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: repositoryId
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
+      - $ref: '#/components/parameters/organisationId'
+      - $ref: '#/components/parameters/repositoryId'
+      - $ref: '#/components/parameters/entityId'
       - $ref: '#/components/parameters/include'
     get:
       operationId: getForks
@@ -1620,11 +1365,7 @@ paths:
       summary: |
         Create a new fork from a particular entity. Updates to existing forks can be applied via forking instructions.
       parameters:
-        - name: version
-          in: query
-          description: Defaults to the latest version number.
-          schema:
-            $ref: '#/components/schemas/VersionNumber'
+        - $ref: '#/components/parameters/version'
       requestBody:
         description: Forking instructions like destination.
         required: true
@@ -1649,24 +1390,12 @@ paths:
           $ref: '#/components/responses/UnexpectedError'
       tags:
         - entity
-  '/{organisationId}/{repositoryId}/{id}/history':
+  '/{organisationId}/{repositoryId}/{entityId}/history':
     summary: Represents the version history of an entity (i.e. phenotype or category) in a repository.
     parameters:
-      - name: organisationId
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: repositoryId
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
+      - $ref: '#/components/parameters/organisationId'
+      - $ref: '#/components/parameters/repositoryId'
+      - $ref: '#/components/parameters/entityId'
       - $ref: '#/components/parameters/include'
     get:
       operationId: getEntityVersionsById
@@ -1688,24 +1417,12 @@ paths:
           $ref: '#/components/responses/UnexpectedError'
       tags:
         - entity
-  '/{organisationId}/{repositoryId}/{id}/subclasses':
+  '/{organisationId}/{repositoryId}/{entityId}/subclasses':
     summary: 'Represents subclasses (categories, abstract or restricted phenotypes) of an entity in a repository.'
     parameters:
-      - name: organisationId
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: repositoryId
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
+      - $ref: '#/components/parameters/organisationId'
+      - $ref: '#/components/parameters/repositoryId'
+      - $ref: '#/components/parameters/entityId'
       - $ref: '#/components/parameters/include'
     get:
       operationId: getSubclassesById
@@ -1802,11 +1519,7 @@ paths:
   '/user/{userId}':
     summary: Manage a specific user.
     parameters:
-      - name: userId
-        in: path
-        required: true
-        schema:
-          type: string
+      - $ref: '#/components/parameters/userId'
     get:
       operationId: getUserById
       summary: Get a user by ID.
@@ -1827,6 +1540,38 @@ paths:
         - user
 components:
   parameters:
+    converter:
+      name: converter
+      in: query
+      description: The converter. You can query available converters via /converter?purpose=import.
+      required: true
+      schema:
+        type: string
+    converterPurpose:
+      name: purpose
+      in: query
+      schema:
+        $ref: '#/components/schemas/Purpose'
+    dataTypeFilter:
+      name: dataType
+      in: query
+      description: Filter by data type.
+      schema:
+        $ref: '#/components/schemas/DataType'
+    entityId:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+    entityTypesFilter:
+      name: type
+      in: query
+      description: Filter by entity types.
+      schema:
+        type: array
+        items:
+          $ref: '#/components/schemas/EntityType'
     include:
       name: include
       description: This field has no purpose jet.
@@ -1836,6 +1581,30 @@ components:
         items:
           type: string
           pattern: ^\w*$
+    itemTypeFilter:
+      name: itemType
+      in: query
+      description: Filter by item type.
+      schema:
+        $ref: '#/components/schemas/ItemType'
+    nameFilter:
+      name: name
+      in: query
+      description: Filter by name.
+      schema:
+        type: string
+    ontologyId:
+      name: ontologyId
+      in: path
+      required: true
+      schema:
+        type: string
+    organisationId:
+      name: organisationId
+      in: path
+      required: true
+      schema:
+        type: string
     page:
       name: page
       in: query
@@ -1845,6 +1614,51 @@ components:
         format: int32
         default: 1
         minimum: 1
+    primaryFilter:
+      name: primary
+      in: query
+      description: Filter by primary state.
+      schema:
+        type: boolean
+    queryId:
+      name: queryId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+    repositoryId:
+      name: repositoryId
+      in: path
+      required: true
+      schema:
+        type: string
+    repositoryIdsFilter:
+      name: repositoryIds
+      in: query
+      description: Filter by repository IDs.
+      schema:
+        type: array
+        items:
+          type: string
+    repositoryTypeFilter:
+      name: type
+      in: query
+      description: Filter by repository type.
+      schema:
+        $ref: '#/components/schemas/RepositoryType'
+    userId:
+      name: userId
+      in: path
+      required: true
+      schema:
+        type: string
+    version:
+      name: version
+      in: query
+      description: Defaults to the latest version number.
+      schema:
+        $ref: '#/components/schemas/VersionNumber'
   schemas:
     Page:
       type: object

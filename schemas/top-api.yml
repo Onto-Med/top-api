@@ -518,7 +518,7 @@ paths:
         default:
           $ref: '#/components/responses/UnexpectedError'
       tags:
-        - data_source
+        - query
   '/{organisationId}':
     summary: Represents an organisation.
     parameters:
@@ -916,6 +916,7 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         default:
           $ref: '#/components/responses/UnexpectedError'
+        - entity
   '/{organisationId}/{repositoryId}/export':
     parameters:
       - name: organisationId
@@ -1613,7 +1614,7 @@ paths:
         default:
           $ref: '#/components/responses/UnexpectedError'
       tags:
-        - fork
+        - entity
     post:
       operationId: createFork
       summary: |
@@ -1647,7 +1648,7 @@ paths:
         default:
           $ref: '#/components/responses/UnexpectedError'
       tags:
-        - fork
+        - entity
   '/{organisationId}/{repositoryId}/{id}/history':
     summary: Represents the version history of an entity (i.e. phenotype or category) in a repository.
     parameters:
@@ -1751,7 +1752,7 @@ paths:
         default:
           $ref: '#/components/responses/UnexpectedError'
       tags:
-        - expression_function
+        - entity
   /expression_constant:
     get:
       operationId: getExpressionConstants
@@ -1770,7 +1771,7 @@ paths:
         default:
           $ref: '#/components/responses/UnexpectedError'
       tags:
-        - expression_constant
+        - entity
   /user:
     summary: Represents users that can be members of organisations and have specific permissions.
     get:

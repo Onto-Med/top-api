@@ -1891,6 +1891,7 @@ components:
         - subject_birth_date
         - subject_sex
     User:
+      type: object
       properties:
         id:
           type: string
@@ -1902,9 +1903,18 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Organisation'
+        role:
+          $ref: '#/components/schemas/Role'
       required:
         - id
+        - role
+    Role:
+      type: string
+      enum:
+        - admin
+        - user
     Value:
+      type: object
       properties:
         dataType:
           $ref: '#/components/schemas/DataType'

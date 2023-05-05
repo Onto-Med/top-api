@@ -1670,12 +1670,15 @@ components:
           format: date-time
         superOrganisation:
           $ref: '#/components/schemas/Organisation'
+        permission:
+          $ref: '#/components/schemas/Permission'
       example:
         id: example_organisation
         name: Example organisation
         description: This is an example organisation.
         createdAt: '2023-04-28T14:48:36.027Z'
         updatedAt: '2023-04-28T15:42:30.035Z'
+        permission: READ
       required:
         - id
     OrganisationMembership:
@@ -1911,8 +1914,8 @@ components:
     Role:
       type: string
       enum:
-        - admin
-        - user
+        - ADMIN
+        - USER
     Value:
       type: object
       properties:

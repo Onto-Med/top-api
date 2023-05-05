@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: TOP API
-  version: 0.7.5
+  version: 0.7.6
   description: |-
     API to manage phenotypes, repositories, ontologies and organisations and to execute phenotypic queries.
 
@@ -1670,12 +1670,15 @@ components:
           format: date-time
         superOrganisation:
           $ref: '#/components/schemas/Organisation'
+        permission:
+          $ref: '#/components/schemas/Permission'
       example:
         id: example_organisation
         name: Example organisation
         description: This is an example organisation.
         createdAt: '2023-04-28T14:48:36.027Z'
         updatedAt: '2023-04-28T15:42:30.035Z'
+        permission: READ
       required:
         - id
     OrganisationMembership:
@@ -1891,6 +1894,7 @@ components:
         - subject_birth_date
         - subject_sex
     User:
+      type: object
       properties:
         id:
           type: string
@@ -1902,9 +1906,18 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Organisation'
+        role:
+          $ref: '#/components/schemas/Role'
       required:
         - id
+        - role
+    Role:
+      type: string
+      enum:
+        - ADMIN
+        - USER
     Value:
+      type: object
       properties:
         dataType:
           $ref: '#/components/schemas/DataType'

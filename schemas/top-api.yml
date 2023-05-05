@@ -1376,7 +1376,7 @@ components:
       schema:
         $ref: '#/components/schemas/DataType'
     entityId:
-      name: id
+      name: entityId
       in: path
       required: true
       schema:

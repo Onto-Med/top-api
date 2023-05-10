@@ -2225,25 +2225,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/QueryCriterion'
-      discriminator:
-        propertyName: type
-        mapping:
-          phenotype: '#/components/schemas/PhenotypeQuery'
-          concept: '#/components/schemas/ConceptQuery'
-      required:
-        - id
-        - type
-    PhenotypeQuery:
-      description: |
-        Represents a phenotypic search query for subjects/individuals.
-        A phenotype query has basic configurations for data source connections as well as in/exclusions and projections.
-      type: object
-      properties:
-        criteria:
-          description: List of in- and exclusion criteria.
-          type: array
-          items:
-            $ref: '#/components/schemas/QueryCriterion'
         projection:
           description: |
             The projection to be performed on the result set. This property holds an ordered list of subjects with sorting directions.
@@ -2256,6 +2237,7 @@ components:
         - $ref: '#/components/schemas/Query'
       required:
         - id
+        - type
     ConceptQuery:
       description: Represents a concept search query.
       type: object

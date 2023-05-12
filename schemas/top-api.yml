@@ -1800,6 +1800,8 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/CompositeConcept'
+      allOf:
+        - $ref: '#/components/schemas/Entity'
     CompositeConcept:
       type: object
       properties:
@@ -1809,6 +1811,8 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/SingleConcept'
+      allOf:
+        - $ref: '#/components/schemas/Entity'
       required:
         - expression
     Constant:

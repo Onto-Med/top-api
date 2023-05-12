@@ -1742,8 +1742,8 @@ components:
         propertyName: entityType
         mapping:
           category: '#/components/schemas/Category'
-          single_concept: '#/components/schemas/Category'
-          composite_concept: '#/components/schemas/Category'
+          single_concept: '#/components/schemas/SingleConcept'
+          composite_concept: '#/components/schemas/CompositeConcept'
           single_phenotype: '#/components/schemas/Phenotype'
           composite_phenotype: '#/components/schemas/Phenotype'
           single_restriction: '#/components/schemas/Phenotype'
@@ -1785,6 +1785,32 @@ components:
           $ref: '#/components/schemas/Phenotype'
       allOf:
         - $ref: '#/components/schemas/Category'
+    SingleConcept:
+      type: object
+      properties:
+        superConcepts:
+          type: array
+          items:
+            $ref: '#/components/schemas/SingleConcept'
+        singleConcepts:
+          type: array
+          items:
+            $ref: '#/components/schemas/SingleConcept'
+        compositeConcepts:
+          type: array
+          items:
+            $ref: '#/components/schemas/CompositeConcept'
+    CompositeConcept:
+      type: object
+      properties:
+        expression:
+          $ref: '#/components/schemas/Expression'
+        superConcepts:
+          type: array
+          items:
+            $ref: '#/components/schemas/SingleConcept'
+      required:
+        - expression
     Constant:
       type: object
       properties:
@@ -2295,7 +2321,7 @@ components:
           type: string
       example: null
       additionalProperties:
-        $ref: '#/components/schemas/Phenotype'
+        $ref: '#/components/schemas/Entity'
       required:
         - id
     DataSource:

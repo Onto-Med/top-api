@@ -3,7 +3,7 @@ info:
   title: TOP API
   version: 0.7.6
   description: |-
-    API to manage phenotypes, repositories, ontologies and organisations and to execute phenotypic queries.
+    API to manage phenotypes, repositories, ontologies, external terminologies and organisations and to execute phenotypic queries.
 
     To interact with this API you need a JSON Web Token. You can request one as shown below with a curl example:
 
@@ -1355,6 +1355,109 @@ paths:
           $ref: '#/components/responses/UnexpectedError'
       tags:
         - user
+  /code:
+    parameters:
+      - $ref: '#/components/parameters/include'
+    get:
+      operationId: getCode
+      summary: Search for codes in coding systems.
+      parameters:
+        - name: term
+          in: query
+          description: Filter codes by term labels or synonyms.
+          schema:
+            type: string
+        - name: codeSystems
+          in: query
+          description: Filter codes by code systems.
+          schema:
+            type: array
+            $ref: '#/components/schemas/CodeSystem'
+        - $ref: '#/components/parameters/page'
+      responses:
+        '200':
+          description: List of codes.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Code'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+      tags:
+        - code
+  /codesystem:
+    parameters:
+      - $ref: '#/components/parameters/include'
+    get:
+      operationId: getCodeSystems
+      summary: Search for code systems.
+      parameters:
+        - name: uri
+          in: query
+          description: Filter code systems by their id
+          schema:
+            type: string
+            format: uri
+        - name: name
+          in: query
+          description: Filter code systems by their name
+          schema:
+            type: string
+        - $ref: '#/components/parameters/page'
+      responses:
+        '200':
+          description: List of code systems.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CodeSystem'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+      tags:
+      - code
+  /code/suggest:
+    parameters:
+      - $ref: '#/components/parameters/include'
+    get:
+      operationId: getCodeSuggestions
+      summary: Search for codes in coding systems.
+      parameters:
+        - name: term
+          in: query
+          description: Filter codes by term labels or synonyms.
+          schema:
+            type: string
+        - name: codeSystems
+          in: query
+          description: Filter codes by code systems specified by their names.
+          schema:
+            type: array
+            items:
+              type: string
+        - $ref: '#/components/parameters/page'
+      responses:
+        '200':
+          description: List of codes.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Code'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+      tags:
+        - code
 components:
   parameters:
     converter:
@@ -2082,6 +2185,9 @@ components:
       description: Code of a code system.
       type: object
       properties:
+        uri:
+          type: string
+          format: uri
         codeSystem:
           $ref: '#/components/schemas/CodeSystem'
         code:

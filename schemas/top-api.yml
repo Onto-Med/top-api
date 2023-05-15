@@ -2267,7 +2267,6 @@ components:
         - $ref: '#/components/schemas/Query'
       required:
         - id
-        - type
     ConceptQuery:
       description: Represents a concept search query.
       type: object

@@ -1376,20 +1376,14 @@ paths:
         - $ref: '#/components/parameters/page'
       responses:
         '200':
-          description: List of codes.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Code'
+          $ref: '#/components/responses/CodePageResponse'
         '401':
           $ref: '#/components/responses/Unauthorized'
         default:
           $ref: '#/components/responses/UnexpectedError'
       tags:
         - code
-  /codesystem:
+  /code_system:
     parameters:
       - $ref: '#/components/parameters/include'
     get:
@@ -1410,19 +1404,13 @@ paths:
         - $ref: '#/components/parameters/page'
       responses:
         '200':
-          description: List of code systems.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/CodeSystem'
+          $ref: '#/components/responses/CodeSystemPageResponse'
         '401':
           $ref: '#/components/responses/Unauthorized'
         default:
           $ref: '#/components/responses/UnexpectedError'
       tags:
-      - code
+        - code
   /code/suggest:
     parameters:
       - $ref: '#/components/parameters/include'
@@ -1445,13 +1433,7 @@ paths:
         - $ref: '#/components/parameters/page'
       responses:
         '200':
-          description: List of codes.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Code'
+          $ref: '#/components/responses/CodePageResponse'
         '401':
           $ref: '#/components/responses/Unauthorized'
         default:
@@ -1618,6 +1600,28 @@ components:
         - totalElements
         - totalPages
         - type
+    CodePage:
+      type: object
+      properties:
+        content:
+          items:
+            $ref: '#/components/schemas/Code'
+          type: array
+      allOf:
+        - $ref: '#/components/schemas/Page'
+      required:
+        - content
+    CodeSystemPage:
+      type: object
+      properties:
+        content:
+          items:
+            $ref: '#/components/schemas/CodeSystem'
+          type: array
+      allOf:
+        - $ref: '#/components/schemas/Page'
+      required:
+        - content
     ConceptPage:
       type: object
       properties:
@@ -2188,6 +2192,7 @@ components:
         uri:
           type: string
           format: uri
+          example: 'https://loinc.org/3137-7'
         codeSystem:
           $ref: '#/components/schemas/CodeSystem'
         code:
@@ -2534,6 +2539,18 @@ components:
           example:
             status: 500
             message: Unexpected error
+    CodePageResponse:
+      description: A page of codes.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CodePage'
+    CodeSystemPageResponse:
+      description: A page of code systems.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CodeSystemPage'
     ConceptPageResponse:
       description: A page of concepts.
       content:

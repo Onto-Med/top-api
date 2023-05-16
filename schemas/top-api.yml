@@ -1360,19 +1360,18 @@ paths:
       - $ref: '#/components/parameters/include'
     get:
       operationId: getCode
-      summary: Search for codes in coding systems.
+      summary: Retrieve a specific code from an external code systems.
       parameters:
-        - name: term
+        - name: iri
           in: query
-          description: Filter codes by term labels or synonyms.
+          description: Code IRI.
           schema:
             type: string
-        - name: codeSystems
+        - name: codeSystemId
           in: query
           description: Filter codes by code systems.
           schema:
-            type: array
-            $ref: '#/components/schemas/CodeSystem'
+            type: string
         - $ref: '#/components/parameters/page'
       responses:
         '200':
@@ -2182,9 +2181,13 @@ components:
         name:
           type: string
           example: LOINC
+        external_id:
+          type: string
+          example: loinc
       required:
         - uri
         - name
+        - external_id
     Code:
       description: Code of a code system.
       type: object
@@ -2201,6 +2204,11 @@ components:
         name:
           type: string
           example: Body height
+        synonyms:
+          type: array
+          items:
+            type: string
+          example: ["length of the body", "body size"]
       required:
         - codeSystem
         - code

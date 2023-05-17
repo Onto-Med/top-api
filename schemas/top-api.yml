@@ -1872,6 +1872,7 @@ components:
         - allergy_intolerance
         - clinical_impression
         - condition
+        - medication
         - medication_administration
         - medication_request
         - medication_statement

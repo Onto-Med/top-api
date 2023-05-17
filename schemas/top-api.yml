@@ -1911,7 +1911,22 @@ components:
           $ref: '#/components/schemas/DataType'
         dateTime:
           description: |
-            This property is for internal use only and will be ignored, if sent to a server. This property specifies when a value has been observed.
+            This property is for internal use only and will be ignored, if sent to a server.
+            The date time of a value specifies when this value has been observed. The observation happened at a specific point in time.
+          type: string
+          format: x-local-date-time
+        startDateTime:
+          description: |
+            This property is for internal use only and will be ignored, if sent to a server.
+            In contrast to values that are observed at a specific point in time, values can also be observed in a time period, with start and end.
+            Use property startDateTime in combination with endDateTime to specify the observation period.
+          type: string
+          format: x-local-date-time
+        endDateTime:
+          description: |
+            This property is for internal use only and will be ignored, if sent to a server.
+            In contrast to values that are observed at a specific point in time, values can also be observed in a time period, with start and end.
+            Use property startDateTime in combination with endDateTime to specify the observation period.
           type: string
           format: x-local-date-time
       discriminator:

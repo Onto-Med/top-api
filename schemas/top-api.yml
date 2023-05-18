@@ -1355,23 +1355,68 @@ paths:
           $ref: '#/components/responses/UnexpectedError'
       tags:
         - user
-  /code:
+  /code/{codeSystemId}/{uri}:
     parameters:
       - $ref: '#/components/parameters/include'
     get:
       operationId: getCode
-      summary: Retrieve a specific code from an external code systems.
+      summary: Retrieve a specific code from an external code system.
       parameters:
-        - name: iri
-          in: query
-          description: Code IRI.
+        - name: uri
+          in: path
+          description: Code URI, double URL-encoded
           schema:
             type: string
+            format: uri
+          required: true
+          example: http://snomed.info/id/1004019008
         - name: codeSystemId
-          in: query
-          description: Filter codes by code systems.
+          in: path
+          description: Identifier of the code system that contains the code.
           schema:
             type: string
+          required: true
+          example: snomedct
+        - $ref: '#/components/parameters/page'
+      responses:
+        '200':
+          description: Details of the code.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Code'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+      tags:
+        - code
+  /code:
+    get:
+      operationId: getCodes
+      summary: Search for codes in external code systems by label.
+      parameters:
+        - $ref: '#/components/parameters/include'
+        - $ref: '#/components/parameters/codeLabel'
+        - $ref: '#/components/parameters/codeSystemIds'
+        - $ref: '#/components/parameters/page'
+      responses:
+        '200':
+          $ref: '#/components/responses/CodePageResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+      tags:
+        - code
+  /code/suggest:
+    get:
+      operationId: getCodeSuggestions
+      summary: Get autosuggestions for codes from external code systems.
+      parameters:
+        - $ref: '#/components/parameters/include'
+        - $ref: '#/components/parameters/codeLabel'
+        - $ref: '#/components/parameters/codeSystemIds'
         - $ref: '#/components/parameters/page'
       responses:
         '200':
@@ -1391,48 +1436,23 @@ paths:
       parameters:
         - name: uri
           in: query
-          description: Filter code systems by their id
+          description: Filter code systems by id(s)
+          example: http://snomed.info
+          required: false
           schema:
             type: string
             format: uri
         - name: name
           in: query
-          description: Filter code systems by their name
+          description: Filter code systems by name(s)
+          example: SNOMEDCD,LOINC
+          required: false
           schema:
             type: string
         - $ref: '#/components/parameters/page'
       responses:
         '200':
           $ref: '#/components/responses/CodeSystemPageResponse'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        default:
-          $ref: '#/components/responses/UnexpectedError'
-      tags:
-        - code
-  /code/suggest:
-    parameters:
-      - $ref: '#/components/parameters/include'
-    get:
-      operationId: getCodeSuggestions
-      summary: Search for codes in coding systems.
-      parameters:
-        - name: term
-          in: query
-          description: Filter codes by term labels or synonyms.
-          schema:
-            type: string
-        - name: codeSystems
-          in: query
-          description: Filter codes by code systems specified by their names.
-          schema:
-            type: array
-            items:
-              type: string
-        - $ref: '#/components/parameters/page'
-      responses:
-        '200':
-          $ref: '#/components/responses/CodePageResponse'
         '401':
           $ref: '#/components/responses/Unauthorized'
         default:
@@ -1560,6 +1580,23 @@ components:
       description: Defaults to the latest version number.
       schema:
         $ref: '#/components/schemas/VersionNumber'
+    codeLabel:
+      name: label
+      in: query
+      description: Filter codes by term labels (including synonyms).
+      example: growth
+      schema:
+        type: string
+    codeSystemIds:
+      name: codeSystemIds
+      in: query
+      description: Filter codes by code systems specified by their ids.
+      example: snomedct,loinc
+      required: false
+      schema:
+        type: array
+        items:
+          type: string
   schemas:
     Page:
       type: object

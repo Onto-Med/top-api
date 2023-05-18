@@ -1,9 +1,9 @@
 openapi: 3.0.0
 info:
   title: TOP API
-  version: 0.7.6
+  version: 0.7.7
   description: |-
-    API to manage phenotypes, repositories, ontologies and organisations and to execute phenotypic queries.
+    API to manage phenotypes, repositories, ontologies, external terminologies and organisations and to execute phenotypic queries.
 
     To interact with this API you need a JSON Web Token. You can request one as shown below with a curl example:
 
@@ -1355,6 +1355,110 @@ paths:
           $ref: '#/components/responses/UnexpectedError'
       tags:
         - user
+  /code/{codeSystemId}/{uri}:
+    parameters:
+      - $ref: '#/components/parameters/include'
+    get:
+      operationId: getCode
+      summary: Retrieve a specific code from an external code system.
+      parameters:
+        - name: uri
+          in: path
+          description: Code URI, double URL-encoded
+          schema:
+            type: string
+            format: uri
+          required: true
+          example: http://snomed.info/id/1004019008
+        - name: codeSystemId
+          in: path
+          description: Identifier of the code system that contains the code.
+          schema:
+            type: string
+          required: true
+          example: snomedct
+        - $ref: '#/components/parameters/page'
+      responses:
+        '200':
+          description: Details of the code.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Code'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+      tags:
+        - code
+  /code:
+    get:
+      operationId: getCodes
+      summary: Search for codes in external code systems by label.
+      parameters:
+        - $ref: '#/components/parameters/include'
+        - $ref: '#/components/parameters/codeLabel'
+        - $ref: '#/components/parameters/codeSystemIds'
+        - $ref: '#/components/parameters/page'
+      responses:
+        '200':
+          $ref: '#/components/responses/CodePageResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+      tags:
+        - code
+  /code/suggest:
+    get:
+      operationId: getCodeSuggestions
+      summary: Get autosuggestions for codes from external code systems.
+      parameters:
+        - $ref: '#/components/parameters/include'
+        - $ref: '#/components/parameters/codeLabel'
+        - $ref: '#/components/parameters/codeSystemIds'
+        - $ref: '#/components/parameters/page'
+      responses:
+        '200':
+          $ref: '#/components/responses/CodePageResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+      tags:
+        - code
+  /code_system:
+    parameters:
+      - $ref: '#/components/parameters/include'
+    get:
+      operationId: getCodeSystems
+      summary: Search for code systems.
+      parameters:
+        - name: uri
+          in: query
+          description: Filter code systems by id(s)
+          example: http://snomed.info
+          required: false
+          schema:
+            type: string
+            format: uri
+        - name: name
+          in: query
+          description: Filter code systems by name(s)
+          example: SNOMEDCD,LOINC
+          required: false
+          schema:
+            type: string
+        - $ref: '#/components/parameters/page'
+      responses:
+        '200':
+          $ref: '#/components/responses/CodeSystemPageResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+      tags:
+        - code
 components:
   parameters:
     converter:
@@ -1476,6 +1580,23 @@ components:
       description: Defaults to the latest version number.
       schema:
         $ref: '#/components/schemas/VersionNumber'
+    codeLabel:
+      name: label
+      in: query
+      description: Filter codes by term labels (including synonyms).
+      example: growth
+      schema:
+        type: string
+    codeSystemIds:
+      name: codeSystemIds
+      in: query
+      description: Filter codes by code systems specified by their ids.
+      example: snomedct,loinc
+      required: false
+      schema:
+        type: array
+        items:
+          type: string
   schemas:
     Page:
       type: object
@@ -1515,6 +1636,28 @@ components:
         - totalElements
         - totalPages
         - type
+    CodePage:
+      type: object
+      properties:
+        content:
+          items:
+            $ref: '#/components/schemas/Code'
+          type: array
+      allOf:
+        - $ref: '#/components/schemas/Page'
+      required:
+        - content
+    CodeSystemPage:
+      type: object
+      properties:
+        content:
+          items:
+            $ref: '#/components/schemas/CodeSystem'
+          type: array
+      allOf:
+        - $ref: '#/components/schemas/Page'
+      required:
+        - content
     ConceptPage:
       type: object
       properties:
@@ -2091,13 +2234,21 @@ components:
         name:
           type: string
           example: LOINC
+        external_id:
+          type: string
+          example: loinc
       required:
         - uri
         - name
+        - external_id
     Code:
       description: Code of a code system.
       type: object
       properties:
+        uri:
+          type: string
+          format: uri
+          example: 'https://loinc.org/3137-7'
         codeSystem:
           $ref: '#/components/schemas/CodeSystem'
         code:
@@ -2106,6 +2257,11 @@ components:
         name:
           type: string
           example: Body height
+        synonyms:
+          type: array
+          items:
+            type: string
+          example: ["length of the body", "body size"]
       required:
         - codeSystem
         - code
@@ -2444,6 +2600,18 @@ components:
           example:
             status: 500
             message: Unexpected error
+    CodePageResponse:
+      description: A page of codes.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CodePage'
+    CodeSystemPageResponse:
+      description: A page of code systems.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CodeSystemPage'
     ConceptPageResponse:
       description: A page of concepts.
       content:

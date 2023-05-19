@@ -1355,7 +1355,7 @@ paths:
           $ref: '#/components/responses/UnexpectedError'
       tags:
         - user
-  /code/{codeSystemId}/{uri}:
+  '/code/{codeSystemId}/{uri}':
     parameters:
       - $ref: '#/components/parameters/include'
     get:
@@ -1364,18 +1364,18 @@ paths:
       parameters:
         - name: uri
           in: path
-          description: Code URI, double URL-encoded
+          description: 'Code URI, double URL-encoded'
+          required: true
           schema:
             type: string
             format: uri
-          required: true
-          example: http://snomed.info/id/1004019008
+          example: 'http://snomed.info/id/1004019008'
         - name: codeSystemId
           in: path
           description: Identifier of the code system that contains the code.
+          required: true
           schema:
             type: string
-          required: true
           example: snomedct
         - $ref: '#/components/parameters/page'
       responses:
@@ -1437,18 +1437,18 @@ paths:
         - name: uri
           in: query
           description: Filter code systems by id(s)
-          example: http://snomed.info
           required: false
           schema:
             type: string
             format: uri
+          example: 'http://snomed.info'
         - name: name
           in: query
           description: Filter code systems by name(s)
-          example: SNOMEDCD,LOINC
           required: false
           schema:
             type: string
+          example: 'SNOMEDCD,LOINC'
         - $ref: '#/components/parameters/page'
       responses:
         '200':
@@ -1461,6 +1461,23 @@ paths:
         - code
 components:
   parameters:
+    codeLabel:
+      name: label
+      in: query
+      description: Filter codes by term labels (including synonyms).
+      example: growth
+      schema:
+        type: string
+    codeSystemIds:
+      name: codeSystemIds
+      in: query
+      description: Filter codes by code systems specified by their ids.
+      example: 'snomedct,loinc'
+      required: false
+      schema:
+        type: array
+        items:
+          type: string
     converter:
       name: converter
       in: query
@@ -1580,23 +1597,6 @@ components:
       description: Defaults to the latest version number.
       schema:
         $ref: '#/components/schemas/VersionNumber'
-    codeLabel:
-      name: label
-      in: query
-      description: Filter codes by term labels (including synonyms).
-      example: growth
-      schema:
-        type: string
-    codeSystemIds:
-      name: codeSystemIds
-      in: query
-      description: Filter codes by code systems specified by their ids.
-      example: snomedct,loinc
-      required: false
-      schema:
-        type: array
-        items:
-          type: string
   schemas:
     Page:
       type: object
@@ -2261,7 +2261,9 @@ components:
           type: array
           items:
             type: string
-          example: ["length of the body", "body size"]
+          example:
+            - length of the body
+            - body size
       required:
         - codeSystem
         - code

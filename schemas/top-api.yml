@@ -1785,13 +1785,18 @@ components:
           $ref: '#/components/schemas/Phenotype'
       allOf:
         - $ref: '#/components/schemas/Category'
-    SingleConcept:
+    Concept:
       type: object
       properties:
         superConcepts:
           type: array
           items:
             $ref: '#/components/schemas/SingleConcept'
+      allOf:
+        - $ref: '#/components/schemas/Entity'
+    SingleConcept:
+      type: object
+      properties:
         singleConcepts:
           type: array
           items:
@@ -1801,18 +1806,14 @@ components:
           items:
             $ref: '#/components/schemas/CompositeConcept'
       allOf:
-        - $ref: '#/components/schemas/Entity'
+        - $ref: '#/components/schemas/Concept'
     CompositeConcept:
       type: object
       properties:
         expression:
           $ref: '#/components/schemas/Expression'
-        superConcepts:
-          type: array
-          items:
-            $ref: '#/components/schemas/SingleConcept'
       allOf:
-        - $ref: '#/components/schemas/Entity'
+        - $ref: '#/components/schemas/Concept'
       required:
         - expression
     Constant:

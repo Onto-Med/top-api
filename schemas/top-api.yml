@@ -1376,7 +1376,7 @@ paths:
           required: true
           schema:
             type: string
-          example: snomedct
+          example: snomed
         - $ref: '#/components/parameters/page'
       responses:
         '200':
@@ -1438,19 +1438,19 @@ paths:
       parameters:
         - name: uri
           in: query
-          description: Filter code systems by id(s)
+          description: Filter code systems by uri
           required: false
           schema:
             type: string
             format: uri
-          example: 'http://snomed.info'
+          example: 'http://snomed.info/sct/900000000000207008'
         - name: name
           in: query
-          description: Filter code systems by name(s)
+          description: Filter code systems by name/id
           required: false
           schema:
             type: string
-          example: 'SNOMEDCD,LOINC'
+          example: snomed
         - $ref: '#/components/parameters/page'
       responses:
         '200':
@@ -1474,7 +1474,9 @@ components:
       name: codeSystemIds
       in: query
       description: Filter codes by code systems specified by their ids.
-      example: 'snomedct,loinc'
+      example:
+        - snomed
+        - loinc
       required: false
       schema:
         type: array

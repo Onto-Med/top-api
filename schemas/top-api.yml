@@ -2268,14 +2268,14 @@ components:
             - length of the body
             - body size
         highlightLabel:
+          description: The highlighted part of an autosuggest query (does not persist - this is only generated on the fly when using /suggest)
           type: string
-          description: the highlighted part of an autosuggest query (do not persist - this is only generated on the fly when using /suggest)
         highlightSynonym:
+          description: The highlighted part of an autosuggest query (does not persist - this is only generated on the fly when using /suggest)
           type: string
-          description: the highlighted part of an autosuggest query (do not persist - this is only generated on the fly when using /suggest)
         codeSystemShortName:
+          description: Short name of the code system the code belongs to (for display in autosuggestion scenarios)
           type: string
-          description: short name of the codeSystem the code belongs to (for display in autosuggestion scenarios)
       required:
         - codeSystem
         - code

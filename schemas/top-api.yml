@@ -2233,8 +2233,11 @@ components:
           example: 'https://loinc.org/'
         name:
           type: string
+          example: Logical Observation Identifier Names and Codes
+        shortName:
+          type: string
           example: LOINC
-        external_id:
+        externalId:
           type: string
           example: loinc
       required:
@@ -2264,6 +2267,15 @@ components:
           example:
             - length of the body
             - body size
+        highlightLabel:
+          type: string
+          description: the highlighted part of an autosuggest query (do not persist - this is only generated on the fly when using /suggest)
+        highlightSynonym:
+          type: string
+          description: the highlighted part of an autosuggest query (do not persist - this is only generated on the fly when using /suggest)
+        codeSystemShortName:
+          type: string
+          description: short name of the codeSystem the code belongs to (for display in autosuggestion scenarios)
       required:
         - codeSystem
         - code

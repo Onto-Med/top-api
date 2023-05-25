@@ -1387,6 +1387,8 @@ paths:
                 $ref: '#/components/schemas/Code'
         '401':
           $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
         default:
           $ref: '#/components/responses/UnexpectedError'
       tags:

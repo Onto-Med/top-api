@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: TOP API
-  version: 0.7.7
+  version: 0.7.8
   description: |-
     API to manage phenotypes, repositories, ontologies, external terminologies and organisations and to execute phenotypic queries.
 
@@ -1376,8 +1376,7 @@ paths:
           required: true
           schema:
             type: string
-          example: snomedct
-        - $ref: '#/components/parameters/page'
+          example: snomed
       responses:
         '200':
           description: Details of the code.
@@ -1387,6 +1386,8 @@ paths:
                 $ref: '#/components/schemas/Code'
         '401':
           $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
         default:
           $ref: '#/components/responses/UnexpectedError'
       tags:
@@ -1436,19 +1437,19 @@ paths:
       parameters:
         - name: uri
           in: query
-          description: Filter code systems by id(s)
+          description: Filter code systems by uri
           required: false
           schema:
             type: string
             format: uri
-          example: 'http://snomed.info'
+          example: 'http://snomed.info/sct/900000000000207008'
         - name: name
           in: query
-          description: Filter code systems by name(s)
+          description: Filter code systems by name/id
           required: false
           schema:
             type: string
-          example: 'SNOMEDCD,LOINC'
+          example: snomed
         - $ref: '#/components/parameters/page'
       responses:
         '200':
@@ -1472,7 +1473,9 @@ components:
       name: codeSystemIds
       in: query
       description: Filter codes by code systems specified by their ids.
-      example: 'snomedct,loinc'
+      example:
+        - snomed
+        - loinc
       required: false
       schema:
         type: array
@@ -2233,8 +2236,11 @@ components:
           example: 'https://loinc.org/'
         name:
           type: string
+          example: Logical Observation Identifier Names and Codes
+        shortName:
+          type: string
           example: LOINC
-        external_id:
+        externalId:
           type: string
           example: loinc
       required:
@@ -2264,6 +2270,12 @@ components:
           example:
             - length of the body
             - body size
+        highlightLabel:
+          description: The highlighted part of an autosuggest query (does not persist - this is only generated on the fly when using /suggest)
+          type: string
+        highlightSynonym:
+          description: The highlighted part of an autosuggest query (does not persist - this is only generated on the fly when using /suggest)
+          type: string
       required:
         - codeSystem
         - code

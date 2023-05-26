@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: TOP API
-  version: 0.7.8
+  version: 0.7.9
   description: |-
     API to manage phenotypes, repositories, ontologies, external terminologies and organisations and to execute phenotypic queries.
 
@@ -2245,8 +2245,6 @@ components:
           example: loinc
       required:
         - uri
-        - name
-        - external_id
     Code:
       description: Code of a code system.
       type: object

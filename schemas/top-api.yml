@@ -1377,7 +1377,6 @@ paths:
           schema:
             type: string
           example: snomed
-        - $ref: '#/components/parameters/page'
       responses:
         '200':
           description: Details of the code.

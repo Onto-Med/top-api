@@ -1,6 +1,8 @@
 # TOP API
 
-This repository contains the OpenAPI 3 specification of the TOP framework. The schema file is located at [schemas/top-api.yaml](schemas/top-api.yaml)
+This repository contains the OpenAPI 3 specification of the TOP framework.
+Please see [top-deployment](https://onto-med.github.io/top-deployment) for an onverall description of the framework.
+The schema file is located at [schemas/top-api.yaml](schemas/top-api.yaml)
 
 [![DOI](https://zenodo.org/badge/429797878.svg)](https://zenodo.org/badge/latestdoi/429797878)
 [![Swagger UI](https://img.shields.io/badge/-Swagger%20UI-%23Clojure?style=flat&logo=swagger&logoColor=white)](https://onto-med.github.io/top-api/)
@@ -61,4 +63,4 @@ Create new releases via GitHub Workflow [publish-snapshots.yml](.github/workflow
 
 ## License
 
-The code in this repository and the packages `care.smith.top:top-api` and `@onto-med/top-api` are licensed under [GPL-3.0](LICENSE).
+The code in this repository and the packages `care.smith.top:top-api` and `@onto-med/top-api` are licensed under [MIT](LICENSE).

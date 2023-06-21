@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: TOP API
-  version: 0.7.9
+  version: 0.8.0
   description: |-
     API to manage phenotypes, repositories, ontologies, external terminologies and organisations and to execute phenotypic queries.
 
@@ -16,7 +16,7 @@ info:
       -X POST "https://top.imise.uni-leipzig.de/auth/realms/top-realm/protocol/openid-connect/token"
     ```
   license:
-    name: GPL-3.0
+    name: MIT
     url: 'https://github.com/Onto-Med/top-api/blob/main/LICENSE'
 servers:
   - url: 'https://top.imise.uni-leipzig.de/api'

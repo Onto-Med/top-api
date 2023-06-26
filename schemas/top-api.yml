@@ -2076,6 +2076,17 @@ components:
             Use property startDateTime in combination with endDateTime to specify the observation period.
           type: string
           format: x-local-date-time
+        fields:
+          description: |
+            In case of FHIR, resources may hold many information relevant for calculations.
+            This property maps FHIR field identifiers to actual values in the fields.
+          type: object
+          example:
+            dosage.dose:
+              dataType: number
+              value: 2
+          additionalProperties:
+            $ref: '#/components/schemas/Value'
       discriminator:
         propertyName: dataType
         mapping:

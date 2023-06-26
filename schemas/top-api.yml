@@ -3,7 +3,7 @@ info:
   title: TOP API
   version: 0.8.0
   description: |-
-    API to manage phenotypes, repositories, ontologies and organisations and to execute phenotypic queries.
+    API to manage phenotypes, repositories, ontologies, external terminologies and organisations and to execute phenotypic queries.
 
     To interact with this API you need a JSON Web Token. You can request one as shown below with a curl example:
 
@@ -16,7 +16,7 @@ info:
       -X POST "https://top.imise.uni-leipzig.de/auth/realms/top-realm/protocol/openid-connect/token"
     ```
   license:
-    name: GPL-3.0
+    name: MIT
     url: 'https://github.com/Onto-Med/top-api/blob/main/LICENSE'
 servers:
   - url: 'https://top.imise.uni-leipzig.de/api'
@@ -1350,8 +1350,132 @@ paths:
           $ref: '#/components/responses/UnexpectedError'
       tags:
         - user
+  '/code/{codeSystemId}/{uri}':
+    parameters:
+      - $ref: '#/components/parameters/include'
+    get:
+      operationId: getCode
+      summary: Retrieve a specific code from an external code system.
+      parameters:
+        - name: uri
+          in: path
+          description: 'Code URI, double URL-encoded'
+          required: true
+          schema:
+            type: string
+            format: uri
+          example: 'http://snomed.info/id/1004019008'
+        - name: codeSystemId
+          in: path
+          description: Identifier of the code system that contains the code.
+          required: true
+          schema:
+            type: string
+          example: snomed
+      responses:
+        '200':
+          description: Details of the code.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Code'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+      tags:
+        - code
+  /code:
+    get:
+      operationId: getCodes
+      summary: Search for codes in external code systems by label.
+      parameters:
+        - $ref: '#/components/parameters/include'
+        - $ref: '#/components/parameters/codeLabel'
+        - $ref: '#/components/parameters/codeSystemIds'
+        - $ref: '#/components/parameters/page'
+      responses:
+        '200':
+          $ref: '#/components/responses/CodePageResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+      tags:
+        - code
+  /code/suggest:
+    get:
+      operationId: getCodeSuggestions
+      summary: Get autosuggestions for codes from external code systems.
+      parameters:
+        - $ref: '#/components/parameters/include'
+        - $ref: '#/components/parameters/codeLabel'
+        - $ref: '#/components/parameters/codeSystemIds'
+        - $ref: '#/components/parameters/page'
+      responses:
+        '200':
+          $ref: '#/components/responses/CodePageResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+      tags:
+        - code
+  /code_system:
+    parameters:
+      - $ref: '#/components/parameters/include'
+    get:
+      operationId: getCodeSystems
+      summary: Search for code systems.
+      parameters:
+        - name: uri
+          in: query
+          description: Filter code systems by uri
+          required: false
+          schema:
+            type: string
+            format: uri
+          example: 'http://snomed.info/sct/900000000000207008'
+        - name: name
+          in: query
+          description: Filter code systems by name/id
+          required: false
+          schema:
+            type: string
+          example: snomed
+        - $ref: '#/components/parameters/page'
+      responses:
+        '200':
+          $ref: '#/components/responses/CodeSystemPageResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+      tags:
+        - code
 components:
   parameters:
+    codeLabel:
+      name: label
+      in: query
+      description: Filter codes by term labels (including synonyms).
+      example: growth
+      schema:
+        type: string
+    codeSystemIds:
+      name: codeSystemIds
+      in: query
+      description: Filter codes by code systems specified by their ids.
+      example:
+        - snomed
+        - loinc
+      required: false
+      schema:
+        type: array
+        items:
+          type: string
     converter:
       name: converter
       in: query
@@ -1510,6 +1634,28 @@ components:
         - totalElements
         - totalPages
         - type
+    CodePage:
+      type: object
+      properties:
+        content:
+          items:
+            $ref: '#/components/schemas/Code'
+          type: array
+      allOf:
+        - $ref: '#/components/schemas/Page'
+      required:
+        - content
+    CodeSystemPage:
+      type: object
+      properties:
+        content:
+          items:
+            $ref: '#/components/schemas/CodeSystem'
+          type: array
+      allOf:
+        - $ref: '#/components/schemas/Page'
+      required:
+        - content
     ConceptClusterPage:
       type: object
       properties:
@@ -1901,6 +2047,8 @@ components:
         - allergy_intolerance
         - clinical_impression
         - condition
+        - encounter
+        - medication
         - medication_administration
         - medication_request
         - medication_statement
@@ -1939,9 +2087,35 @@ components:
           $ref: '#/components/schemas/DataType'
         dateTime:
           description: |
-            This property is for internal use only and will be ignored, if sent to a server. This property specifies when a value has been observed.
+            This property is for internal use only and will be ignored, if sent to a server.
+            The date time of a value specifies when this value has been observed. The observation happened at a specific point in time.
           type: string
           format: x-local-date-time
+        startDateTime:
+          description: |
+            This property is for internal use only and will be ignored, if sent to a server.
+            In contrast to values that are observed at a specific point in time, values can also be observed in a time period, with start and end.
+            Use property startDateTime in combination with endDateTime to specify the observation period.
+          type: string
+          format: x-local-date-time
+        endDateTime:
+          description: |
+            This property is for internal use only and will be ignored, if sent to a server.
+            In contrast to values that are observed at a specific point in time, values can also be observed in a time period, with start and end.
+            Use property startDateTime in combination with endDateTime to specify the observation period.
+          type: string
+          format: x-local-date-time
+        fields:
+          description: |
+            In case of FHIR, resources may hold many information relevant for calculations.
+            This property maps FHIR field identifiers to actual values in the fields.
+          type: object
+          example:
+            dosage.dose:
+              dataType: number
+              value: 2
+          additionalProperties:
+            $ref: '#/components/schemas/Value'
       discriminator:
         propertyName: dataType
         mapping:
@@ -2105,14 +2279,23 @@ components:
           example: 'https://loinc.org/'
         name:
           type: string
+          example: Logical Observation Identifier Names and Codes
+        shortName:
+          type: string
           example: LOINC
+        externalId:
+          type: string
+          example: loinc
       required:
         - uri
-        - name
     Code:
       description: Code of a code system.
       type: object
       properties:
+        uri:
+          type: string
+          format: uri
+          example: 'https://loinc.org/3137-7'
         codeSystem:
           $ref: '#/components/schemas/CodeSystem'
         code:
@@ -2121,6 +2304,19 @@ components:
         name:
           type: string
           example: Body height
+        synonyms:
+          type: array
+          items:
+            type: string
+          example:
+            - length of the body
+            - body size
+        highlightLabel:
+          description: The highlighted part of an autosuggest query (does not persist - this is only generated on the fly when using /suggest)
+          type: string
+        highlightSynonym:
+          description: The highlighted part of an autosuggest query (does not persist - this is only generated on the fly when using /suggest)
+          type: string
       required:
         - codeSystem
         - code
@@ -2492,6 +2688,18 @@ components:
           example:
             status: 500
             message: Unexpected error
+    CodePageResponse:
+      description: A page of codes.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CodePage'
+    CodeSystemPageResponse:
+      description: A page of code systems.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CodeSystemPage'
     ConceptClusterPageResponse:
       description: A page of concept cluster.
       content:

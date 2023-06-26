@@ -2018,6 +2018,7 @@ components:
         - allergy_intolerance
         - clinical_impression
         - condition
+        - encounter
         - medication
         - medication_administration
         - medication_request

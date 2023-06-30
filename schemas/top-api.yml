@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: TOP API
-  version: 0.8.0
+  version: 0.9.0
   description: |-
     API to manage phenotypes, repositories, ontologies, external terminologies and organisations and to execute phenotypic queries.
 
@@ -63,22 +63,9 @@ paths:
           in: query
           description: Filter document by containing phrase.
           schema:
-            type: string
-        - name: conceptText
-          in: query
-          description: Filter document by containing concept.
-          schema:
-            type: string
-        - name: phraseId
-          in: query
-          description: Filter document by containing phrase id.
-          schema:
-            type: string
-        - name: conceptId
-          in: query
-          description: Filter document by containing concept id.
-          schema:
-            type: string
+            type: array
+            items:
+              type: string
       responses:
         '200':
           description: List of documents
@@ -94,26 +81,23 @@ paths:
           $ref: '#/components/responses/UnexpectedError'
       tags:
         - document
-  '/document/concept/{conceptId}':
+  '/document/conceptcluster/{conceptClusterId}':
     parameters:
-      - name: conceptId
+      - name: conceptClusterId
         in: path
         required: true
+        description: filter documents by the concept cluster ids to which they belong
         schema:
           type: array
           items:
             type: string
     get:
-      operationId: getDocumentsByConceptIds
+      operationId: getDocumentIdsByConceptClusterIds
       summary: Searches for documents from specific concept clusters. Use the query parameters to filter the result.
       parameters:
-        - name: idOnly
-          in: query
-          schema:
-            type: boolean
-            default: true
         - name: gatheringMode
           in: query
+          description: which gathering strategy for the documents regarding their concept cluster to employ (union, exclusive, intersection)
           schema:
             type: string
             default: exclusive
@@ -122,6 +106,12 @@ paths:
           description: Filter documents by name.
           schema:
             type: string
+        - name: exemplarOnly
+          in: query
+          description: only gets documents if they contain phrases that are considered exemplary for the concept cluster
+          schema:
+            type: boolean
+            default: false
       responses:
         '200':
           description: List of documents.
@@ -148,7 +138,7 @@ paths:
           type: string
       - $ref: '#/components/parameters/include'
     get:
-      operationId: getDocumentByPhraseId
+      operationId: getDocumentsByPhraseIds
       summary: Searches for documents that contain a specific phrase. Use the query parameters to filter the result.
       parameters:
         - name: name
@@ -176,10 +166,18 @@ paths:
         required: true
         schema:
           type: string
-      - $ref: '#/components/parameters/include'
     get:
       operationId: getDocumentById
       summary: Returns a particular document
+      parameters:
+        - name: conceptClusterIds
+          in: query
+          description: highlights the phrases of the selected concepts cluster
+          schema:
+            type: array
+            items:
+              type: string
+        - $ref: '#/components/parameters/include'
       responses:
         '200':
           description: Details of the Document
@@ -205,9 +203,9 @@ paths:
           description: Search phrase by text
           schema:
             type: string
-        - name: conceptText
+        - name: conceptClusterText
           in: query
-          description: Search phrase by concept text
+          description: Search phrase by concept cluster text
           schema:
             type: string
       responses:
@@ -225,17 +223,17 @@ paths:
           $ref: '#/components/responses/UnexpectedError'
       tags:
         - phrase
-  '/phrase/concept/{conceptId}':
+  '/phrase/conceptcluster/{conceptClusterId}':
     parameters:
-      - name: conceptId
+      - name: conceptClusterId
         in: path
         required: true
         schema:
           type: string
       - $ref: '#/components/parameters/include'
     get:
-      operationId: getPhraseByConceptId
-      summary: Searches for phrases that are contained in a specific concept. Use the query parameters to filter the result.
+      operationId: getPhrasesByConceptClusterIds
+      summary: Searches for phrases that are contained in a specific concept cluster. Use the query parameters to filter the result.
       parameters:
         - name: name
           in: query
@@ -263,7 +261,7 @@ paths:
           type: string
       - $ref: '#/components/parameters/include'
     get:
-      operationId: getPhraseByDocumentId
+      operationId: getPhrasesByDocumentId
       summary: Searches for phrases that are contained in a specific document. Use the query parameters to filter the result.
       parameters:
         - name: name
@@ -310,32 +308,32 @@ paths:
           $ref: '#/components/responses/UnexpectedError'
       tags:
         - phrase
-  /concept:
+  /conceptcluster:
     get:
-      operationId: getConcepts
-      summary: Searches for concepts
+      operationId: getConceptClusters
+      summary: Searches for specific concept clusters
       parameters:
         - name: phraseText
           in: query
-          description: Search concept by phrase
+          description: filter concept cluster by phrase string
           schema:
             type: string
       responses:
         '200':
-          description: List of concepts
+          description: List of concept clusters
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Concept'
+                  $ref: '#/components/schemas/ConceptCluster'
         '401':
           $ref: '#/components/responses/Unauthorized'
         default:
           $ref: '#/components/responses/UnexpectedError'
       tags:
-        - concept
-  '/concept/phrase/{phraseId}':
+        - conceptcluster
+  '/conceptcluster/phrase/{phraseId}':
     parameters:
       - name: phraseId
         in: path
@@ -344,18 +342,18 @@ paths:
           type: string
       - $ref: '#/components/parameters/include'
     get:
-      operationId: getConceptByPhraseId
-      summary: Searches for concepts that contain a specific phrase. Use the query parameters to filter the result.
+      operationId: getConceptClustersByPhraseId
+      summary: Searches for concept cluster that contain a specific phrase. Use the query parameters to filter the result.
       parameters:
         - name: name
           in: query
-          description: Filter concepts by name.
+          description: Filter concept cluster by name.
           schema:
             type: string
         - $ref: '#/components/parameters/page'
       responses:
         '200':
-          $ref: '#/components/responses/ConceptPageResponse'
+          $ref: '#/components/responses/ConceptClusterPageResponse'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
@@ -363,8 +361,8 @@ paths:
         default:
           $ref: '#/components/responses/UnexpectedError'
       tags:
-        - concept
-  '/concept/document/{documentId}':
+        - conceptcluster
+  '/conceptcluster/document/{documentId}':
     parameters:
       - name: documentId
         in: path
@@ -373,18 +371,18 @@ paths:
           type: string
       - $ref: '#/components/parameters/include'
     get:
-      operationId: getConceptByDocumentId
-      summary: Searches for concepts that are contained in a specific document. Use the query parameters to filter the result.
+      operationId: getConceptClustersByDocumentId
+      summary: Searches for concept clusters that are contained in a specific document. Use the query parameters to filter the result.
       parameters:
         - name: name
           in: query
-          description: Filter concepts by name.
+          description: Filter concept clusters by name.
           schema:
             type: string
         - $ref: '#/components/parameters/page'
       responses:
         '200':
-          $ref: '#/components/responses/ConceptPageResponse'
+          $ref: '#/components/responses/ConceptClusterPageResponse'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
@@ -392,26 +390,26 @@ paths:
         default:
           $ref: '#/components/responses/UnexpectedError'
       tags:
-        - concept
-  '/concept/{conceptId}':
-    summary: Represents a concept
+        - conceptcluster
+  '/conceptcluster/{conceptClusterId}':
+    summary: Represents a concept cluster
     parameters:
-      - name: conceptId
+      - name: conceptClusterId
         in: path
         required: true
         schema:
           type: string
       - $ref: '#/components/parameters/include'
     get:
-      operationId: getConceptById
-      summary: Returns a particular concept
+      operationId: getConceptClusterById
+      summary: Returns a particular concept cluster
       responses:
         '200':
-          description: Details of the Concept
+          description: Details of the Concept cluster
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Concept'
+                $ref: '#/components/schemas/ConceptCluster'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
@@ -419,7 +417,7 @@ paths:
         default:
           $ref: '#/components/responses/UnexpectedError'
       tags:
-        - concept
+        - conceptcluster
   /organisation:
     parameters:
       - $ref: '#/components/parameters/include'
@@ -1625,7 +1623,7 @@ components:
       discriminator:
         propertyName: type
         mapping:
-          concept: '#/components/responses/ConceptPage'
+          conceptcluster: '#/components/responses/ConceptClusterPage'
           document: '#/components/responses/DocumentPage'
           entity: '#/components/responses/EntityPage'
           organisation: '#/components/responses/OrganisationPage'
@@ -1661,12 +1659,12 @@ components:
         - $ref: '#/components/schemas/Page'
       required:
         - content
-    ConceptPage:
+    ConceptClusterPage:
       type: object
       properties:
         content:
           items:
-            $ref: '#/components/schemas/Concept'
+            $ref: '#/components/schemas/ConceptCluster'
           type: array
       allOf:
         - $ref: '#/components/schemas/Page'
@@ -1893,6 +1891,8 @@ components:
         propertyName: entityType
         mapping:
           category: '#/components/schemas/Category'
+          single_concept: '#/components/schemas/SingleConcept'
+          composite_concept: '#/components/schemas/CompositeConcept'
           single_phenotype: '#/components/schemas/Phenotype'
           composite_phenotype: '#/components/schemas/Phenotype'
           single_restriction: '#/components/schemas/Phenotype'
@@ -1934,6 +1934,33 @@ components:
           $ref: '#/components/schemas/Phenotype'
       allOf:
         - $ref: '#/components/schemas/Category'
+    Concept:
+      type: object
+      properties:
+        superConcepts:
+          type: array
+          items:
+            $ref: '#/components/schemas/SingleConcept'
+      allOf:
+        - $ref: '#/components/schemas/Entity'
+    SingleConcept:
+      type: object
+      properties:
+        subConcepts:
+          type: array
+          items:
+            $ref: '#/components/schemas/Concept'
+      allOf:
+        - $ref: '#/components/schemas/Concept'
+    CompositeConcept:
+      type: object
+      properties:
+        expression:
+          $ref: '#/components/schemas/Expression'
+      allOf:
+        - $ref: '#/components/schemas/Concept'
+      required:
+        - expression
     Constant:
       type: object
       properties:
@@ -1993,6 +2020,11 @@ components:
       properties:
         functionId:
           description: ID of a valid expression function. See ExpressionFunction for a detailed description.
+          type: string
+        type:
+          description: |
+            Determines the result of a text function. For example: 'initial_term_list', 'processed_term_list'
+            Valid values depend on the implementation.
           type: string
         entityId:
           description: 'In case this expression holds an entity, this property contains the id of that entity.'
@@ -2199,6 +2231,8 @@ components:
       type: string
       enum:
         - category
+        - single_concept
+        - composite_concept
         - single_phenotype
         - composite_phenotype
         - single_restriction
@@ -2376,13 +2410,17 @@ components:
         - min
         - max
     Query:
-      description: |
-        Represents a search query for subjects/individuals. A query has basic configurations for data source connections as well as in/exclusions and projections.
+      description: A Query can be used to search for arbitrary data in external data sources.
       type: object
       properties:
         id:
           type: string
           format: uuid
+        type:
+          type: string
+          enum:
+            - phenotype
+            - concept
         name:
           description: |
             Name of this query. For example, you could allow users to save a query for later use and use the name as identifier.
@@ -2394,6 +2432,20 @@ components:
           items:
             type: string
             example: example_data_source
+      discriminator:
+        propertyName: type
+        mapping:
+          phenotype: '#/components/schemas/PhenotypeQuery'
+          concept: '#/components/schemas/ConceptQuery'
+      required:
+        - id
+        - type
+    PhenotypeQuery:
+      description: |
+        Represents a phenotypic search query for subjects/individuals.
+        A phenotype query has basic configurations for data source connections as well as in/exclusions and projections.
+      type: object
+      properties:
         criteria:
           description: List of in- and exclusion criteria.
           type: array
@@ -2407,8 +2459,23 @@ components:
             $ref: '#/components/schemas/ProjectionEntry'
         dependentSubjects:
           $ref: '#/components/schemas/DependentSubjectsMap'
+      allOf:
+        - $ref: '#/components/schemas/Query'
       required:
         - id
+    ConceptQuery:
+      description: Represents a concept search query.
+      type: object
+      properties:
+        entityId:
+          description: The ID of the entity this query is performed with.
+          type: string
+        dateTimeRestriction:
+          $ref: '#/components/schemas/DateTimeRestriction'
+      allOf:
+        - $ref: '#/components/schemas/Query'
+      required:
+        - entityId
     QueryResult:
       description: Result of a query. It might indicate that the query has not finished yet or has failed.
       type: object
@@ -2420,7 +2487,7 @@ components:
           type: string
           format: date-time
         count:
-          description: Total count of subjects in the query result.
+          description: Total count of entries in the query result.
           type: integer
           format: int64
           example: 2746
@@ -2453,7 +2520,7 @@ components:
           type: string
       example: null
       additionalProperties:
-        $ref: '#/components/schemas/Phenotype'
+        $ref: '#/components/schemas/Entity'
       required:
         - id
     DataSource:
@@ -2549,10 +2616,10 @@ components:
           type: string
         text:
           type: string
-        phrases:
-          type: array
-          items:
-            type: string
+        name:
+          type: string
+        highlightedText:
+          type: string
     Phrase:
       type: object
       properties:
@@ -2568,7 +2635,7 @@ components:
             type: string
       required:
         - id
-    Concept:
+    ConceptCluster:
       type: object
       properties:
         id:
@@ -2636,12 +2703,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/CodeSystemPage'
-    ConceptPageResponse:
-      description: A page of concepts.
+    ConceptClusterPageResponse:
+      description: A page of concept cluster.
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ConceptPage'
+            $ref: '#/components/schemas/ConceptClusterPage'
     DocumentPageResponse:
       description: A page of documents.
       content:
@@ -2708,8 +2775,8 @@ tags:
   - name: document
     description: Everything about documents
   - name: phrase
-    description: Phrases are contained in specific documents and belong to concepts
-  - name: concept
-    description: Concepts are abstract representations of similar phrases
+    description: Phrases are contained in specific documents and belong to concept clusters
+  - name: conceptcluster
+    description: Concept clusters are abstract representations of similar phrases
 security:
   - BearerAuth: []

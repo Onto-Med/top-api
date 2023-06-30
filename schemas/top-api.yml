@@ -86,6 +86,7 @@ paths:
       - name: conceptClusterId
         in: path
         required: true
+        description: filter documents by the concept cluster ids to which they belong
         schema:
           type: array
           items:
@@ -96,6 +97,7 @@ paths:
       parameters:
         - name: gatheringMode
           in: query
+          description: which gathering strategy for the documents regarding their concept cluster to employ (union, exclusive, intersection)
           schema:
             type: string
             default: exclusive
@@ -106,6 +108,7 @@ paths:
             type: string
         - name: exemplarOnly
           in: query
+          description: only gets documents if they contain phrases that are considered exemplary for the concept cluster
           schema:
             type: boolean
             default: false
@@ -312,7 +315,7 @@ paths:
       parameters:
         - name: phraseText
           in: query
-          description: Search concept cluster by phrase
+          description: filter concept cluster by phrase string
           schema:
             type: string
       responses:

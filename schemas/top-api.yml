@@ -463,6 +463,12 @@ paths:
     get:
       operationId: getDataSources
       summary: Returns all available and accessible data sources.
+      parameters:
+        - name: queryType
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/QueryType'
       responses:
         '200':
           description: List of data sources.
@@ -1839,7 +1845,7 @@ components:
           type: boolean
           default: false
     Entity:
-      description: Either category or phenotype.
+      description: Either category, phenotype or concept.
       type: object
       properties:
         entityType:
@@ -2409,6 +2415,11 @@ components:
         - exact
         - min
         - max
+    QueryType:
+      type: string
+      enum:
+        - phenotype
+        - concept
     Query:
       description: A Query can be used to search for arbitrary data in external data sources.
       type: object
@@ -2417,10 +2428,7 @@ components:
           type: string
           format: uuid
         type:
-          type: string
-          enum:
-            - phenotype
-            - concept
+          $ref: '#/components/schemas/QueryType'
         name:
           description: |
             Name of this query. For example, you could allow users to save a query for later use and use the name as identifier.

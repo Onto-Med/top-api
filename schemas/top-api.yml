@@ -2480,6 +2480,8 @@ components:
           type: string
         dateTimeRestriction:
           $ref: '#/components/schemas/DateTimeRestriction'
+        language:
+          type: string
       allOf:
         - $ref: '#/components/schemas/Query'
       required:

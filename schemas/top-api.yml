@@ -2447,6 +2447,7 @@ components:
       required:
         - id
         - type
+        - dataSource
     PhenotypeQuery:
       description: |
         Represents a phenotypic search query for subjects/individuals.
@@ -2468,8 +2469,6 @@ components:
           $ref: '#/components/schemas/DependentSubjectsMap'
       allOf:
         - $ref: '#/components/schemas/Query'
-      required:
-        - id
     ConceptQuery:
       description: |
         Represents a concept search query.

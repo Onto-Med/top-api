@@ -465,6 +465,7 @@ paths:
       summary: Returns all available and accessible data sources.
       parameters:
         - name: queryType
+          description: Filter by query type for which data sources can be used.
           in: query
           required: false
           schema:
@@ -2434,12 +2435,10 @@ components:
             Name of this query. For example, you could allow users to save a query for later use and use the name as identifier.
           type: string
           example: Example Query
-        dataSources:
-          description: List of data source IDs.
-          type: array
-          items:
-            type: string
-            example: example_data_source
+        dataSource:
+          description: A data source ID.
+          type: string
+          example: example_data_source
       discriminator:
         propertyName: type
         mapping:
@@ -2451,7 +2450,7 @@ components:
     PhenotypeQuery:
       description: |
         Represents a phenotypic search query for subjects/individuals.
-        A phenotype query has basic configurations for data source connections as well as in/exclusions and projections.
+        A phenotype query has in/exclusions and projections.
       type: object
       properties:
         criteria:
@@ -2472,7 +2471,9 @@ components:
       required:
         - id
     ConceptQuery:
-      description: Represents a concept search query.
+      description: |
+        Represents a concept search query.
+        A concept query references exactly one entity and specifies a language to search for.
       type: object
       properties:
         entityId:

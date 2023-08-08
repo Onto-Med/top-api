@@ -25,13 +25,17 @@ The schema file is located at [schemas/top-api.yaml](schemas/top-api.yaml)
 2. Add annotation `@ComponentScan("care.smith.top.backend")` to your application class.
 3. Create implementations for the delegate interfaces in `care.smith.top.backend.api` (e.g., `EntityApiDelegate`).
 
+Because the Maven package is hosted at [GitHub Packages](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-apache-maven-registry),
+you need to make some modifications to your Maven installation in order to download and install the package. Please follow the [Authenticating to GitHub Packages](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-apache-maven-registry#authenticating-to-github-packages) instructions.
+
 ### Typescript Axios
 
 1. Add the file .npmrc to the project folder, with the following content:
     ```properties
     @onto-med:registry=https://npm.pkg.github.com
     ```
-2. Authenticate at GitHub Packages registry (you will be prompted for username and password aka. personal access token):
+2. Authenticate to [GitHub Packages](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-npm-registry)
+  (you will be prompted for username and password aka. personal access token, see [Authenticating to GitHub Packages](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-npm-registry#authenticating-to-github-packages)):
     ```sh
     npm login --scope=@onto-med --registry=https://npm.pkg.github.com
     ```
@@ -40,26 +44,9 @@ The schema file is located at [schemas/top-api.yaml](schemas/top-api.yaml)
     yarn add @onto-med/top-api
     ```
 
-## Versioning
+## Contribution and Development
 
-There will always be a snapshot version available with latest changes pushed to the main branch. Snapshots have a **higher** version number than the latest release.
-
-## Development
-
-We recommend to use a [Visual Studie Code](https://code.visualstudio.com) [devcontainer](https://code.visualstudio.com/docs/remote/containers) to modify the specification file.
-The container has the [OpenAPI (Swagger) Editor](https://marketplace.visualstudio.com/items?itemName=42Crunch.vscode-openapi) extension preinstalled.
-
-### Format Schema File
-
-You can use the npm package [openapi-format](https://www.npmjs.com/package/openapi-format) to automatically format the OpenApi schema file.
-
-```
-npx openapi-format schemas/top-api.yml --output schemas/top-api.yml
-```
-
-### Releases
-
-Create new releases via GitHub Workflow [publish-snapshots.yml](.github/workflows/publish-snapshots.yml). Doing so will automatically build and publish a new Spring Boot skeleton and typescript-axios package, generated with [openapi-generator-maven-plugin](https://github.com/OpenAPITools/openapi-generator/tree/master/modules/openapi-generator-maven-plugin).
+Please see our [Contributing Guide](https://github.com/Onto-Med/top-api/blob/main/CONTRIBUTING.md).
 
 ## License
 

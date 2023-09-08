@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: TOP API
-  version: 0.9.0
+  version: 0.9.1
   description: |-
     API to manage phenotypes, repositories, ontologies, external terminologies and organisations and to execute phenotypic queries.
 
@@ -1231,6 +1231,38 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Entity'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+      tags:
+        - entity
+  '/{organisationId}/{repositoryId}/{entityId}/move':
+    parameters:
+      - $ref: '#/components/parameters/organisationId'
+      - $ref: '#/components/parameters/repositoryId'
+      - $ref: '#/components/parameters/entityId'
+    put:
+      operationId: moveEntity
+      summary: Update super entites of an entity, also known as moving the entity.
+      requestBody:
+        description: List of entities that will become the new super entities.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Entity'
+      responses:
+        '200':
+          description: The resulting entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Entity'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':

@@ -2331,7 +2331,10 @@ components:
       required:
         - uri
     Code:
-      description: Code of a code system.
+      description: |-
+        In TOP, a code is considered as one or more codes of a code system (also referred to as taxonomy or ontology).
+        Most code systems have a hierarchical structure. The property `includeSubtree` specifies, whether exactly one
+        or multiple codes (subtree of codes) are represented by a TOP code.
       type: object
       properties:
         uri:
@@ -2343,6 +2346,10 @@ components:
         code:
           type: string
           example: 3137-7
+        includeSubtree:
+          description: 'If true, this code represents the corresponding code system code and all of it''s children (subtree).'
+          type: boolean
+          default: false
         name:
           type: string
           example: Body height

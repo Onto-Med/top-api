@@ -2333,8 +2333,8 @@ components:
     Code:
       description: |-
         In TOP, a code is considered as one or more codes of a code system (also referred to as taxonomy or ontology).
-        Most code systems have a hierarchical structure. The property `includeSubtree` specifies, whether exactly one
-        or multiple codes (subtree of codes) are represented by a TOP code.
+        Most code systems have a hierarchical structure. The property `scope` specifies, whether exactly one (self)
+        or multiple codes (subtree or leaves) are represented by a TOP code.
       type: object
       properties:
         uri:
@@ -2346,10 +2346,8 @@ components:
         code:
           type: string
           example: 3137-7
-        includeSubtree:
-          description: 'If true, this code represents the corresponding code system code and all of it''s children (subtree).'
-          type: boolean
-          default: false
+        scope:
+          $ref: '#/components/schemas/CodeScope'
         name:
           type: string
           example: Body height
@@ -2369,6 +2367,14 @@ components:
       required:
         - codeSystem
         - code
+    CodeScope:
+      description: Specifies the scope of a code.
+      type: string
+      enum:
+        - self
+        - subtree
+        - leaves
+      default: self
     Restriction:
       description: Represents restriction of an abstract phenotype.
       type: object

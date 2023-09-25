@@ -85,8 +85,8 @@ paths:
     parameters:
       - name: conceptClusterId
         in: path
-        required: true
         description: filter documents by the concept cluster ids to which they belong
+        required: true
         schema:
           type: array
           items:
@@ -97,7 +97,7 @@ paths:
       parameters:
         - name: gatheringMode
           in: query
-          description: which gathering strategy for the documents regarding their concept cluster to employ (union, exclusive, intersection)
+          description: 'which gathering strategy for the documents regarding their concept cluster to employ (union, exclusive, intersection)'
           schema:
             type: string
             default: exclusive
@@ -465,8 +465,8 @@ paths:
       summary: Returns all available and accessible data sources.
       parameters:
         - name: queryType
-          description: Filter by query type for which data sources can be used.
           in: query
+          description: Filter by query type for which data sources can be used.
           required: false
           schema:
             $ref: '#/components/schemas/QueryType'
@@ -1246,7 +1246,7 @@ paths:
       - $ref: '#/components/parameters/entityId'
     put:
       operationId: moveEntity
-      summary: Update super entites of an entity, also known as moving the entity.
+      summary: 'Update super entites of an entity, also known as moving the entity.'
       requestBody:
         description: List of entities that will become the new super entities.
         required: true
@@ -1878,7 +1878,7 @@ components:
           type: boolean
           default: false
     Entity:
-      description: Either category, phenotype or concept.
+      description: 'Either category, phenotype or concept.'
       type: object
       properties:
         entityType:
@@ -2370,11 +2370,11 @@ components:
     CodeScope:
       description: Specifies the scope of a code.
       type: string
+      default: self
       enum:
         - self
         - subtree
         - leaves
-      default: self
     Restriction:
       description: Represents restriction of an abstract phenotype.
       type: object

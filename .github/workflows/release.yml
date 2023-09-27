@@ -28,7 +28,6 @@ jobs:
         with:
           node-version: 14
           registry-url: https://npm.pkg.github.com
-          cache: "npm"
       - name: Get version
         run: echo project_version=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout) >> $GITHUB_ENV
 

@@ -66,6 +66,13 @@ paths:
             type: array
             items:
               type: string
+        - name: documentIds
+          in: query
+          description: Get only specific documents
+          schema:
+            type: array
+            items:
+              type: string
         - $ref: '#/components/parameters/page'
       responses:
         '200':

@@ -197,7 +197,7 @@ paths:
         - document
   '/document/query/{organisationId}/{repositoryId}/{queryId}':
     get:
-      operationId: getDocumentIdsForQuery
+      operationId: getDocumentsForQuery
       summary: Get all document ids that were found in a query
       parameters:
         - $ref: '#/components/parameters/organisationId'

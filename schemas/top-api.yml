@@ -68,7 +68,7 @@ paths:
               type: string
         - name: documentIds
           in: query
-          description: Get only specific documents
+          description: Get only specific documents from a query
           schema:
             type: array
             items:
@@ -2702,6 +2702,9 @@ components:
           type: string
         highlightedText:
           type: string
+        score:
+          type: number
+          format: float
     Phrase:
       type: object
       properties:

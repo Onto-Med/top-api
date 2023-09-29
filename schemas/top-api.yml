@@ -959,6 +959,31 @@ paths:
           $ref: '#/components/responses/UnexpectedError'
       tags:
         - query
+  '/{organisationId}/{repositoryId}/query/{queryId}/resultIds':
+    parameters:
+      - $ref: '#/components/parameters/organisationId'
+      - $ref: '#/components/parameters/repositoryId'
+      - $ref: '#/components/parameters/queryId'
+    get:
+      operationId: getQueryResultIds
+      summary: Get the resulting ids (e.g. documents) of a particular query by ID.
+      responses:
+        '200':
+          description: List of documents ids.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+      tags:
+        - query
   '/{organisationId}/{repositoryId}/entity':
     parameters:
       - $ref: '#/components/parameters/organisationId'

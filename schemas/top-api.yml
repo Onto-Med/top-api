@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: TOP API
-  version: 0.9.1
+  version: 0.9.2
   description: |-
     API to manage phenotypes, repositories, ontologies, external terminologies and organisations and to execute phenotypic queries.
 
@@ -191,6 +191,24 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+      tags:
+        - document
+  '/document/query/{organisationId}/{repositoryId}/{queryId}':
+    get:
+      operationId: getDocumentIdsForQuery
+      summary: Get all document ids that were found in a query
+      parameters:
+        - $ref: '#/components/parameters/organisationId'
+        - $ref: '#/components/parameters/repositoryId'
+        - $ref: '#/components/parameters/queryId'
+        - $ref: '#/components/parameters/page'
+      responses:
+        '200':
+          $ref: '#/components/responses/DocumentPageResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
         default:
           $ref: '#/components/responses/UnexpectedError'
       tags:

@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: TOP API
-  version: 0.9.2
+  version: 0.9.3
   description: |-
     API to manage phenotypes, repositories, ontologies, external terminologies and organisations and to execute phenotypic queries.
 
@@ -922,15 +922,15 @@ paths:
       - $ref: '#/components/parameters/repositoryId'
       - $ref: '#/components/parameters/queryId'
     get:
-      operationId: getQueryResult
-      summary: Returns the result of a particular query by ID.
+      operationId: getQueryById
+      summary: Returns the a particular query by ID.
       responses:
         '200':
-          description: Details of the query result.
+          description: Details of the query.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/QueryResult'
+                $ref: '#/components/schemas/Query'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':

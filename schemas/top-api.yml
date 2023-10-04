@@ -2529,6 +2529,8 @@ components:
           description: A data source ID.
           type: string
           example: example_data_source
+        result:
+          $ref: '#/components/schemas/QueryResult'
       discriminator:
         propertyName: type
         mapping:

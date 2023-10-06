@@ -923,7 +923,7 @@ paths:
       - $ref: '#/components/parameters/queryId'
     get:
       operationId: getQueryById
-      summary: Returns the a particular query by ID.
+      summary: Returns a particular query by ID.
       responses:
         '200':
           description: Details of the query.

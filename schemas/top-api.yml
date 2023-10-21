@@ -438,11 +438,12 @@ paths:
           $ref: '#/components/responses/UnexpectedError'
       tags:
         - conceptcluster
-  /conceptgraphs:
+  /conceptgraphs/statistics:
     parameters:
       - $ref: '#/components/parameters/include'
     get:
       operationId: getConceptGraphStatistics
+      summary: Gets an overview of the concept graphs for a process
       parameters:
         - name: process
           in: query
@@ -457,6 +458,55 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/ConceptGraphStat'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+      tags:
+        - conceptgraphs
+  /conceptgraphs/processes/{processId}/{graphId}:
+    parameters:
+      - $ref: '#/components/parameters/include'
+    get:
+      operationId: getConceptGraph
+      summary: Get a specific Concept Graph for a process by its id
+      parameters:
+        - name: processId
+          in: path
+          schema:
+            type: string
+        - name: graphId
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A graph object with node and adjacency information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConceptGraph'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+      tags:
+        - conceptgraphs
+  /conceptgraphs/processes:
+    parameters:
+      - $ref: '#/components/parameters/include'
+    get:
+      operationId: getStoredProcesses
+      summary: Returns all Processes with some additional information that are stored
+      responses:
+        '200':
+          description: An overview of all processes that are stored
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ConceptGraphProcess'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
         default:
           $ref: '#/components/responses/UnexpectedError'
       tags:
@@ -2178,6 +2228,20 @@ components:
                 type: array
                 items:
                   type: string
+    ConceptGraphProcess:
+      type: object
+      properties:
+        name:
+          type: string
+        finished_steps:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              rank:
+                type: integer
     Constant:
       type: object
       properties:

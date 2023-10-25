@@ -567,7 +567,7 @@ paths:
           $ref: '#/components/responses/UnexpectedError'
       tags:
         - organisation
-  /{organisationId}/data_source:
+  '/{organisationId}/data_source':
     summary: Represents a data source available to a specific organisation.
     parameters:
       - $ref: '#/components/parameters/organisationId'
@@ -598,14 +598,13 @@ paths:
         - query
     post:
       operationId: addOrganisationDataSource
-      summary: Add a new data source or update an existing one, available to a specific organisation. Only administrator should be able to perform this operation.
+      summary: 'Add a new data source or update an existing one, available to a specific organisation. Only administrator should be able to perform this operation.'
       requestBody:
-        description: ID of the Data source to be applied.
         required: true
         content:
           application/json:
             schema:
-              type: string
+              $ref: '#/components/schemas/DataSource'
       responses:
         '204':
           description: Data source has been added to the set.
@@ -619,12 +618,11 @@ paths:
       operationId: removeOrganisationDataSource
       summary: Remove a data source from the set of available data sources of a specific organisation. Only administrator should be able to perform this operation.
       requestBody:
-        description: ID of the Data source to be removed.
         required: true
         content:
           application/json:
             schema:
-              type: string
+              $ref: '#/components/schemas/DataSource'
       responses:
         '204':
           description: Data source has been removed from the set.

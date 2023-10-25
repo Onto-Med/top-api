@@ -574,6 +574,13 @@ paths:
     get:
       operationId: getOrganisationDataSources
       summary: Returns all available and accessible data sources for a specific organisation.
+      parameters:
+        - name: queryType
+          in: query
+          description: Filter by query type for which data sources can be used.
+          required: false
+          schema:
+            $ref: '#/components/schemas/QueryType'
       responses:
         '200':
           description: List of data sources.

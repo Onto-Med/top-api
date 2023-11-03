@@ -482,7 +482,7 @@ paths:
   /data_source:
     get:
       operationId: getDataSources
-      summary: Returns all available and accessible data sources. Only administrator should be able to perform this operation.
+      summary: Returns all available and accessible data sources. Only administrators should be able to perform this operation.
       parameters:
         - name: queryType
           in: query
@@ -598,7 +598,7 @@ paths:
         - query
     post:
       operationId: addOrganisationDataSource
-      summary: 'Add a new data source or update an existing one, available to a specific organisation. Only administrator should be able to perform this operation.'
+      summary: 'Add a new data source, available to a specific organisation. Only administrators should be able to perform this operation.'
       requestBody:
         required: true
         content:
@@ -616,7 +616,7 @@ paths:
         - query
     delete:
       operationId: removeOrganisationDataSource
-      summary: Remove a data source from the set of available data sources of a specific organisation. Only administrator should be able to perform this operation.
+      summary: Remove a data source from the set of available data sources of a specific organisation. Only administrators should be able to perform this operation.
       requestBody:
         required: true
         content:

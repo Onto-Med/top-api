@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: TOP API
-  version: 0.9.3
+  version: 0.9.4
   description: |-
     API to manage phenotypes, repositories, ontologies, external terminologies and organisations and to execute phenotypic queries.
 
@@ -482,7 +482,7 @@ paths:
   /data_source:
     get:
       operationId: getDataSources
-      summary: Returns all available and accessible data sources.
+      summary: Returns all available and accessible data sources. Only administrators should be able to perform this operation.
       parameters:
         - name: queryType
           in: query
@@ -567,6 +567,71 @@ paths:
           $ref: '#/components/responses/UnexpectedError'
       tags:
         - organisation
+  '/{organisationId}/data_source':
+    summary: Represents a data source available to a specific organisation.
+    parameters:
+      - $ref: '#/components/parameters/organisationId'
+    get:
+      operationId: getOrganisationDataSources
+      summary: Returns all available and accessible data sources for a specific organisation.
+      parameters:
+        - name: queryType
+          in: query
+          description: Filter by query type for which data sources can be used.
+          required: false
+          schema:
+            $ref: '#/components/schemas/QueryType'
+      responses:
+        '200':
+          description: List of data sources.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DataSource'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+      tags:
+        - query
+    post:
+      operationId: addOrganisationDataSource
+      summary: 'Add a new data source, available to a specific organisation. Only administrators should be able to perform this operation.'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DataSource'
+      responses:
+        '201':
+          description: Data source has been added to the set.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+      tags:
+        - query
+    delete:
+      operationId: removeOrganisationDataSource
+      summary: Remove a data source from the set of available data sources of a specific organisation. Only administrators should be able to perform this operation.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DataSource'
+      responses:
+        '204':
+          description: Data source has been removed from the set.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+      tags:
+        - query
   /repository:
     parameters:
       - $ref: '#/components/parameters/include'
@@ -2637,8 +2702,11 @@ components:
           description: Human-readable title of the data source.
           type: string
           example: Example Data Source
+        queryType:
+          $ref: '#/components/schemas/QueryType'
       required:
         - id
+        - queryType
     ProjectionEntry:
       description: Single entry of a projection select list.
       type: object

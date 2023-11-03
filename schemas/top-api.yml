@@ -2702,8 +2702,11 @@ components:
           description: Human-readable title of the data source.
           type: string
           example: Example Data Source
+        queryType:
+          $ref: '#/components/schemas/QueryType'
       required:
         - id
+        - queryType
     ProjectionEntry:
       description: Single entry of a projection select list.
       type: object

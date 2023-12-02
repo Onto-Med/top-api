@@ -460,7 +460,7 @@ paths:
             type: boolean
             default: true
       requestBody:
-        description: Organisation details.
+        description: Upload configs and data file.
         content:
           multipart/form-data:
             schema:
@@ -492,9 +492,13 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                additionalProperties:
-                  $ref: '#/components/schemas/ConceptGraphStat'
+                  $ref: '#/components/schemas/PipelineResponse'
+        '202':
+          description: The POST request was accepted and a pipeline process started
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/PipelineResponse'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
@@ -2307,6 +2311,11 @@ components:
                 type: string
               rank:
                 type: integer
+    PipelineResponse:
+      type: object
+      properties:
+        name:
+          type: string
     Constant:
       type: object
       properties:

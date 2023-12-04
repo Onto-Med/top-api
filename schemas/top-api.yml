@@ -459,6 +459,11 @@ paths:
           schema:
             type: boolean
             default: true
+        - name: returnStatistics
+          in: query
+          schema:
+            type: boolean
+            default: false
       requestBody:
         description: Upload configs and data file.
         content:
@@ -2315,6 +2320,8 @@ components:
       type: object
       properties:
         name:
+          type: string
+        response:
           type: string
     Constant:
       type: object

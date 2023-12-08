@@ -443,7 +443,7 @@ paths:
       - $ref: '#/components/parameters/include'
     post:
       operationId: startConceptGraphPipeline
-      summary: Initializes a complete pipeline with all steps 'preprocessing', 'embedding', 'clustering' & 'graph creation'
+      summary: 'Initializes a complete pipeline with all steps ''preprocessing'', ''embedding'', ''clustering'' & ''graph creation'''
       parameters:
         - name: process
           in: query
@@ -469,8 +469,6 @@ paths:
         content:
           multipart/form-data:
             schema:
-              required:
-                - data
               type: object
               properties:
                 data:
@@ -491,19 +489,21 @@ paths:
                 graphConfig:
                   type: string
                   format: binary
+              required:
+                - data
       responses:
         '200':
           description: A short summary of the graphs created by this pipeline
           content:
             application/json:
               schema:
-                  $ref: '#/components/schemas/PipelineResponse'
+                $ref: '#/components/schemas/PipelineResponse'
         '202':
           description: The POST request was accepted and a pipeline process started
           content:
             application/json:
               schema:
-                  $ref: '#/components/schemas/PipelineResponse'
+                $ref: '#/components/schemas/PipelineResponse'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
@@ -536,7 +536,7 @@ paths:
           $ref: '#/components/responses/UnexpectedError'
       tags:
         - conceptgraphs
-  /conceptgraphs/processes/{processId}/{graphId}:
+  '/conceptgraphs/processes/{processId}/{graphId}':
     parameters:
       - $ref: '#/components/parameters/include'
     get:

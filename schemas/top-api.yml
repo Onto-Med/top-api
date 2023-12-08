@@ -545,10 +545,12 @@ paths:
       parameters:
         - name: processId
           in: path
+          required: true
           schema:
             type: string
         - name: graphId
           in: path
+          required: true
           schema:
             type: string
       responses:

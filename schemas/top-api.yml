@@ -532,6 +532,8 @@ paths:
                 type: object
                 additionalProperties:
                   $ref: '#/components/schemas/ConceptGraphStat'
+        '404':
+          $ref: '#/components/responses/NotFound'
         default:
           $ref: '#/components/responses/UnexpectedError'
       tags:

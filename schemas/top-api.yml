@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: TOP API
-  version: 0.9.4
+  version: 0.9.5
   description: |-
     API to manage phenotypes, repositories, ontologies, external terminologies and organisations and to execute phenotypic queries.
 
@@ -363,7 +363,7 @@ paths:
       - $ref: '#/components/parameters/include'
     get:
       operationId: getConceptClustersByPhraseId
-      summary: Searches for concept cluster that contain a specific phrase. Use the query parameters to filter the result.
+      summary: Searches for concept clusters that contain a specific phrase. Use the query parameters to filter the result.
       parameters:
         - name: name
           in: query
@@ -422,10 +422,10 @@ paths:
       - $ref: '#/components/parameters/include'
     get:
       operationId: getConceptClusterById
-      summary: Returns a particular concept cluster
+      summary: Returns a particular concept cluster.
       responses:
         '200':
-          description: Details of the Concept cluster
+          description: Details of the Concept cluster.
           content:
             application/json:
               schema:
@@ -438,6 +438,161 @@ paths:
           $ref: '#/components/responses/UnexpectedError'
       tags:
         - conceptcluster
+  /conceptgraphs/pipeline:
+    parameters:
+      - $ref: '#/components/parameters/include'
+    post:
+      operationId: startConceptGraphPipeline
+      summary: 'Initializes a complete pipeline with all steps ''preprocessing'', ''embedding'', ''clustering'' & ''graph creation''.'
+      parameters:
+        - name: process
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: lang
+          in: query
+          schema:
+            type: string
+        - name: skipPresent
+          in: query
+          schema:
+            type: boolean
+            default: true
+        - name: returnStatistics
+          in: query
+          description: Whether statistics of the graph should be returned in a 200 response. Otherwise 202 response is returned.
+          schema:
+            type: boolean
+            default: false
+      requestBody:
+        description: Upload configs and data file.
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: string
+                  format: binary
+                labels:
+                  type: string
+                  format: binary
+                dataConfig:
+                  type: string
+                  format: binary
+                embeddingConfig:
+                  type: string
+                  format: binary
+                clusteringConfig:
+                  type: string
+                  format: binary
+                graphConfig:
+                  type: string
+                  format: binary
+              required:
+                - data
+      responses:
+        '200':
+          description: A short summary of the graphs created by this pipeline.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PipelineResponse'
+        '202':
+          description: The POST request was accepted and a pipeline process started.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PipelineResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+      tags:
+        - conceptgraphs
+  /conceptgraphs/statistics:
+    parameters:
+      - $ref: '#/components/parameters/include'
+    get:
+      operationId: getConceptGraphStatistics
+      summary: Gets an overview of the concept graphs for a process.
+      parameters:
+        - name: process
+          in: query
+          schema:
+            type: string
+            default: default
+      responses:
+        '200':
+          description: A short summary of the graphs from a process.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  $ref: '#/components/schemas/ConceptGraphStat'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+      tags:
+        - conceptgraphs
+  '/conceptgraphs/processes/{processId}/{graphId}':
+    parameters:
+      - $ref: '#/components/parameters/include'
+    get:
+      operationId: getConceptGraph
+      summary: Get a specific Concept Graph for a process by its ID.
+      parameters:
+        - name: processId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: graphId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A graph object with node and adjacency information.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConceptGraph'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+      tags:
+        - conceptgraphs
+  /conceptgraphs/processes:
+    parameters:
+      - $ref: '#/components/parameters/include'
+    get:
+      operationId: getStoredProcesses
+      summary: Returns all stored processes with some additional information.
+      responses:
+        '200':
+          description: An overview of all processes that are stored
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ConceptGraphProcess'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+      tags:
+        - conceptgraphs
   /organisation:
     parameters:
       - $ref: '#/components/parameters/include'
@@ -2110,6 +2265,72 @@ components:
         - $ref: '#/components/schemas/Concept'
       required:
         - expression
+    ConceptGraphStat:
+      type: object
+      properties:
+        id:
+          type: string
+        nodes:
+          type: integer
+        edges:
+          type: integer
+    ConceptGraph:
+      type: object
+      properties:
+        adjacency:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              neighbors:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    significance:
+                      type: number
+                      format: float
+                    weight:
+                      type: number
+                      format: float
+        nodes:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              label:
+                type: string
+              documents:
+                type: array
+                items:
+                  type: string
+    ConceptGraphProcess:
+      type: object
+      properties:
+        name:
+          type: string
+        finished_steps:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              rank:
+                type: integer
+    PipelineResponse:
+      type: object
+      properties:
+        name:
+          type: string
+        response:
+          type: string
     Constant:
       type: object
       properties:

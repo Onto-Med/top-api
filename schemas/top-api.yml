@@ -523,6 +523,7 @@ paths:
           in: query
           schema:
             type: string
+            default: default
       responses:
         '200':
           description: A short summary of the graphs from a process

@@ -363,7 +363,7 @@ paths:
       - $ref: '#/components/parameters/include'
     get:
       operationId: getConceptClustersByPhraseId
-      summary: Searches for concept cluster that contain a specific phrase. Use the query parameters to filter the result.
+      summary: Searches for concept clusters that contain a specific phrase. Use the query parameters to filter the result.
       parameters:
         - name: name
           in: query
@@ -422,10 +422,10 @@ paths:
       - $ref: '#/components/parameters/include'
     get:
       operationId: getConceptClusterById
-      summary: Returns a particular concept cluster
+      summary: Returns a particular concept cluster.
       responses:
         '200':
-          description: Details of the Concept cluster
+          description: Details of the Concept cluster.
           content:
             application/json:
               schema:
@@ -443,7 +443,7 @@ paths:
       - $ref: '#/components/parameters/include'
     post:
       operationId: startConceptGraphPipeline
-      summary: 'Initializes a complete pipeline with all steps ''preprocessing'', ''embedding'', ''clustering'' & ''graph creation'''
+      summary: 'Initializes a complete pipeline with all steps ''preprocessing'', ''embedding'', ''clustering'' & ''graph creation''.'
       parameters:
         - name: process
           in: query
@@ -461,6 +461,7 @@ paths:
             default: true
         - name: returnStatistics
           in: query
+          description: Whether statistics of the graph should be returned in a 200 response. Otherwise 202 response is returned.
           schema:
             type: boolean
             default: false
@@ -493,13 +494,13 @@ paths:
                 - data
       responses:
         '200':
-          description: A short summary of the graphs created by this pipeline
+          description: A short summary of the graphs created by this pipeline.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/PipelineResponse'
         '202':
-          description: The POST request was accepted and a pipeline process started
+          description: The POST request was accepted and a pipeline process started.
           content:
             application/json:
               schema:
@@ -517,21 +518,24 @@ paths:
       - $ref: '#/components/parameters/include'
     get:
       operationId: getConceptGraphStatistics
-      summary: Gets an overview of the concept graphs for a process
+      summary: Gets an overview of the concept graphs for a process.
       parameters:
         - name: process
           in: query
           schema:
             type: string
+            default: default
       responses:
         '200':
-          description: A short summary of the graphs from a process
+          description: A short summary of the graphs from a process.
           content:
             application/json:
               schema:
                 type: object
                 additionalProperties:
                   $ref: '#/components/schemas/ConceptGraphStat'
+        '404':
+          $ref: '#/components/responses/NotFound'
         default:
           $ref: '#/components/responses/UnexpectedError'
       tags:
@@ -541,7 +545,7 @@ paths:
       - $ref: '#/components/parameters/include'
     get:
       operationId: getConceptGraph
-      summary: Get a specific Concept Graph for a process by its id
+      summary: Get a specific Concept Graph for a process by its ID.
       parameters:
         - name: processId
           in: path
@@ -555,13 +559,15 @@ paths:
             type: string
       responses:
         '200':
-          description: A graph object with node and adjacency information
+          description: A graph object with node and adjacency information.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ConceptGraph'
         '401':
           $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
         default:
           $ref: '#/components/responses/UnexpectedError'
       tags:
@@ -571,7 +577,7 @@ paths:
       - $ref: '#/components/parameters/include'
     get:
       operationId: getStoredProcesses
-      summary: Returns all Processes with some additional information that are stored
+      summary: Returns all stored processes with some additional information.
       responses:
         '200':
           description: An overview of all processes that are stored

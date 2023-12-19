@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: TOP API
-  version: 0.9.5
+  version: 0.9.6
   description: |-
     API to manage phenotypes, repositories, ontologies, external terminologies and organisations and to execute phenotypic queries.
 
@@ -349,6 +349,46 @@ paths:
                   $ref: '#/components/schemas/ConceptCluster'
         '401':
           $ref: '#/components/responses/Unauthorized'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+      tags:
+        - conceptcluster
+  '/conceptcluster/{processId}/create':
+    parameters:
+      - name: processId
+        in: path
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/include'
+    get:
+      operationId: createConceptClustersForProcessId
+      summary: Create the concept clusters from a process that already built the concept graphs.
+      parameters:
+        - name: graphId
+          in: query
+          description: Only build concept clusters for the specified graphs.
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          description: A short summary of the concept clusters created in the Graph DB.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PipelineResponse'
+        '202':
+          description: The request was accepted and a process started to create the concept clusters in the Graph DB.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PipelineResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
         default:
           $ref: '#/components/responses/UnexpectedError'
       tags:

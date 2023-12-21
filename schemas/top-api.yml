@@ -338,6 +338,12 @@ paths:
           description: filter concept cluster by phrase string
           schema:
             type: string
+        - name: recalculateCache
+          in: query
+          description: recalculate the cache of concept clusters (needed when new clusters were added due to some pipeline)
+          schema:
+            type: boolean
+            default: false
       responses:
         '200':
           description: List of concept clusters

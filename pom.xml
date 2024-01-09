@@ -4,7 +4,7 @@
 
 	<groupId>care.smith.top</groupId>
 	<artifactId>top-api</artifactId>
-	<version>0.9.5</version>
+	<version>0.9.6</version>
 
 	<name>TOP API</name>
 	<description>REST API of the TOP framework</description>

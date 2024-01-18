@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: TOP API
-  version: 0.9.6
+  version: 0.9.7
   description: |-
     API to manage phenotypes, repositories, ontologies, external terminologies and organisations and to execute phenotypic queries.
 
@@ -520,28 +520,57 @@ paths:
         content:
           multipart/form-data:
             schema:
-              type: object
-              properties:
-                data:
-                  type: string
-                  format: binary
-                labels:
-                  type: string
-                  format: binary
-                dataConfig:
-                  type: string
-                  format: binary
-                embeddingConfig:
-                  type: string
-                  format: binary
-                clusteringConfig:
-                  type: string
-                  format: binary
-                graphConfig:
-                  type: string
-                  format: binary
-              required:
-                - data
+              oneOf:
+                - type: object
+                  properties:
+                    data:
+                      type: string
+                      format: binary
+                    labels:
+                      type: string
+                      format: binary
+                    dataConfig:
+                      type: string
+                      format: binary
+                    embeddingConfig:
+                      type: string
+                      format: binary
+                    clusteringConfig:
+                      type: string
+                      format: binary
+                    graphConfig:
+                      type: string
+                      format: binary
+                    dataServerConfig:
+                      type: string
+                      format: binary
+                  required:
+                    - data
+                - type: object
+                  properties:
+                    data:
+                      type: string
+                      format: binary
+                    labels:
+                      type: string
+                      format: binary
+                    dataConfig:
+                      type: string
+                      format: binary
+                    embeddingConfig:
+                      type: string
+                      format: binary
+                    clusteringConfig:
+                      type: string
+                      format: binary
+                    graphConfig:
+                      type: string
+                      format: binary
+                    dataServerConfig:
+                      type: string
+                      format: binary
+                  required:
+                    - dataServerConfig
       responses:
         '200':
           description: A short summary of the graphs created by this pipeline.

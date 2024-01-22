@@ -6,7 +6,6 @@ on:
 
 jobs:
   publish-maven-snapshot:
-    needs: build
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -33,7 +32,6 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
 
   publish-npm-snapshot:
-    needs: build
     runs-on: ubuntu-latest
     permissions:
       contents: read

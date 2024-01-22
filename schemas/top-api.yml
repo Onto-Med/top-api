@@ -26,13 +26,17 @@ servers:
   - url: 'http://host.docker.internal:8080'
     description: In case the server is running on the Docker host.
 paths:
-  /ping:
+  /:
     get:
       operationId: ping
-      summary: Checks if the server is running.
+      summary: Checks if the server is running and returns general description.
       responses:
         '200':
           description: Server is up and running.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppDescription'
         default:
           $ref: '#/components/responses/UnexpectedError'
       security:
@@ -3103,6 +3107,18 @@ components:
       required:
         - id
         - purpose
+    AppDescription:
+      type: object
+      properties:
+        appName:
+          type: string
+          example: TOP Backend
+        version:
+          type: string
+          example: 1.0.0
+      required:
+        - appName
+        - version
   responses:
     NotFound:
       description: The specified resource was not found.

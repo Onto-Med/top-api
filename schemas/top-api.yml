@@ -2410,6 +2410,13 @@ components:
           type: string
         response:
           type: string
+        status:
+          $ref: '#/components/schemas/PipelineResponseStatus'
+    PipelineResponseStatus:
+      type: string
+      enum:
+        - "failed"
+        - "successful"
     Constant:
       type: object
       properties:

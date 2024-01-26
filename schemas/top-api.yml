@@ -491,6 +491,51 @@ paths:
   /conceptgraphs/pipeline:
     parameters:
       - $ref: '#/components/parameters/include'
+    get:
+      operationId: startConceptGraphPipelineWithoutUpload
+      summary: 'Initializes a complete pipeline with all steps ''preprocessing'', ''embedding'', ''clustering'' & ''graph creation''; but requires no upload and uses defaults as well as the default document server.'
+      parameters:
+        - name: process
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: lang
+          in: query
+          schema:
+            type: string
+        - name: skipPresent
+          in: query
+          schema:
+            type: boolean
+            default: true
+        - name: returnStatistics
+          in: query
+          description: Whether statistics of the graph should be returned in a 200 response. Otherwise 202 response is returned.
+          schema:
+            type: boolean
+            default: false
+      responses:
+        '200':
+          description: A short summary of the graphs created by this pipeline.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PipelineResponse'
+        '202':
+          description: The POST request was accepted and a pipeline process started.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PipelineResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+      tags:
+        - conceptgraphs
     post:
       operationId: startConceptGraphPipeline
       summary: 'Initializes a complete pipeline with all steps ''preprocessing'', ''embedding'', ''clustering'' & ''graph creation''.'
@@ -541,16 +586,10 @@ paths:
                     graphConfig:
                       type: string
                       format: binary
-                    dataServerConfig:
-                      type: string
-                      format: binary
                   required:
                     - data
                 - type: object
                   properties:
-                    data:
-                      type: string
-                      format: binary
                     labels:
                       type: string
                       format: binary
@@ -571,6 +610,23 @@ paths:
                       format: binary
                   required:
                     - dataServerConfig
+                - type: object
+                  properties:
+                    labels:
+                      type: string
+                      format: binary
+                    dataConfig:
+                      type: string
+                      format: binary
+                    embeddingConfig:
+                      type: string
+                      format: binary
+                    clusteringConfig:
+                      type: string
+                      format: binary
+                    graphConfig:
+                      type: string
+                      format: binary
       responses:
         '200':
           description: A short summary of the graphs created by this pipeline.

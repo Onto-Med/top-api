@@ -2471,8 +2471,8 @@ components:
     PipelineResponseStatus:
       type: string
       enum:
-        - "failed"
-        - "successful"
+        - failed
+        - successful
     Constant:
       type: object
       properties:

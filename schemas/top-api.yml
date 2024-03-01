@@ -157,78 +157,12 @@ paths:
       operationId: getPhrases
       summary: Searches for phrases
       parameters:
-        - name: text
+        - $ref: '#/components/parameters/phraseText'
+        - name: conceptClusterId
           in: query
-          description: Search phrase by text
+          description: Search phrase by a concept cluster id it is contained in
           schema:
             type: string
-        - name: conceptClusterText
-          in: query
-          description: Search phrase by concept cluster text
-          schema:
-            type: string
-      responses:
-        '200':
-          description: List of phrases
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Phrase'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        default:
-          $ref: '#/components/responses/UnexpectedError'
-      tags:
-        - phrase
-  '/phrase/conceptcluster/{conceptClusterId}':
-    parameters:
-      - name: conceptClusterId
-        in: path
-        required: true
-        schema:
-          type: string
-      - $ref: '#/components/parameters/include'
-    get:
-      operationId: getPhrasesByConceptClusterIds
-      summary: Searches for phrases that are contained in a specific concept cluster. Use the query parameters to filter the result.
-      parameters:
-        - name: name
-          in: query
-          description: Filter phrases by name.
-          schema:
-            type: string
-        - $ref: '#/components/parameters/page'
-      responses:
-        '200':
-          $ref: '#/components/responses/PhrasePageResponse'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        default:
-          $ref: '#/components/responses/UnexpectedError'
-      tags:
-        - phrase
-  '/phrase/document/{documentId}':
-    parameters:
-      - name: documentId
-        in: path
-        required: true
-        schema:
-          type: string
-      - $ref: '#/components/parameters/include'
-    get:
-      operationId: getPhrasesByDocumentId
-      summary: Searches for phrases that are contained in a specific document. Use the query parameters to filter the result.
-      parameters:
-        - name: name
-          in: query
-          description: Filter phrases by name.
-          schema:
-            type: string
-        - $ref: '#/components/parameters/page'
       responses:
         '200':
           $ref: '#/components/responses/PhrasePageResponse'
@@ -254,11 +188,33 @@ paths:
       summary: Returns a particular Phrase
       responses:
         '200':
-          description: Details of the Phrase
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Phrase'
+          $ref: '#/components/responses/Phrase'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+      tags:
+        - phrase
+  '/phrase/document/{documentId}':
+    parameters:
+      - name: documentId
+        in: path
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/include'
+    get:
+      operationId: getPhrasesByDocumentId
+      summary: Searches for phrases that are contained in a specific document. Use the query parameters to filter the result.
+      parameters:
+        - $ref: '#/components/parameters/documentDataSource'
+        - $ref: '#/components/parameters/phraseText'
+        - $ref: '#/components/parameters/page'
+      responses:
+        '200':
+          $ref: '#/components/responses/PhrasePageResponse'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
@@ -1926,6 +1882,12 @@ components:
         format: int32
         default: 1
         minimum: 1
+    phraseText:
+      name: text
+      in: query
+      description: Search/Filter phrases by text
+      schema:
+        type: string
     primaryFilter:
       name: primary
       in: query
@@ -3224,6 +3186,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/OrganisationPage'
+    Phrase:
+      description: Details of a Phrase
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Phrase'
     PhrasePageResponse:
       description: A page of phrases.
       content:

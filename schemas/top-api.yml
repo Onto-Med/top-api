@@ -89,7 +89,7 @@ paths:
             $ref: '#/components/schemas/StringArray'
         - name: gatheringMode
           in: query
-          description: Which gathering strategy for the documents regarding their concept cluster to employ (union, exclusive, intersection)
+          description: 'Which gathering strategy for the documents regarding their concept cluster to employ (union, exclusive, intersection)'
           schema:
             $ref: '#/components/schemas/DocumentGatheringMode'
         - name: exemplarOnly
@@ -1972,11 +1972,11 @@ components:
   schemas:
     DocumentGatheringMode:
       type: string
+      default: exclusive
       enum:
         - union
         - exclusive
         - intersection
-      default: exclusive
     StringArray:
       type: array
       items:

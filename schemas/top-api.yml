@@ -57,109 +57,54 @@ paths:
       security:
         - BearerAuth: []
   /document:
-    parameters:
-      - $ref: '#/components/parameters/include'
     get:
       operationId: getDocuments
       summary: Searches for documents.
       parameters:
-        - name: phraseText
+        - $ref: '#/components/parameters/documentDataSource'
+        - name: name
           in: query
-          description: Filter document by containing phrase.
+          description: Filter documents by name
           schema:
-            type: array
-            items:
-              type: string
+            type: string
         - name: documentIds
           in: query
           description: Get only specific documents from a query
           schema:
-            type: array
-            items:
-              type: string
-        - $ref: '#/components/parameters/page'
-      responses:
-        '200':
-          $ref: '#/components/responses/DocumentPageResponse'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        default:
-          $ref: '#/components/responses/UnexpectedError'
-      tags:
-        - document
-  '/document/conceptcluster/{conceptClusterId}':
-    parameters:
-      - name: conceptClusterId
-        in: path
-        description: filter documents by the concept cluster ids to which they belong
-        required: true
-        schema:
-          type: array
-          items:
-            type: string
-    get:
-      operationId: getDocumentIdsByConceptClusterIds
-      summary: Searches for documents from specific concept clusters. Use the query parameters to filter the result.
-      parameters:
+            $ref: '#/components/schemas/StringArray'
+        - name: phraseIds
+          in: query
+          description: Filter documents by phrase ids that they are connected to
+          schema:
+            $ref: '#/components/schemas/StringArray'
+        - name: conceptClusterIds
+          in: query
+          description: Filter documents by the concept cluster ids to which they belong
+          schema:
+            $ref: '#/components/schemas/StringArray'
+        - name: phraseText
+          in: query
+          description: Filter documents by containing phrases (textual)
+          schema:
+            $ref: '#/components/schemas/StringArray'
         - name: gatheringMode
           in: query
-          description: 'which gathering strategy for the documents regarding their concept cluster to employ (union, exclusive, intersection)'
+          description: Which gathering strategy for the documents regarding their concept cluster to employ (union, exclusive, intersection)
           schema:
-            type: string
-            default: exclusive
-        - name: name
-          in: query
-          description: Filter documents by name.
-          schema:
-            type: string
+            $ref: '#/components/schemas/DocumentGatheringMode'
         - name: exemplarOnly
           in: query
-          description: only gets documents if they contain phrases that are considered exemplary for the concept cluster
+          description: Only gets documents if they contain phrases that are considered exemplary for the concept cluster
           schema:
             type: boolean
             default: false
-      responses:
-        '200':
-          description: List of documents.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Document'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        default:
-          $ref: '#/components/responses/UnexpectedError'
-      tags:
-        - document
-  '/document/phrase/{phraseId}':
-    parameters:
-      - name: phraseId
-        in: path
-        required: true
-        schema:
-          type: string
-      - $ref: '#/components/parameters/include'
-    get:
-      operationId: getDocumentsByPhraseIds
-      summary: Searches for documents that contain a specific phrase. Use the query parameters to filter the result.
-      parameters:
-        - name: name
-          in: query
-          description: Filter documents by name.
-          schema:
-            type: string
         - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/include'
       responses:
         '200':
           $ref: '#/components/responses/DocumentPageResponse'
         '401':
           $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
         default:
           $ref: '#/components/responses/UnexpectedError'
       tags:
@@ -173,24 +118,14 @@ paths:
         schema:
           type: string
     get:
-      operationId: getDocumentById
+      operationId: getSingleDocumentById
       summary: Returns a particular document
       parameters:
-        - name: conceptClusterIds
-          in: query
-          description: highlights the phrases of the selected concepts cluster
-          schema:
-            type: array
-            items:
-              type: string
+        - $ref: '#/components/parameters/documentDataSource'
         - $ref: '#/components/parameters/include'
       responses:
         '200':
-          description: Details of the Document
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Document'
+          $ref: '#/components/responses/Document'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
@@ -379,9 +314,7 @@ paths:
           in: query
           description: Only build concept clusters for the specified graphs.
           schema:
-            type: array
-            items:
-              type: string
+            $ref: '#/components/schemas/StringArray'
       responses:
         '200':
           description: A short summary of the concept clusters created in the Graph DB.
@@ -1346,9 +1279,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  type: string
+                $ref: '#/components/schemas/StringArray'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
@@ -1757,9 +1688,7 @@ paths:
           in: query
           description: 'The organisations to filter users for. If you provide an empty array or leave out this parameter, no organisation filter will be applied.'
           schema:
-            type: array
-            items:
-              type: string
+            $ref: '#/components/schemas/StringArray'
         - $ref: '#/components/parameters/page'
       responses:
         '200':
@@ -1915,9 +1844,7 @@ components:
         - loinc
       required: false
       schema:
-        type: array
-        items:
-          type: string
+        $ref: '#/components/schemas/StringArray'
     converter:
       name: converter
       in: query
@@ -1936,6 +1863,13 @@ components:
       description: Filter by data type.
       schema:
         $ref: '#/components/schemas/DataType'
+    documentDataSource:
+      name: dataSource
+      in: query
+      description: Data source where the document comes from
+      required: true
+      schema:
+        type: string
     entityId:
       name: entityId
       in: path
@@ -2016,9 +1950,7 @@ components:
       in: query
       description: Filter by repository IDs.
       schema:
-        type: array
-        items:
-          type: string
+        $ref: '#/components/schemas/StringArray'
     repositoryTypeFilter:
       name: type
       in: query
@@ -2038,6 +1970,17 @@ components:
       schema:
         $ref: '#/components/schemas/VersionNumber'
   schemas:
+    DocumentGatheringMode:
+      type: string
+      enum:
+        - union
+        - exclusive
+        - intersection
+      default: exclusive
+    StringArray:
+      type: array
+      items:
+        type: string
     Page:
       type: object
       properties:
@@ -3257,6 +3200,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ConceptClusterPage'
+    Document:
+      description: Details of a Document
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Document'
     DocumentPageResponse:
       description: A page of documents.
       content:

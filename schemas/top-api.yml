@@ -163,6 +163,7 @@ paths:
           description: Search phrase by a concept cluster id it is contained in
           schema:
             type: string
+        - $ref: '#/components/parameters/page'
       responses:
         '200':
           $ref: '#/components/responses/PhrasePageResponse'
@@ -228,49 +229,52 @@ paths:
       operationId: getConceptClusters
       summary: Searches for specific concept clusters
       parameters:
-        - name: phraseText
+        - name: labelsText
           in: query
-          description: filter concept cluster by phrase string
+          description: filter concept cluster by text of its labels attribute
           schema:
             type: string
+        - name: phraseId
+          in: query
+          description: filter concept cluster by ids of phrases it contains
+          schema:
+            $ref: "#/components/schemas/StringArray"
         - name: recalculateCache
           in: query
           description: recalculate the cache of concept clusters (needed when new clusters were added due to some pipeline)
           schema:
             type: boolean
             default: false
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/include'
       responses:
         '200':
-          description: List of concept clusters
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/ConceptCluster'
+          $ref: '#/components/responses/ConceptClusterPageResponse'
         '401':
           $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
         default:
           $ref: '#/components/responses/UnexpectedError'
       tags:
         - conceptcluster
-  '/conceptcluster/{processId}/create':
-    parameters:
-      - name: processId
-        in: path
-        required: true
-        schema:
-          type: string
-      - $ref: '#/components/parameters/include'
+  /conceptcluster/create:
     get:
       operationId: createConceptClustersForProcessId
-      summary: Create the concept clusters from a process that already built the concept graphs.
+      summary: Create the Neo4j concept clusters representations from a process that already built the concept graphs.
       parameters:
-        - name: graphId
+        - name: processId
+          in: query
+          description: The name of the corpus/process from which to create the clusters.
+          required: true
+          schema:
+            type: string  
+        - name: graphIds
           in: query
           description: Only build concept clusters for the specified graphs.
           schema:
             $ref: '#/components/schemas/StringArray'
+        - $ref: '#/components/parameters/include'
       responses:
         '200':
           description: A short summary of the concept clusters created in the Graph DB.
@@ -284,64 +288,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PipelineResponse'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        default:
-          $ref: '#/components/responses/UnexpectedError'
-      tags:
-        - conceptcluster
-  '/conceptcluster/phrase/{phraseId}':
-    parameters:
-      - name: phraseId
-        in: path
-        required: true
-        schema:
-          type: string
-      - $ref: '#/components/parameters/include'
-    get:
-      operationId: getConceptClustersByPhraseId
-      summary: Searches for concept clusters that contain a specific phrase. Use the query parameters to filter the result.
-      parameters:
-        - name: name
-          in: query
-          description: Filter concept cluster by name.
-          schema:
-            type: string
-        - $ref: '#/components/parameters/page'
-      responses:
-        '200':
-          $ref: '#/components/responses/ConceptClusterPageResponse'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        default:
-          $ref: '#/components/responses/UnexpectedError'
-      tags:
-        - conceptcluster
-  '/conceptcluster/document/{documentId}':
-    parameters:
-      - name: documentId
-        in: path
-        required: true
-        schema:
-          type: string
-      - $ref: '#/components/parameters/include'
-    get:
-      operationId: getConceptClustersByDocumentId
-      summary: Searches for concept clusters that are contained in a specific document. Use the query parameters to filter the result.
-      parameters:
-        - name: name
-          in: query
-          description: Filter concept clusters by name.
-          schema:
-            type: string
-        - $ref: '#/components/parameters/page'
-      responses:
-        '200':
-          $ref: '#/components/responses/ConceptClusterPageResponse'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
@@ -369,6 +315,31 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ConceptCluster'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+      tags:
+        - conceptcluster
+  '/conceptcluster/document/{documentId}':
+    parameters:
+      - name: documentId
+        in: path
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/include'
+    get:
+      operationId: getConceptClusterByDocumentId
+      summary: Returns concept clusters for a specific document.
+      parameters:
+        - $ref: '#/components/parameters/documentDataSource'
+        - $ref: '#/components/parameters/page'
+      responses:
+        '200':
+          $ref: '#/components/responses/ConceptClusterPageResponse'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':

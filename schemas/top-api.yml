@@ -231,9 +231,9 @@ paths:
       parameters:
         - name: labelsText
           in: query
-          description: filter concept cluster by text of its labels attribute
+          description: filter concept cluster by texts of its labels attribute
           schema:
-            type: string
+            $ref: "#/components/schemas/StringArray"
         - name: phraseId
           in: query
           description: filter concept cluster by ids of phrases it contains

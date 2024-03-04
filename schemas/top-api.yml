@@ -157,52 +157,37 @@ paths:
       operationId: getPhrases
       summary: Searches for phrases
       parameters:
-        - name: text
+        - $ref: '#/components/parameters/phraseText'
+        - name: conceptClusterId
           in: query
-          description: Search phrase by text
-          schema:
-            type: string
-        - name: conceptClusterText
-          in: query
-          description: Search phrase by concept cluster text
-          schema:
-            type: string
-      responses:
-        '200':
-          description: List of phrases
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Phrase'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        default:
-          $ref: '#/components/responses/UnexpectedError'
-      tags:
-        - phrase
-  '/phrase/conceptcluster/{conceptClusterId}':
-    parameters:
-      - name: conceptClusterId
-        in: path
-        required: true
-        schema:
-          type: string
-      - $ref: '#/components/parameters/include'
-    get:
-      operationId: getPhrasesByConceptClusterIds
-      summary: Searches for phrases that are contained in a specific concept cluster. Use the query parameters to filter the result.
-      parameters:
-        - name: name
-          in: query
-          description: Filter phrases by name.
+          description: Search phrase by a concept cluster id it is contained in
           schema:
             type: string
         - $ref: '#/components/parameters/page'
       responses:
         '200':
           $ref: '#/components/responses/PhrasePageResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+      tags:
+        - phrase
+  '/phrase/{phraseId}':
+    summary: Represents a Phrase
+    parameters:
+      - name: phraseId
+        in: path
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/include'
+    get:
+      operationId: getPhraseById
+      summary: Returns a particular Phrase
+      responses:
+        '200':
+          $ref: '#/components/responses/Phrase'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
@@ -223,42 +208,12 @@ paths:
       operationId: getPhrasesByDocumentId
       summary: Searches for phrases that are contained in a specific document. Use the query parameters to filter the result.
       parameters:
-        - name: name
-          in: query
-          description: Filter phrases by name.
-          schema:
-            type: string
+        - $ref: '#/components/parameters/documentDataSource'
+        - $ref: '#/components/parameters/phraseText'
         - $ref: '#/components/parameters/page'
       responses:
         '200':
           $ref: '#/components/responses/PhrasePageResponse'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        default:
-          $ref: '#/components/responses/UnexpectedError'
-      tags:
-        - phrase
-  '/phrase/{phraseId}':
-    summary: Represents a Phrase
-    parameters:
-      - name: phraseId
-        in: path
-        required: true
-        schema:
-          type: string
-      - $ref: '#/components/parameters/include'
-    get:
-      operationId: getPhraseById
-      summary: Returns a particular Phrase
-      responses:
-        '200':
-          description: Details of the Phrase
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Phrase'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
@@ -272,49 +227,50 @@ paths:
       operationId: getConceptClusters
       summary: Searches for specific concept clusters
       parameters:
-        - name: phraseText
+        - name: labelsText
           in: query
-          description: filter concept cluster by phrase string
+          description: filter concept cluster by texts of its labels attribute
           schema:
-            type: string
+            $ref: '#/components/schemas/StringArray'
+        - name: phraseId
+          in: query
+          description: filter concept cluster by ids of phrases it contains
+          schema:
+            $ref: '#/components/schemas/StringArray'
         - name: recalculateCache
           in: query
           description: recalculate the cache of concept clusters (needed when new clusters were added due to some pipeline)
           schema:
             type: boolean
             default: false
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/include'
       responses:
         '200':
-          description: List of concept clusters
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/ConceptCluster'
+          $ref: '#/components/responses/ConceptClusterPageResponse'
         '401':
           $ref: '#/components/responses/Unauthorized'
         default:
           $ref: '#/components/responses/UnexpectedError'
       tags:
         - conceptcluster
-  '/conceptcluster/{processId}/create':
-    parameters:
-      - name: processId
-        in: path
-        required: true
-        schema:
-          type: string
-      - $ref: '#/components/parameters/include'
+  /conceptcluster/create:
     get:
       operationId: createConceptClustersForProcessId
-      summary: Create the concept clusters from a process that already built the concept graphs.
+      summary: Create the Neo4j concept clusters representations from a process that already built the concept graphs.
       parameters:
-        - name: graphId
+        - name: processId
+          in: query
+          description: The name of the corpus/process from which to create the clusters.
+          required: true
+          schema:
+            type: string
+        - name: graphIds
           in: query
           description: Only build concept clusters for the specified graphs.
           schema:
             $ref: '#/components/schemas/StringArray'
+        - $ref: '#/components/parameters/include'
       responses:
         '200':
           description: A short summary of the concept clusters created in the Graph DB.
@@ -328,64 +284,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PipelineResponse'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        default:
-          $ref: '#/components/responses/UnexpectedError'
-      tags:
-        - conceptcluster
-  '/conceptcluster/phrase/{phraseId}':
-    parameters:
-      - name: phraseId
-        in: path
-        required: true
-        schema:
-          type: string
-      - $ref: '#/components/parameters/include'
-    get:
-      operationId: getConceptClustersByPhraseId
-      summary: Searches for concept clusters that contain a specific phrase. Use the query parameters to filter the result.
-      parameters:
-        - name: name
-          in: query
-          description: Filter concept cluster by name.
-          schema:
-            type: string
-        - $ref: '#/components/parameters/page'
-      responses:
-        '200':
-          $ref: '#/components/responses/ConceptClusterPageResponse'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        default:
-          $ref: '#/components/responses/UnexpectedError'
-      tags:
-        - conceptcluster
-  '/conceptcluster/document/{documentId}':
-    parameters:
-      - name: documentId
-        in: path
-        required: true
-        schema:
-          type: string
-      - $ref: '#/components/parameters/include'
-    get:
-      operationId: getConceptClustersByDocumentId
-      summary: Searches for concept clusters that are contained in a specific document. Use the query parameters to filter the result.
-      parameters:
-        - name: name
-          in: query
-          description: Filter concept clusters by name.
-          schema:
-            type: string
-        - $ref: '#/components/parameters/page'
-      responses:
-        '200':
-          $ref: '#/components/responses/ConceptClusterPageResponse'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
@@ -413,6 +311,31 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ConceptCluster'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+      tags:
+        - conceptcluster
+  '/conceptcluster/document/{documentId}':
+    parameters:
+      - name: documentId
+        in: path
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/include'
+    get:
+      operationId: getConceptClusterByDocumentId
+      summary: Returns concept clusters for a specific document.
+      parameters:
+        - $ref: '#/components/parameters/documentDataSource'
+        - $ref: '#/components/parameters/page'
+      responses:
+        '200':
+          $ref: '#/components/responses/ConceptClusterPageResponse'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
@@ -1926,6 +1849,12 @@ components:
         format: int32
         default: 1
         minimum: 1
+    phraseText:
+      name: text
+      in: query
+      description: Search/Filter phrases by text
+      schema:
+        type: string
     primaryFilter:
       name: primary
       in: query
@@ -3224,6 +3153,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/OrganisationPage'
+    Phrase:
+      description: Details of a Phrase
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Phrase'
     PhrasePageResponse:
       description: A page of phrases.
       content:

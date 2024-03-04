@@ -233,12 +233,12 @@ paths:
           in: query
           description: filter concept cluster by texts of its labels attribute
           schema:
-            $ref: "#/components/schemas/StringArray"
+            $ref: '#/components/schemas/StringArray'
         - name: phraseId
           in: query
           description: filter concept cluster by ids of phrases it contains
           schema:
-            $ref: "#/components/schemas/StringArray"
+            $ref: '#/components/schemas/StringArray'
         - name: recalculateCache
           in: query
           description: recalculate the cache of concept clusters (needed when new clusters were added due to some pipeline)
@@ -268,7 +268,7 @@ paths:
           description: The name of the corpus/process from which to create the clusters.
           required: true
           schema:
-            type: string  
+            type: string
         - name: graphIds
           in: query
           description: Only build concept clusters for the specified graphs.

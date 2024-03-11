@@ -255,22 +255,14 @@ paths:
       tags:
         - conceptcluster
   /conceptcluster/create:
-    get:
-      operationId: createConceptClustersForProcessId
-      summary: Create the Neo4j concept clusters representations from a process that already built the concept graphs.
-      parameters:
-        - name: processId
-          in: query
-          description: The name of the corpus/process from which to create the clusters.
-          required: true
-          schema:
-            type: string
-        - name: graphIds
-          in: query
-          description: Only build concept clusters for the specified graphs.
-          schema:
-            $ref: '#/components/schemas/StringArray'
-        - $ref: '#/components/parameters/include'
+    post:
+      operationId: createConceptClustersForPipelineId
+      summary: Create the Neo4j concept clusters representations from a pipeline that already built the concept graphs.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateConceptClustersRequest'
       responses:
         '200':
           description: A short summary of the concept clusters created in the Graph DB.
@@ -279,7 +271,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/PipelineResponse'
         '202':
-          description: The request was accepted and a process started to create the concept clusters in the Graph DB.
+          description: The request was accepted and a pipeline started to create the concept clusters in the Graph DB.
           content:
             application/json:
               schema:
@@ -344,145 +336,35 @@ paths:
           $ref: '#/components/responses/UnexpectedError'
       tags:
         - conceptcluster
-  /conceptgraphs/pipeline:
-    parameters:
-      - $ref: '#/components/parameters/include'
+  /concept_pipeline:
     get:
-      operationId: startConceptGraphPipelineWithoutUpload
-      summary: 'Initializes a complete pipeline with all steps ''preprocessing'', ''embedding'', ''clustering'' & ''graph creation''; but requires no upload and uses defaults as well as the default document server.'
-      parameters:
-        - name: process
-          in: query
-          required: true
-          schema:
-            type: string
-        - name: lang
-          in: query
-          schema:
-            type: string
-        - name: skipPresent
-          in: query
-          schema:
-            type: boolean
-            default: true
-        - name: returnStatistics
-          in: query
-          description: Whether statistics of the graph should be returned in a 200 response. Otherwise 202 response is returned.
-          schema:
-            type: boolean
-            default: false
+      operationId: getConceptPipelines
+      summary: Returns all concept pipelines with some additional information.
       responses:
         '200':
-          description: A short summary of the graphs created by this pipeline.
+          description: An overview of all pipelines that are stored.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PipelineResponse'
-        '202':
-          description: The POST request was accepted and a pipeline process started.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PipelineResponse'
+                type: array
+                items:
+                  $ref: '#/components/schemas/ConceptGraphPipeline'
         '401':
           $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
         default:
           $ref: '#/components/responses/UnexpectedError'
       tags:
-        - conceptgraphs
+        - conceptPipeline
     post:
       operationId: startConceptGraphPipeline
-      summary: 'Initializes a complete pipeline with all steps ''preprocessing'', ''embedding'', ''clustering'' & ''graph creation''.'
-      parameters:
-        - name: process
-          in: query
-          required: true
-          schema:
-            type: string
-        - name: lang
-          in: query
-          schema:
-            type: string
-        - name: skipPresent
-          in: query
-          schema:
-            type: boolean
-            default: true
-        - name: returnStatistics
-          in: query
-          description: Whether statistics of the graph should be returned in a 200 response. Otherwise 202 response is returned.
-          schema:
-            type: boolean
-            default: false
+      summary: |
+        Initialises a complete pipeline with all steps 'preprocessing', 'embedding', 'clustering' and 'graph creation'.
+        You can provide optional configuration files via the properties 'data', 'labels', 'dataConfig', 'embeddingConfig', 'clusteringConfig' and 'graphConfig'.
       requestBody:
-        description: Upload configs and data file.
         content:
           multipart/form-data:
             schema:
-              oneOf:
-                - type: object
-                  properties:
-                    data:
-                      type: string
-                      format: binary
-                    labels:
-                      type: string
-                      format: binary
-                    dataConfig:
-                      type: string
-                      format: binary
-                    embeddingConfig:
-                      type: string
-                      format: binary
-                    clusteringConfig:
-                      type: string
-                      format: binary
-                    graphConfig:
-                      type: string
-                      format: binary
-                  required:
-                    - data
-                - type: object
-                  properties:
-                    labels:
-                      type: string
-                      format: binary
-                    dataConfig:
-                      type: string
-                      format: binary
-                    embeddingConfig:
-                      type: string
-                      format: binary
-                    clusteringConfig:
-                      type: string
-                      format: binary
-                    graphConfig:
-                      type: string
-                      format: binary
-                    dataServerConfig:
-                      type: string
-                      format: binary
-                  required:
-                    - dataServerConfig
-                - type: object
-                  properties:
-                    labels:
-                      type: string
-                      format: binary
-                    dataConfig:
-                      type: string
-                      format: binary
-                    embeddingConfig:
-                      type: string
-                      format: binary
-                    clusteringConfig:
-                      type: string
-                      format: binary
-                    graphConfig:
-                      type: string
-                      format: binary
+              $ref: '#/components/schemas/ConceptPipelineRequest'
       responses:
         '200':
           description: A short summary of the graphs created by this pipeline.
@@ -498,27 +380,48 @@ paths:
                 $ref: '#/components/schemas/PipelineResponse'
         '401':
           $ref: '#/components/responses/Unauthorized'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+      tags:
+        - conceptPipeline
+  '/concept_pipeline/{pipelineId}':
+    get:
+      operationId: getConceptPipelineById
+      summary: Returns a pipeline description by its ID.
+      parameters:
+        - name: pipelineId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A description of the requested pipeline.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConceptGraphPipeline'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
         default:
           $ref: '#/components/responses/UnexpectedError'
       tags:
-        - conceptgraphs
-  /conceptgraphs/statistics:
-    parameters:
-      - $ref: '#/components/parameters/include'
+        - conceptPipeline
+  '/concept_pipeline/{pipelineId}/concept_graphs':
     get:
       operationId: getConceptGraphStatistics
-      summary: Gets an overview of the concept graphs for a process.
+      summary: Returns an overview of the concept graphs for a pipeline.
       parameters:
-        - name: process
-          in: query
+        - name: pipelineId
+          in: path
+          required: true
           schema:
             type: string
-            default: default
       responses:
         '200':
-          description: A short summary of the graphs from a process.
+          description: A short summary of the graphs from a pipeline.
           content:
             application/json:
               schema:
@@ -530,15 +433,13 @@ paths:
         default:
           $ref: '#/components/responses/UnexpectedError'
       tags:
-        - conceptgraphs
-  '/conceptgraphs/processes/{processId}/{graphId}':
-    parameters:
-      - $ref: '#/components/parameters/include'
+        - conceptPipeline
+  '/concept_pipeline/{pipelineId}/concept_graphs/{graphId}':
     get:
       operationId: getConceptGraph
-      summary: Get a specific Concept Graph for a process by its ID.
+      summary: Get a specific Concept Graph for a pipeline by its ID.
       parameters:
-        - name: processId
+        - name: pipelineId
           in: path
           required: true
           schema:
@@ -562,28 +463,7 @@ paths:
         default:
           $ref: '#/components/responses/UnexpectedError'
       tags:
-        - conceptgraphs
-  /conceptgraphs/processes:
-    parameters:
-      - $ref: '#/components/parameters/include'
-    get:
-      operationId: getStoredProcesses
-      summary: Returns all stored processes with some additional information.
-      responses:
-        '200':
-          description: An overview of all processes that are stored
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/ConceptGraphProcess'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        default:
-          $ref: '#/components/responses/UnexpectedError'
-      tags:
-        - conceptgraphs
+        - conceptPipeline
   /organisation:
     parameters:
       - $ref: '#/components/parameters/include'
@@ -2317,10 +2197,10 @@ components:
                 type: array
                 items:
                   type: string
-    ConceptGraphProcess:
+    ConceptGraphPipeline:
       type: object
       properties:
-        name:
+        pipelineId:
           type: string
         finished_steps:
           type: array
@@ -2331,19 +2211,24 @@ components:
                 type: string
               rank:
                 type: integer
+      required:
+        - pipelineId
     PipelineResponse:
       type: object
       properties:
-        name:
+        pipelineId:
           type: string
         response:
           type: string
         status:
           $ref: '#/components/schemas/PipelineResponseStatus'
+      required:
+        - pipelineId
     PipelineResponseStatus:
       type: string
       enum:
         - failed
+        - running
         - successful
     Constant:
       type: object
@@ -3052,6 +2937,57 @@ components:
           type: string
       required:
         - id
+    ConceptPipelineRequest:
+      type: object
+      properties:
+        pipelineId:
+          description: Unique identifier of the pipeline.
+          type: string
+        dataSourceId:
+          description: 'ID of the data source, the pipeline is issued for.'
+          type: string
+        skipPresent:
+          description: 'If a pipeline with the specified ID already exists, intermediate pipeline steps will be picked up.'
+          type: boolean
+          default: true
+        returnStatistics:
+          description: Whether statistics of the graph should be returned in a 200 response. Otherwise 202 response is returned.
+          type: boolean
+          default: false
+        data:
+          type: string
+          format: binary
+        labels:
+          type: string
+          format: binary
+        dataConfig:
+          type: string
+          format: binary
+        embeddingConfig:
+          type: string
+          format: binary
+        clusteringConfig:
+          type: string
+          format: binary
+        graphConfig:
+          type: string
+          format: binary
+      required:
+        - pipelineId
+    CreateConceptClustersRequest:
+      type: object
+      properties:
+        pipelineId:
+          description: The name of the corpus/pipeline from which to create the clusters.
+          type: string
+        graphIds:
+          description: Only build concept clusters for the specified graphs.
+          type: array
+          items:
+            type: string
+      required:
+        - pipelineId
+        - graphIds
     Purpose:
       type: string
       enum:

@@ -2997,6 +2997,11 @@ components:
           description: Whether statistics of the graph should be returned in a 200 response. Otherwise 202 response is returned.
           type: boolean
           default: false
+        language:
+          description: |
+            Use this property to specify the language of the documents contained in the corpus.
+            You can also use it to overwrite the language that is specified in a data source configuration.
+          type: string
         data:
           type: string
           format: binary

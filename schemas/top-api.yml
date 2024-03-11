@@ -254,36 +254,6 @@ paths:
           $ref: '#/components/responses/UnexpectedError'
       tags:
         - conceptcluster
-  /conceptcluster/create:
-    post:
-      operationId: createConceptClustersForPipelineId
-      summary: Create the Neo4j concept clusters representations from a pipeline that already built the concept graphs.
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CreateConceptClustersRequest'
-      responses:
-        '200':
-          description: A short summary of the concept clusters created in the Graph DB.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PipelineResponse'
-        '202':
-          description: The request was accepted and a pipeline started to create the concept clusters in the Graph DB.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PipelineResponse'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        default:
-          $ref: '#/components/responses/UnexpectedError'
-      tags:
-        - conceptcluster
   '/conceptcluster/{conceptClusterId}':
     summary: Represents a concept cluster
     parameters:
@@ -427,7 +397,57 @@ paths:
           $ref: '#/components/responses/NotFound'
         default:
           $ref: '#/components/responses/UnexpectedError'
-  '/concept_pipeline/{pipelineId}/concept_graphs':
+  '/concept_pipeline/{pipelineId}/concept_cluster':
+    parameters:
+      - name: pipelineId
+        in: path
+        required: true
+        schema:
+          type: string
+    post:
+      operationId: createConceptClustersForPipelineId
+      summary: Create concept clusters from a pipeline that already built the concept graphs.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateConceptClustersRequest'
+      responses:
+        '200':
+          description: A short summary of the concept clusters created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PipelineResponse'
+        '202':
+          description: The request was accepted and a pipeline started to create the concept clusters.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PipelineResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+      tags:
+        - conceptcluster
+    delete:
+      operationId: deleteConceptClustersForPipelineId
+      summary: Delete all concept clusters that where derived from a concept pipeline.
+      responses:
+        '202':
+          description: Concept clusters where deleted.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+      tags:
+        - conceptcluster
+  '/concept_pipeline/{pipelineId}/concept_graph':
     get:
       operationId: getConceptGraphStatistics
       summary: Returns an overview of the concept graphs for a pipeline.

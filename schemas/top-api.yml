@@ -413,7 +413,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateConceptClustersRequest'
+              description: Only build concept clusters for the specified graphs.
+              type: array
+              items:
+                type: string
       responses:
         '200':
           description: A short summary of the concept clusters created.
@@ -3014,20 +3017,6 @@ components:
           format: binary
       required:
         - pipelineId
-    CreateConceptClustersRequest:
-      type: object
-      properties:
-        pipelineId:
-          description: The name of the corpus/pipeline from which to create the clusters.
-          type: string
-        graphIds:
-          description: Only build concept clusters for the specified graphs.
-          type: array
-          items:
-            type: string
-      required:
-        - pipelineId
-        - graphIds
     Purpose:
       type: string
       enum:

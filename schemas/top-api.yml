@@ -2963,7 +2963,7 @@ components:
           type: string
         text:
           type: string
-        isExemplar:
+        exemplar:
           type: boolean
         attributes:
           type: array

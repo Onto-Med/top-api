@@ -2977,7 +2977,7 @@ components:
         id:
           type: string
         labels:
-          type: string
+          $ref: '#/components/schemas/StringArray'
       required:
         - id
     ConceptPipelineRequest:

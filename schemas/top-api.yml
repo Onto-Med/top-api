@@ -308,8 +308,8 @@ paths:
         - conceptcluster
   /concept_pipeline:
     get:
-      operationId: getConceptPipelines
-      summary: Returns all concept pipelines with some additional information.
+      operationId: getConceptGraphPipelines
+      summary: Returns all concept graph pipelines with some additional information.
       responses:
         '200':
           description: An overview of all pipelines that are stored.
@@ -356,7 +356,7 @@ paths:
         - conceptPipeline
   '/concept_pipeline/{pipelineId}':
     get:
-      operationId: getConceptPipelineById
+      operationId: getConceptGraphPipelineById
       summary: Returns a pipeline description by its ID.
       parameters:
         - name: pipelineId
@@ -2245,17 +2245,36 @@ components:
       properties:
         pipelineId:
           type: string
-        finished_steps:
+        status:
           type: array
           items:
-            type: object
-            properties:
-              name:
-                type: string
-              rank:
-                type: integer
+            $ref: "#/components/schemas/ConceptGraphPipelineStatus"
       required:
         - pipelineId
+    ConceptGraphPipelineStatus:
+      type: object
+      properties:
+        name:
+          $ref: "#/components/schemas/ConceptGraphPipelineStepsEnum"
+        status:
+          $ref: '#/components/schemas/ConceptGraphPipelineStatusEnum'
+        rank:
+          type: integer
+    ConceptGraphPipelineStepsEnum:
+      type: string
+      enum:
+        - data
+        - embedding
+        - clustering
+        - graph
+    ConceptGraphPipelineStatusEnum:
+      type: string
+      enum:
+        - started
+        - running
+        - finished
+        - aborted
+        - not_present
     PipelineResponse:
       type: object
       properties:

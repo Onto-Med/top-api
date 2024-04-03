@@ -2274,7 +2274,7 @@ components:
         - running
         - finished
         - aborted
-        - not_present
+        - not present
     PipelineResponse:
       type: object
       properties:

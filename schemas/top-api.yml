@@ -272,6 +272,29 @@ paths:
           $ref: '#/components/responses/UnexpectedError'
       tags:
         - conceptcluster
+  /conceptcluster/processes:
+    get:
+      operationId: getProcess
+      summary: Checks the status of a specific Neo4j graph creation process
+      parameters:
+        - name: pipelineId
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Returns a PipelineResponse object for the specified process
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PipelineResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+      tags:
+        - conceptcluster
   '/conceptcluster/{conceptClusterId}':
     summary: Represents a concept cluster
     parameters:

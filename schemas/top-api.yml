@@ -243,6 +243,7 @@ paths:
           schema:
             type: boolean
             default: false
+        - $ref: '#/components/parameters/corpusId'
         - $ref: '#/components/parameters/page'
         - $ref: '#/components/parameters/include'
       responses:
@@ -266,6 +267,8 @@ paths:
     get:
       operationId: getConceptClusterById
       summary: Returns a particular concept cluster.
+      parameters:
+        - $ref: '#/components/parameters/corpusId'
       responses:
         '200':
           description: Details of the Concept cluster.
@@ -1821,6 +1824,12 @@ components:
       description: Defaults to the latest version number.
       schema:
         $ref: '#/components/schemas/VersionNumber'
+    corpusId:
+      name: corpusId
+      in: query
+      description: Gets only clusters that were generated from the specified corpus (i.e. datasource)
+      schema:
+        type: string
   schemas:
     DocumentGatheringMode:
       type: string
@@ -2245,10 +2254,12 @@ components:
       properties:
         pipelineId:
           type: string
-        status:
+        steps:
           type: array
           items:
             $ref: "#/components/schemas/ConceptGraphPipelineStatus"
+        status:
+          $ref: "#/components/schemas/PipelineResponseStatus"
       required:
         - pipelineId
     ConceptGraphPipelineStatus:

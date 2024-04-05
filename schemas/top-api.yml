@@ -263,12 +263,12 @@ paths:
         required: true
         schema:
           type: string
-      - $ref: '#/components/parameters/include'
     get:
       operationId: getConceptClusterById
       summary: Returns a particular concept cluster.
       parameters:
         - $ref: '#/components/parameters/corpusId'
+        - $ref: '#/components/parameters/include'
       responses:
         '200':
           description: Details of the Concept cluster.
@@ -1827,7 +1827,7 @@ components:
     corpusId:
       name: corpusId
       in: query
-      description: Gets only clusters that were generated from the specified corpus (i.e. datasource)
+      description: Gets only clusters that were generated from the specified corpus (i.e. datasource). If undefined all clusters are returned.
       schema:
         type: string
   schemas:

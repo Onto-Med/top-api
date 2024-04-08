@@ -258,7 +258,7 @@ paths:
   /conceptcluster/corpora:
     get:
       operationId: getCorpusIds
-      summary: Searches for specific concept clusters
+      summary: Get all corpus IDs.
       responses:
         '200':
           description: Returns a distinct list of all the 'corpusIds' found in Concept Nodes.
@@ -266,29 +266,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/StringArray'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        default:
-          $ref: '#/components/responses/UnexpectedError'
-      tags:
-        - conceptcluster
-  /conceptcluster/processes:
-    get:
-      operationId: getProcess
-      summary: Checks the status of a specific Neo4j graph creation process
-      parameters:
-        - name: pipelineId
-          in: query
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Returns a PipelineResponse object for the specified process
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PipelineResponse'
         '401':
           $ref: '#/components/responses/Unauthorized'
         default:
@@ -374,6 +351,7 @@ paths:
         Initialises a complete pipeline with all steps 'preprocessing', 'embedding', 'clustering' and 'graph creation'.
         You can provide optional configuration files via the properties 'data', 'labels', 'dataConfig', 'embeddingConfig', 'clusteringConfig' and 'graphConfig'.
       requestBody:
+        required: true
         content:
           multipart/form-data:
             schema:
@@ -387,6 +365,36 @@ paths:
                 $ref: '#/components/schemas/PipelineResponse'
         '202':
           description: The POST request was accepted and a pipeline process started.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PipelineResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+      tags:
+        - conceptPipeline
+    put:
+      operationId: startConceptGraphPipelineWithJson
+      summary: |
+        Initialises a complete pipeline with all steps 'preprocessing', 'embedding', 'clustering' and 'graph creation'.
+        Doesn't support file uploading; configuration is done via json body.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConceptPipelineConfigRequest'
+      responses:
+        '200':
+          description: A short summary of the graphs created by this pipeline.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PipelineResponse'
+        '202':
+          description: The PUT request was accepted and a pipeline process started.
           content:
             application/json:
               schema:
@@ -491,6 +499,29 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+      tags:
+        - conceptcluster
+  /concept_pipeline/{pipelineId}/concept_cluster/process:
+    get:
+      operationId: getConceptClusterProcess
+      summary: Checks the status of a specific Neo4j graph creation process
+      parameters:
+        - name: pipelineId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Returns a PipelineResponse object for the specified process
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PipelineResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
         default:
           $ref: '#/components/responses/UnexpectedError'
       tags:
@@ -3050,6 +3081,45 @@ components:
           $ref: '#/components/schemas/StringArray'
       required:
         - id
+    ConceptPipelineConfigRequest:
+      type: object
+      properties:
+        pipelineId:
+          description: Unique identifier of the pipeline.
+          type: string
+        dataSourceId:
+          description: 'ID of the data source, the pipeline is issued for.'
+          type: string
+        skipPresent:
+          description: 'If a pipeline with the specified ID already exists, intermediate pipeline steps will be picked up.'
+          type: boolean
+          default: true
+        returnStatistics:
+          description: Whether statistics of the graph should be returned in a 200 response. Otherwise 202 response is returned.
+          type: boolean
+          default: false
+        language:
+          description: |
+            Use this property to specify the language of the documents contained in the corpus.
+            You can also use it to overwrite the language that is specified in a data source configuration.
+          type: string
+        documentServerConfig:
+          $ref: '#/components/schemas/ElasticsearchServerConfig'
+        dataConfig:
+          description: A simple mapping for configuration values for the preprocessing step.
+          type: object
+        embeddingConfig:
+          description: A simple mapping for configuration values for the embedding step.
+          type: object
+        clusteringConfig:
+          description: A simple mapping for configuration values for the clustering step.
+          type: object
+        graphConfig:
+          description: A simple mapping for configuration values for the graph creation step.
+          type: object
+      required:
+        - pipelineId
+        - documentServerConfig
     ConceptPipelineRequest:
       type: object
       properties:
@@ -3092,6 +3162,28 @@ components:
           format: binary
       required:
         - pipelineId
+    ElasticsearchServerConfig:
+      description: Configuration for an Elasticsearch server, where the documents to process are stored
+      type: object
+      properties:
+        url:
+          type: string
+        port:
+          type: string
+        index:
+          type: string
+        size:
+          type: number
+        labelKey:
+          description: |
+            The ES field where the label (if any) of the document is stored
+            (e.g. could denote some document category or some such).
+          type: string
+        replaceKeys:
+          description: |
+            A map where the key states the ES field where the actual text is stored.
+            The value is the field the concept graphs api references for where it expects the textual content (i.e.: 'content').
+          type: object
     Purpose:
       type: string
       enum:

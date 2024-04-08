@@ -3052,6 +3052,8 @@ components:
           type: string
         name:
           type: string
+        label:
+          type: string
         highlightedText:
           type: string
         score:

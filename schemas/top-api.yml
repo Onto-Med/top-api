@@ -122,6 +122,11 @@ paths:
       summary: Returns a particular document
       parameters:
         - $ref: '#/components/parameters/documentDataSource'
+        - name: highlightedTerms
+          in: query
+          description: Highlights the terms in resulting document
+          schema:
+            $ref: '#/components/schemas/StringArray'
         - $ref: '#/components/parameters/include'
       responses:
         '200':

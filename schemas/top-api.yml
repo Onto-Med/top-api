@@ -122,9 +122,11 @@ paths:
       summary: Returns a particular document
       parameters:
         - $ref: '#/components/parameters/documentDataSource'
-        - name: highlightedTerms
+        - name: highlightConcepts
           in: query
-          description: Highlights the terms in resulting document
+          description: |
+            Highlights the terms that are connected to these concepts in the resulting document.
+            A highlight color can be provided by prepending '$color::{COLORCODE; COLORSTRING}::color$'.
           schema:
             $ref: '#/components/schemas/StringArray'
         - $ref: '#/components/parameters/include'

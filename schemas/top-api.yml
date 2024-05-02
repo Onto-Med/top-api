@@ -511,7 +511,7 @@ paths:
           $ref: '#/components/responses/UnexpectedError'
       tags:
         - conceptcluster
-  /concept_pipeline/{pipelineId}/concept_cluster/process:
+  '/concept_pipeline/{pipelineId}/concept_cluster/process':
     get:
       operationId: getConceptClusterProcess
       summary: Checks the status of a specific Neo4j graph creation process
@@ -1785,6 +1785,12 @@ components:
       in: query
       schema:
         $ref: '#/components/schemas/Purpose'
+    corpusId:
+      name: corpusId
+      in: query
+      description: Gets only clusters that were generated from the specified corpus (i.e. datasource). If undefined all clusters are returned.
+      schema:
+        type: string
     dataTypeFilter:
       name: dataType
       in: query
@@ -1903,12 +1909,6 @@ components:
       description: Defaults to the latest version number.
       schema:
         $ref: '#/components/schemas/VersionNumber'
-    corpusId:
-      name: corpusId
-      in: query
-      description: Gets only clusters that were generated from the specified corpus (i.e. datasource). If undefined all clusters are returned.
-      schema:
-        type: string
   schemas:
     DocumentGatheringMode:
       type: string
@@ -2336,16 +2336,16 @@ components:
         steps:
           type: array
           items:
-            $ref: "#/components/schemas/ConceptGraphPipelineStatus"
+            $ref: '#/components/schemas/ConceptGraphPipelineStatus'
         status:
-          $ref: "#/components/schemas/PipelineResponseStatus"
+          $ref: '#/components/schemas/PipelineResponseStatus'
       required:
         - pipelineId
     ConceptGraphPipelineStatus:
       type: object
       properties:
         name:
-          $ref: "#/components/schemas/ConceptGraphPipelineStepsEnum"
+          $ref: '#/components/schemas/ConceptGraphPipelineStepsEnum'
         status:
           $ref: '#/components/schemas/ConceptGraphPipelineStatusEnum'
         rank:
@@ -3173,7 +3173,7 @@ components:
       required:
         - pipelineId
     ElasticsearchServerConfig:
-      description: Configuration for an Elasticsearch server, where the documents to process are stored
+      description: 'Configuration for an Elasticsearch server, where the documents to process are stored'
       type: object
       properties:
         url:

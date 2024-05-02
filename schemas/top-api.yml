@@ -125,8 +125,9 @@ paths:
         - name: highlightConcepts
           in: query
           description: |
-            Highlights the terms that are connected to these concepts in the resulting document.
+            Highlights the terms that are connected to these concepts (given their id) in the resulting document.
             A highlight color can be provided by prepending '$color::{COLORCODE; COLORSTRING}::color$'.
+            (e.g. [$color::#556b2f::color$21, $color::red::color$17])
           schema:
             $ref: '#/components/schemas/StringArray'
         - $ref: '#/components/parameters/include'

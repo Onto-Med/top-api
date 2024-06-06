@@ -2,7 +2,7 @@
 
 This repository contains the OpenAPI 3 specification of the TOP framework.
 Please see [top-deployment](https://onto-med.github.io/top-deployment) for an onverall description of the framework.
-The schema file is located at [schemas/top-api.yaml](schemas/top-api.yaml)
+The schema file is located at [schemas/top-api.yml](schemas/top-api.yml)
 
 [![DOI](https://zenodo.org/badge/429797878.svg)](https://zenodo.org/badge/latestdoi/429797878)
 [![Swagger UI](https://img.shields.io/badge/-Swagger%20UI-%23Clojure?style=flat&logo=swagger&logoColor=white)](https://onto-med.github.io/top-api/)

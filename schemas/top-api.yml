@@ -2710,6 +2710,14 @@ components:
         externalId:
           type: string
           example: loinc
+        version:
+          description: A string specifying the version of this code system.
+          type: string
+          example: 2023AA
+        latest:
+          description: A boolean specifying whether this code system version is currently the latest of the code system series.
+          type: boolean
+          default: false
       required:
         - uri
     Code:

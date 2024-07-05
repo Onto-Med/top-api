@@ -1701,8 +1701,6 @@ paths:
       tags:
         - user
   '/code/{codeSystemId}/{uri}':
-    parameters:
-      - $ref: '#/components/parameters/include'
     get:
       operationId: getCode
       summary: Retrieve a specific code from an external code system.
@@ -1722,6 +1720,12 @@ paths:
           schema:
             type: string
           example: snomed
+        - name: subtree
+          in: query
+          description: Indicates whether only the code (self) or its child codes (subtree/leaves) should be returned. Defaults to "self".
+          required: false
+          schema:
+            $ref: '#/components/schemas/CodeScope'
       responses:
         '200':
           description: Details of the code.
@@ -2791,6 +2795,12 @@ components:
           example: 3137-7
         scope:
           $ref: '#/components/schemas/CodeScope'
+        parent:
+          $ref: '#/components/schemas/Code'
+        children:
+          type: array
+          items:
+            $ref: '#/components/schemas/Code'
         name:
           type: string
           example: Body height
@@ -2813,11 +2823,11 @@ components:
     CodeScope:
       description: Specifies the scope of a code.
       type: string
-      default: self
+      default: SELF
       enum:
-        - self
-        - subtree
-        - leaves
+        - SELF
+        - SUBTREE
+        - LEAVES
     Restriction:
       description: Represents restriction of an abstract phenotype.
       type: object

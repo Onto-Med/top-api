@@ -2793,10 +2793,6 @@ components:
         code:
           type: string
           example: 3137-7
-        scope:
-          $ref: '#/components/schemas/CodeScope'
-        parent:
-          $ref: '#/components/schemas/Code'
         children:
           type: array
           items:

@@ -1720,7 +1720,7 @@ paths:
           schema:
             type: string
           example: snomed
-        - name: subtree
+        - name: scope
           in: query
           description: Indicates whether only the code (self) or its child codes (subtree/leaves) should be returned. Defaults to "self".
           required: false
@@ -2780,8 +2780,7 @@ components:
     Code:
       description: |-
         In TOP, a code is considered as one or more codes of a code system (also referred to as taxonomy or ontology).
-        Most code systems have a hierarchical structure. The property `scope` specifies, whether exactly one (self)
-        or multiple codes (subtree or leaves) are represented by a TOP code.
+        Most code systems have a hierarchical structure. Therefore, codes may have children.
       type: object
       properties:
         uri:

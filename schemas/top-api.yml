@@ -1722,7 +1722,7 @@ paths:
           example: snomed
         - name: scope
           in: query
-          description: Indicates whether only the code (self) or its child codes (subtree/leaves) should be returned. Defaults to "self".
+          description: Indicates whether only the code (self) or its child codes (subtree/leaves) should be returned. Defaults to "SELF".
           required: false
           schema:
             $ref: '#/components/schemas/CodeScope'

@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: TOP API
-  version: 0.10.0
+  version: 0.10.1
   description: |-
     API to manage phenotypes, repositories, ontologies, external terminologies and organisations and to execute phenotypic queries.
 
@@ -450,6 +450,31 @@ paths:
       responses:
         '202':
           description: Pipeline has been deleted.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+      tags:
+        - conceptPipeline
+  '/concept_pipeline/configuration':
+    get:
+      operationId: getConceptGraphPipelineConfiguration
+      summary: Returns either a default configuration or the configuration for a specific pipeline if an ID is given
+      parameters:
+        - name: pipelineId
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A configuration in JSON format
+          content:
+            application/json:
+              schema:
+                type: object
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':

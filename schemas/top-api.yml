@@ -474,7 +474,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
+                $ref: '#/components/schemas/ConceptPipelineConfigRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
@@ -3127,25 +3127,21 @@ components:
     ConceptPipelineConfigRequest:
       type: object
       properties:
-        pipelineId:
+        name:
           description: Unique identifier of the pipeline.
           type: string
-        dataSourceId:
-          description: 'ID of the data source, the pipeline is issued for.'
-          type: string
-        skipPresent:
-          description: 'If a pipeline with the specified ID already exists, intermediate pipeline steps will be picked up.'
-          type: boolean
-          default: true
-        returnStatistics:
-          description: Whether statistics of the graph should be returned in a 200 response. Otherwise 202 response is returned.
-          type: boolean
-          default: false
         language:
           description: |
             Use this property to specify the language of the documents contained in the corpus.
             You can also use it to overwrite the language that is specified in a data source configuration.
-          type: string
+        skipPresent:
+          description: Whether already present pipeline steps for this process should be skipped.
+          type: boolean
+          default: true
+        returnStatistics:
+          description: Whether it should be waited for the response (not recommended).
+          type: boolean
+          default: false
         documentServerConfig:
           $ref: '#/components/schemas/ElasticsearchServerConfig'
         dataConfig:
@@ -3160,9 +3156,6 @@ components:
         graphConfig:
           description: A simple mapping for configuration values for the graph creation step.
           type: object
-      required:
-        - pipelineId
-        - documentServerConfig
     ConceptPipelineRequest:
       type: object
       properties:

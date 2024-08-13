@@ -474,7 +474,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ConceptPipelineConfigRequest'
+                type: string
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
@@ -3125,37 +3125,7 @@ components:
       required:
         - id
     ConceptPipelineConfigRequest:
-      type: object
-      properties:
-        name:
-          description: Unique identifier of the pipeline.
-          type: string
-        language:
-          description: |
-            Use this property to specify the language of the documents contained in the corpus.
-            You can also use it to overwrite the language that is specified in a data source configuration.
-        skipPresent:
-          description: Whether already present pipeline steps for this process should be skipped.
-          type: boolean
-          default: true
-        returnStatistics:
-          description: Whether it should be waited for the response (not recommended).
-          type: boolean
-          default: false
-        documentServerConfig:
-          $ref: '#/components/schemas/ElasticsearchServerConfig'
-        dataConfig:
-          description: A simple mapping for configuration values for the preprocessing step.
-          type: object
-        embeddingConfig:
-          description: A simple mapping for configuration values for the embedding step.
-          type: object
-        clusteringConfig:
-          description: A simple mapping for configuration values for the clustering step.
-          type: object
-        graphConfig:
-          description: A simple mapping for configuration values for the graph creation step.
-          type: object
+      type: string
     ConceptPipelineRequest:
       type: object
       properties:

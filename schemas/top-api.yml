@@ -468,6 +468,11 @@ paths:
           required: false
           schema:
             type: string
+        - name: language
+          in: query
+          required: false
+          schema:
+            type: string
       responses:
         '200':
           description: A configuration in JSON format

@@ -488,13 +488,13 @@ paths:
           $ref: '#/components/responses/UnexpectedError'
       tags:
         - conceptPipeline
-  '/concept_pipeline/stop':
+  '/concept_pipeline/{pipelineId}/stop':
     get:
       operationId: stopConceptGraphPipeline
       summary: Stops the pipeline for this specific ID after the currently running step is finished
       parameters:
         - name: pipelineId
-          in: query
+          in: path
           required: true
           schema:
             type: string

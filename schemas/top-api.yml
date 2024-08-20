@@ -2415,6 +2415,7 @@ components:
         - running
         - finished
         - aborted
+        - stopped
         - not present
     PipelineResponse:
       type: object
@@ -2433,6 +2434,7 @@ components:
         - failed
         - running
         - successful
+        - stopped
     Constant:
       type: object
       properties:

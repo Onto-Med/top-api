@@ -488,6 +488,27 @@ paths:
           $ref: '#/components/responses/UnexpectedError'
       tags:
         - conceptPipeline
+  '/concept_pipeline/stop':
+    get:
+      operationId: stopConceptGraphPipeline
+      summary: Stops the pipeline for this specific ID after the currently running step is finished
+      parameters:
+        - name: pipelineId
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '202':
+          description: Pipeline will be stopped
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+      tags:
+        - conceptPipeline
   '/concept_pipeline/{pipelineId}/concept_cluster':
     parameters:
       - name: pipelineId

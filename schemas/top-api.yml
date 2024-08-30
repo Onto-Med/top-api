@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: TOP API
-  version: 0.10.0
+  version: 0.10.1
   description: |-
     API to manage phenotypes, repositories, ontologies, external terminologies and organisations and to execute phenotypic queries.
 
@@ -450,6 +450,57 @@ paths:
       responses:
         '202':
           description: Pipeline has been deleted.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+      tags:
+        - conceptPipeline
+  '/concept_pipeline/configuration':
+    get:
+      operationId: getConceptGraphPipelineConfiguration
+      summary: Returns either a default configuration or the configuration for a specific pipeline if an ID is given
+      parameters:
+        - name: pipelineId
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: language
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A configuration in JSON format
+          content:
+            application/json:
+              schema:
+                type: string
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+      tags:
+        - conceptPipeline
+  '/concept_pipeline/{pipelineId}/stop':
+    get:
+      operationId: stopConceptGraphPipeline
+      summary: Stops the pipeline for this specific ID after the currently running step is finished
+      parameters:
+        - name: pipelineId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '202':
+          description: Pipeline will be stopped
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
@@ -2364,6 +2415,7 @@ components:
         - running
         - finished
         - aborted
+        - stopped
         - not present
     PipelineResponse:
       type: object
@@ -2382,6 +2434,7 @@ components:
         - failed
         - running
         - successful
+        - stopped
     Constant:
       type: object
       properties:
@@ -3100,44 +3153,7 @@ components:
       required:
         - id
     ConceptPipelineConfigRequest:
-      type: object
-      properties:
-        pipelineId:
-          description: Unique identifier of the pipeline.
-          type: string
-        dataSourceId:
-          description: 'ID of the data source, the pipeline is issued for.'
-          type: string
-        skipPresent:
-          description: 'If a pipeline with the specified ID already exists, intermediate pipeline steps will be picked up.'
-          type: boolean
-          default: true
-        returnStatistics:
-          description: Whether statistics of the graph should be returned in a 200 response. Otherwise 202 response is returned.
-          type: boolean
-          default: false
-        language:
-          description: |
-            Use this property to specify the language of the documents contained in the corpus.
-            You can also use it to overwrite the language that is specified in a data source configuration.
-          type: string
-        documentServerConfig:
-          $ref: '#/components/schemas/ElasticsearchServerConfig'
-        dataConfig:
-          description: A simple mapping for configuration values for the preprocessing step.
-          type: object
-        embeddingConfig:
-          description: A simple mapping for configuration values for the embedding step.
-          type: object
-        clusteringConfig:
-          description: A simple mapping for configuration values for the clustering step.
-          type: object
-        graphConfig:
-          description: A simple mapping for configuration values for the graph creation step.
-          type: object
-      required:
-        - pipelineId
-        - documentServerConfig
+      type: string
     ConceptPipelineRequest:
       type: object
       properties:

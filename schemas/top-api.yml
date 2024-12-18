@@ -707,6 +707,37 @@ paths:
           $ref: '#/components/responses/UnexpectedError'
       tags:
         - query
+    post:
+      operationId: uploadDataSource
+      summary: |-
+        Reads the content of an uploaded file and loads contained data into a local data source of the framework.
+        If the specified data source allready exists, data will be appended to that data source.
+      requestBody:
+        description: File to be loaded into the local data source.
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                dataSourceId:
+                  description: ID of the local data source the data is to be loaded into.
+                  type: string
+                file:
+                  type: string
+                  format: binary
+              required:
+                - dataSourceId
+                - file
+      responses:
+        '204':
+          description: Upload accepted.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+      tags:
+        - query
   '/{organisationId}':
     summary: Represents an organisation.
     parameters:

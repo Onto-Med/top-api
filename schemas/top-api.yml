@@ -738,6 +738,28 @@ paths:
           $ref: '#/components/responses/UnexpectedError'
       tags:
         - query
+  '/data_source/{dataSourceId}':
+    delete:
+      operationId: deleteDataSource
+      summary: Delete an existing local data source.
+      parameters:
+        - name: dataSourceId
+          in: path
+          description: The ID of the local data source to be deleted.
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Data source deleted.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+      tags:
+        - query
   '/{organisationId}':
     summary: Represents an organisation.
     parameters:

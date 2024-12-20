@@ -458,7 +458,7 @@ paths:
           $ref: '#/components/responses/UnexpectedError'
       tags:
         - conceptPipeline
-  '/concept_pipeline/configuration':
+  /concept_pipeline/configuration:
     get:
       operationId: getConceptGraphPipelineConfiguration
       summary: Returns either a default configuration or the configuration for a specific pipeline if an ID is given
@@ -3317,7 +3317,7 @@ components:
         birthDate:
           type: string
           format: date
-          example: 2000-01-01
+          example: '2000-01-01'
         sex:
           type: string
           example: female
@@ -3339,11 +3339,11 @@ components:
         startDateTime:
           type: string
           format: date-time
-          example: 2000-01-02T01:02:03
+          example: '2000-01-02T01:02:03'
         endDateTime:
           type: string
           format: date-time
-          example: 2000-01-03T15:00:07
+          example: '2000-01-03T15:00:07'
       required:
         - encounterId
         - subjectId
@@ -3362,14 +3362,14 @@ components:
           example: Encounter/1
         codeSystem:
           type: string
-          example: https://loinc.org/
+          example: 'https://loinc.org/'
         code:
           type: string
           example: 3137-7
         dateTime:
           type: string
           format: date-time
-          example: 2000-01-02T01:02:03
+          example: '2000-01-02T01:02:03'
         startDateTime:
           type: string
           format: date-time

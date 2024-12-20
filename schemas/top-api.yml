@@ -720,15 +720,22 @@ paths:
             schema:
               type: object
               properties:
-                dataSourceId:
-                  description: ID of the local data source the data is to be loaded into.
-                  type: string
                 file:
                   type: string
                   format: binary
+                fileType:
+                  type: string
+                  example: subject
+                dataSourceId:
+                  description: ID of the local data source the data is to be loaded into.
+                  type: string
+                config:
+                  description: Additional configurations specific to the file type.
+                  type: string
               required:
-                - dataSourceId
                 - file
+                - fileType
+                - dataSourceId
       responses:
         '204':
           description: Upload accepted.

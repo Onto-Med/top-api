@@ -3307,6 +3307,92 @@ components:
       required:
         - appName
         - version
+    Subject:
+      description: Master data of a subject to be imported into a data source for phenotypic queries.
+      type: object
+      properties:
+        subjectId:
+          type: string
+          example: Patient/1
+        birthDate:
+          type: string
+          format: date
+          example: 2000-01-01
+        sex:
+          type: string
+          example: female
+      required:
+        - subjectId
+    Encounter:
+      description: Encounter data to be imported into a data source for phenotypic queries.
+      type: object
+      properties:
+        encounterId:
+          type: string
+          example: Encounter/1
+        subjectId:
+          type: string
+          example: Patient/1
+        type:
+          type: string
+          example: some type
+        startDateTime:
+          type: string
+          format: date-time
+          example: 2000-01-02T01:02:03
+        endDateTime:
+          type: string
+          format: date-time
+          example: 2000-01-03T15:00:07
+      required:
+        - encounterId
+        - subjectId
+    SubjectResource:
+      description: Observational data of a subject to be imported into a data source for phenotypic queries.
+      type: object
+      properties:
+        subjectResourceId:
+          type: string
+          example: Observation/1
+        subjectId:
+          type: string
+          example: Patient/1
+        encounterId:
+          type: string
+          example: Encounter/1
+        codeSystem:
+          type: string
+          example: https://loinc.org/
+        code:
+          type: string
+          example: 3137-7
+        dateTime:
+          type: string
+          format: date-time
+          example: 2000-01-02T01:02:03
+        startDateTime:
+          type: string
+          format: date-time
+        endDateTime:
+          type: string
+          format: date-time
+        unit:
+          type: string
+          example: cm
+        numberValue:
+          type: number
+          example: 47.2
+        textValue:
+          type: string
+        booleanValue:
+          type: boolean
+        dateTimeValue:
+          type: string
+          format: date-time
+      required:
+        - subjectResourceId
+        - codeSystem
+        - code
   responses:
     NotFound:
       description: The specified resource was not found.

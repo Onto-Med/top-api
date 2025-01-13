@@ -724,8 +724,7 @@ paths:
                   type: string
                   format: binary
                 fileType:
-                  type: string
-                  example: subject
+                  $ref: '#/components/schemas/DataSourceFileType'
                 dataSourceId:
                   description: ID of the local data source the data is to be loaded into.
                   type: string
@@ -3400,6 +3399,14 @@ components:
         - subjectResourceId
         - codeSystem
         - code
+    DataSourceFileType:
+      type: string
+      enum:
+        - subject_csv
+        - encounter_csv
+        - subject_resource_csv
+        - fhir
+      example: subject_csv
   responses:
     NotFound:
       description: The specified resource was not found.

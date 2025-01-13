@@ -109,6 +109,9 @@
 							<modelPackage>care.smith.top.model</modelPackage>
 							<apiPackage>care.smith.top.backend.api</apiPackage>
 							<supportingFilesToGenerate>ApiUtil.java</supportingFilesToGenerate>
+							<globalProperties>
+								<skipFormModel>false</skipFormModel>
+							</globalProperties>
 							<configOptions>
 								<serializableModel>true</serializableModel>
 								<delegatePattern>true</delegatePattern>
@@ -133,6 +136,9 @@
 								<typeMapping>x-local-date-time=Date</typeMapping>
 								<typeMapping>DateTime=Date</typeMapping>
 							</typeMappings>
+							<globalProperties>
+								<skipFormModel>false</skipFormModel>
+							</globalProperties>
 							<configOptions>
 								<npmName>@onto-med/top-api</npmName>
 								<npmRepository>https://npm.pkg.github.com</npmRepository>

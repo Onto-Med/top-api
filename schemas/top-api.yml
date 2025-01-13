@@ -3402,9 +3402,9 @@ components:
     DataSourceFileType:
       type: string
       enum:
-        - subject_csv
-        - encounter_csv
-        - subject_resource_csv
+        - csv_encounter
+        - csv_subject
+        - csv_subject_resource
         - fhir
       example: subject_csv
   responses:

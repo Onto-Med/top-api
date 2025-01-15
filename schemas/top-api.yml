@@ -3101,6 +3101,10 @@ components:
           example: Example Data Source
         queryType:
           $ref: '#/components/schemas/QueryType'
+        local:
+          description: Whether the data source is located at the backend (true) or an a remote server (false).
+          type: boolean
+          default: false
       required:
         - id
         - queryType

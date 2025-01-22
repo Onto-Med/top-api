@@ -3405,12 +3405,12 @@ components:
         - code
     DataSourceFileType:
       type: string
+      example: subject_csv
       enum:
         - csv_encounter
         - csv_subject
         - csv_subject_resource
         - fhir
-      example: subject_csv
   responses:
     NotFound:
       description: The specified resource was not found.

@@ -3102,7 +3102,7 @@ components:
         queryType:
           $ref: '#/components/schemas/QueryType'
         local:
-          description: Whether the data source is located at the backend (true) or an a remote server (false).
+          description: Whether the data source is located at the backend (true) or on a remote server (false).
           type: boolean
           default: false
       required:

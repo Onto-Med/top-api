@@ -109,6 +109,7 @@
 							<modelPackage>care.smith.top.model</modelPackage>
 							<apiPackage>care.smith.top.backend.api</apiPackage>
 							<supportingFilesToGenerate>ApiUtil.java</supportingFilesToGenerate>
+							<templateDirectory>custom_templates</templateDirectory>
 							<globalProperties>
 								<skipFormModel>false</skipFormModel>
 							</globalProperties>

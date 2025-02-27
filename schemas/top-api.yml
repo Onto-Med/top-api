@@ -1313,11 +1313,14 @@ paths:
       summary: Get the resulting ids (e.g. documents) of a particular query by ID.
       responses:
         '200':
-          description: List of documents ids.
+          description: Map of document ids to a list of offsets where entities were found.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/StringArray'
+                type: object
+                additionalProperties:
+                  $ref: '#/components/schemas/StringArray'
+
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':

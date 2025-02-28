@@ -130,6 +130,10 @@ paths:
             (e.g. [$color::#556b2f::color$21, $color::red::color$17])
           schema:
             $ref: '#/components/schemas/StringArray'
+        - name: offsets
+          in: query
+          schema:
+            $ref: '#/components/schemas/StringArray'
         - $ref: '#/components/parameters/include'
       responses:
         '200':

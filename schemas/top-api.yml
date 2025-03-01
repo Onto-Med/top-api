@@ -132,6 +132,9 @@ paths:
             $ref: '#/components/schemas/StringArray'
         - name: offsets
           in: query
+          description: |
+            Highlights terms within a given offset in the form of e.g. '8-14'
+            (more precisely, an array of said representation is expected)
           schema:
             $ref: '#/components/schemas/StringArray'
         - $ref: '#/components/parameters/include'

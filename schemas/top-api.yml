@@ -2337,6 +2337,7 @@ components:
         propertyName: entityType
         mapping:
           category: '#/components/schemas/Category'
+          concept: '#/components/schemas/Concept'
           single_concept: '#/components/schemas/SingleConcept'
           composite_concept: '#/components/schemas/CompositeConcept'
           single_phenotype: '#/components/schemas/Phenotype'

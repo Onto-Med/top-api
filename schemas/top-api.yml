@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: TOP API
-  version: 0.11.1
+  version: 0.11.2
   description: |-
     API to manage phenotypes, repositories, ontologies, external terminologies and organisations and to execute phenotypic queries.
 
@@ -128,6 +128,13 @@ paths:
             Highlights the terms that are connected to these concepts (given their id) in the resulting document.
             A highlight color can be provided by prepending '$color::{COLORCODE; COLORSTRING}::color$'.
             (e.g. [$color::#556b2f::color$21, $color::red::color$17])
+          schema:
+            $ref: '#/components/schemas/StringArray'
+        - name: offsets
+          in: query
+          description: |
+            Highlights terms within a given offset in the form of e.g. '8-14'
+            (more precisely, an array of said representation is expected)
           schema:
             $ref: '#/components/schemas/StringArray'
         - $ref: '#/components/parameters/include'
@@ -1313,11 +1320,14 @@ paths:
       summary: Get the resulting ids (e.g. documents) of a particular query by ID.
       responses:
         '200':
-          description: List of documents ids.
+          description: Map of document ids to a list of offsets where entities were found.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/StringArray'
+                type: object
+                additionalProperties:
+                  $ref: '#/components/schemas/StringArray'
+
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':

@@ -1327,7 +1327,6 @@ paths:
                 type: object
                 additionalProperties:
                   $ref: '#/components/schemas/StringArray'
-
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
@@ -2423,6 +2422,7 @@ components:
         adjacency:
           type: array
           items:
+            title: ConceptGraphAdjacency
             type: object
             properties:
               id:
@@ -2430,6 +2430,7 @@ components:
               neighbors:
                 type: array
                 items:
+                  title: ConceptGraphNeighbors
                   type: object
                   properties:
                     id:
@@ -2443,6 +2444,7 @@ components:
         nodes:
           type: array
           items:
+            title: ConceptGraphNodes
             type: object
             properties:
               id:
@@ -2883,7 +2885,7 @@ components:
           description: The highlighted part of an autosuggest query (does not persist - this is only generated on the fly when using /suggest)
           type: string
         leafContainer:
-          description: A marker indicating whether a code should be treated as the container of a collection of leaves (if, at creation time, the CodeScope "LEAVES" was selected). If true, the code itself should, for example, be excluded from queries.
+          description: 'A marker indicating whether a code should be treated as the container of a collection of leaves (if, at creation time, the CodeScope "LEAVES" was selected). If true, the code itself should, for example, be excluded from queries.'
           type: boolean
       required:
         - codeSystem

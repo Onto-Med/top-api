@@ -5,7 +5,7 @@
 	<artifactId>top-api</artifactId>
 	<packaging>jar</packaging>
 	<name>TOP API</name>
-	<version>0.12.0</version>
+	<version>0.12.0-SNAPSHOT</version>
 	<description>REST API of the TOP framework</description>
 	<properties>
 		<java.version>17</java.version>
@@ -67,6 +67,11 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.swagger.core.v3</groupId>
+			<artifactId>swagger-annotations</artifactId>
+			<version>2.2.27</version>
 		</dependency>
 	</dependencies>
 

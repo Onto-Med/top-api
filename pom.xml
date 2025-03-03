@@ -111,6 +111,7 @@
 								<delegatePattern>true</delegatePattern>
 								<booleanGetterPrefix>is</booleanGetterPrefix>
 								<useTags>true</useTags>
+								<containerDefaultToNull>true</containerDefaultToNull>
 								<documentationProvider>none</documentationProvider>
 							</configOptions>
 							<typeMappings>

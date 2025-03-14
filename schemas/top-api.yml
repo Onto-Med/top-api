@@ -1249,6 +1249,33 @@ paths:
           $ref: '#/components/responses/UnexpectedError'
       tags:
         - query
+  '/{organisationId}/{repositoryId}/test':
+    parameters:
+      - $ref: '#/components/parameters/organisationId'
+      - $ref: '#/components/parameters/repositoryId'
+      - name: dataSourceId
+        in: query
+        required: true
+        schema:
+          type: string
+    post:
+      operationId: testRepository
+      summary: Perform tests on a repository by applying expected values from a local data source.
+      responses:
+        '200':
+          description: List of test reports.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TestReport'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+      tags:
+        - repository
   '/{organisationId}/{repositoryId}/query/{queryId}':
     parameters:
       - $ref: '#/components/parameters/organisationId'
@@ -3428,6 +3455,23 @@ components:
         - csv_subject_resource
         - csv_expected_result
         - fhir
+    TestReport:
+      description: A test report that describes a test performed and its result.
+      type: object
+      properties:
+        id:
+          type: string
+          example: test_1
+        passed:
+          type: boolean
+          example: true
+        expected:
+          $ref: '#/components/schemas/Value'
+        actual:
+          $ref: '#/components/schemas/Value'
+      required:
+        - id
+        - passed
   responses:
     NotFound:
       description: The specified resource was not found.

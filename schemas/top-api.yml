@@ -178,6 +178,7 @@ paths:
           description: Search phrase by a concept cluster id it is contained in
           schema:
             type: string
+        - $ref: '#/components/parameters/corpusId'
         - $ref: '#/components/parameters/page'
       responses:
         '200':
@@ -196,10 +197,12 @@ paths:
         required: true
         schema:
           type: string
-      - $ref: '#/components/parameters/include'
     get:
       operationId: getPhraseById
       summary: Returns a particular Phrase
+      parameters:
+        - $ref: '#/components/parameters/corpusId'
+        - $ref: '#/components/parameters/include'
       responses:
         '200':
           $ref: '#/components/responses/Phrase'

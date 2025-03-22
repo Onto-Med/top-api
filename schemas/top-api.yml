@@ -2484,7 +2484,17 @@ components:
               documents:
                 type: array
                 items:
-                  type: string
+                  title: NodeDocuments
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    offsets:
+                      type: array
+                      items:
+                        type: array
+                        items:
+                          type: integer
     ConceptGraphPipeline:
       type: object
       properties:

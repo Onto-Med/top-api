@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: TOP API
-  version: 0.13.0
+  version: 0.13.1
   description: |-
     API to manage phenotypes, repositories, ontologies, external terminologies and organisations and to execute phenotypic queries.
 
@@ -2528,6 +2528,7 @@ components:
         - embedding
         - clustering
         - graph
+        - integration
     ConceptGraphPipelineStatusEnum:
       type: string
       enum:

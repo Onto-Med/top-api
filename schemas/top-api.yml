@@ -533,10 +533,7 @@ paths:
         content:
           application/json:
             schema:
-              description: Only build concept clusters for the specified graphs.
-              type: array
-              items:
-                type: string
+              $ref: '#/components/schemas/ConceptClusterCreationDef'
       responses:
         '200':
           description: A short summary of the concept clusters created.
@@ -3281,6 +3278,19 @@ components:
           $ref: '#/components/schemas/StringArray'
       required:
         - id
+    ConceptClusterCreationDef:
+      type: object
+      properties:
+        graphIds:
+          description: 'List of ids for specific graphs that should be taken into account.'
+          type: array
+          items:
+            type: string
+        phraseExclusions:
+          description: 'List of ids of phrases that should not be included.'
+          type: array
+          items:
+            type: string
     ConceptPipelineConfigRequest:
       type: string
     ConceptPipelineRequest:

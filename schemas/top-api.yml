@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: TOP API
-  version: 0.13.0
+  version: 0.13.1
   description: |-
     API to manage phenotypes, repositories, ontologies, external terminologies and organisations and to execute phenotypic queries.
 
@@ -533,10 +533,7 @@ paths:
         content:
           application/json:
             schema:
-              description: Only build concept clusters for the specified graphs.
-              type: array
-              items:
-                type: string
+              $ref: '#/components/schemas/ConceptClusterCreationDef'
       responses:
         '200':
           description: A short summary of the concept clusters created.
@@ -2528,6 +2525,7 @@ components:
         - embedding
         - clustering
         - graph
+        - integration
     ConceptGraphPipelineStatusEnum:
       type: string
       enum:
@@ -3280,6 +3278,19 @@ components:
           $ref: '#/components/schemas/StringArray'
       required:
         - id
+    ConceptClusterCreationDef:
+      type: object
+      properties:
+        graphIds:
+          description: 'List of ids for specific graphs that should be taken into account.'
+          type: array
+          items:
+            type: string
+        phraseExclusions:
+          description: 'List of ids of phrases that should not be included.'
+          type: array
+          items:
+            type: string
     ConceptPipelineConfigRequest:
       type: string
     ConceptPipelineRequest:

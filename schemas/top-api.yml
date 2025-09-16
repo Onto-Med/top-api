@@ -224,11 +224,7 @@ paths:
             type: string
       responses:
         '200':
-          description: JSON with written response as well as additional information
-          content:
-            application/json:
-              schema:
-                type: object
+          $ref: '#/components/responses/RAGResponse'
         'default':
           $ref: '#/components/responses/UnexpectedError'
       tags:
@@ -3433,6 +3429,14 @@ components:
             A map where the key states the ES field where the actual text is stored.
             The value is the field the concept graphs api references for where it expects the textual content (i.e.: 'content').
           type: object
+    RAGAnswer:
+      description: 'Stores the written answer as well as some additional information.'
+      type: object
+      properties:
+        answer:
+          type: string
+        info:
+          type: object
     Purpose:
       type: string
       enum:
@@ -3676,6 +3680,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/QueryPage'
+    RAGResponse:
+      description: Response of a question to a RAG component
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RAGAnswer'
     RepositoryPageResponse:
       description: A page of repositories.
       content:

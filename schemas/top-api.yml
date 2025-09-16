@@ -203,6 +203,8 @@ paths:
                 type: string
         'default':
           $ref: '#/components/responses/UnexpectedError'
+      tags:
+        - rag
   /document/rag/question:
     get:
       operationId: poseQuestionToRAG
@@ -229,6 +231,8 @@ paths:
                 type: object
         'default':
           $ref: '#/components/responses/UnexpectedError'
+      tags:
+        - rag
   /phrase:
     get:
       operationId: getPhrases

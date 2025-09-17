@@ -224,7 +224,10 @@ paths:
             type: string
       responses:
         '200':
-          $ref: '#/components/responses/RAGResponse'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RAGAnswer'
         'default':
           $ref: '#/components/responses/UnexpectedError'
       tags:
@@ -3680,12 +3683,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/QueryPage'
-    RAGResponse:
-      description: Response of a question to a RAG component
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RAGAnswer'
     RepositoryPageResponse:
       description: A page of repositories.
       content:

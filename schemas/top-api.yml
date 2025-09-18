@@ -3438,9 +3438,11 @@ components:
       type: object
       properties:
         answer:
+          description: Simple plain text
           type: string
         info:
-          type: object
+          description: JSON formatted string
+          type: string
     Purpose:
       type: string
       enum:

@@ -206,22 +206,22 @@ paths:
       tags:
         - rag
   /document/rag/question:
+    summary: Poses a question to the RAG component for the specified corpus/process
+    parameters:
+      - name: process
+        in: query
+        description: Name of the process for which to initialize a RAG component
+        required: true
+        schema:
+          type: string
+      - name: q
+        in: query
+        description: The question to pose
+        required: true
+        schema:
+          type: string
     get:
       operationId: poseQuestionToRAG
-      summary: Poses a question to the RAG component for the specified corpus/process
-      parameters:
-        - name: process
-          in: query
-          description: Name of the process for which to initialize a RAG component
-          required: true
-          schema:
-            type: string
-        - name: q
-          in: query
-          description: The question to pose
-          required: true
-          schema:
-            type: string
       responses:
         '200':
           description: An answer with some additional info
@@ -233,6 +233,26 @@ paths:
           $ref: '#/components/responses/UnexpectedError'
       tags:
         - rag
+    post:
+      operationId: poseQuestionToRAGWithFilter
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RAGFilter'
+      responses:
+        '200':
+          description: An answer with some additional info
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RAGAnswer'
+        'default':
+          $ref: '#/components/responses/UnexpectedError'
+      tags:
+        - rag
+
   /phrase:
     get:
       operationId: getPhrases
@@ -3443,6 +3463,15 @@ components:
         info:
           description: JSON formatted string
           type: string
+    RAGFilter:
+      description: 'Filter the question to the RAG system for document ids'
+      type: object
+      properties:
+        docIds:
+          description: The ids of the documents
+          type: array
+          items:
+            type: string
     Purpose:
       type: string
       enum:

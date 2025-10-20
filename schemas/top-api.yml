@@ -255,6 +255,13 @@ paths:
   /document/rag/status:
     get:
       operationId: getStatusOfRAG
+      parameters:
+        - name: process
+          in: query
+          description: Name of the process for which to check the status of a RAG component
+          required: true
+          schema:
+            type: string
       responses:
         '200':
           description: 'The Status object with either "active" as false or true'

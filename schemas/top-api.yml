@@ -114,6 +114,11 @@ paths:
       summary: Import documents
       parameters:
         - $ref: '#/components/parameters/documentDataSource'
+        - name: language
+          in: query
+          description: Language of the document sources
+          schema:
+            type: string
       requestBody:
         content:
           application/json:

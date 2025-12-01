@@ -112,6 +112,13 @@ paths:
     put:
       operationId: importDocuments
       summary: Import documents
+      parameters:
+        - $ref: '#/components/parameters/documentDataSource'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Document'
       responses:
         '200':
           $ref: '#/components/responses/DocumentImportResponse'

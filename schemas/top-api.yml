@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: TOP API
-  version: 0.13.4
+  version: 0.13.5
   description: |-
     API to manage phenotypes, repositories, ontologies, external terminologies and organisations and to execute phenotypic queries.
 
@@ -103,6 +103,18 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/DocumentPageResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+      tags:
+        - document
+    put:
+      operationId: importDocuments
+      summary: Import documents
+      responses:
+        '200':
+          $ref: '#/components/responses/DocumentImportResponse'
         '401':
           $ref: '#/components/responses/Unauthorized'
         default:
@@ -2176,6 +2188,23 @@ components:
       schema:
         $ref: '#/components/schemas/VersionNumber'
   schemas:
+    DocumentImport:
+      type: object
+      properties:
+        count:
+          type: number
+          format: int32
+        status:
+          $ref: '#/components/schemas/DocumentImportStatus'
+        documents:
+          $ref: '#/components/schemas/StringArray'
+    DocumentImportStatus:
+      type: string
+      enum:
+        - successful
+        - partially
+        - failed
+        - running
     DocumentGatheringMode:
       type: string
       default: exclusive
@@ -3715,6 +3744,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Document'
+    DocumentImportResponse:
+      description: Details of the document Import
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/DocumentImport'
     DocumentPageResponse:
       description: A page of documents.
       content:

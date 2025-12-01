@@ -118,7 +118,9 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Document'
+              type: array
+              items:
+                $ref: '#/components/schemas/Document'
       responses:
         '200':
           $ref: '#/components/responses/DocumentImportResponse'

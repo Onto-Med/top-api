@@ -2206,7 +2206,7 @@ components:
       type: object
       properties:
         count:
-          type: number
+          type: integer
           format: int32
         status:
           $ref: '#/components/schemas/DocumentImportStatus'

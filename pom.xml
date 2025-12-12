@@ -5,19 +5,20 @@
 	<artifactId>top-api</artifactId>
 	<packaging>jar</packaging>
 	<name>TOP API</name>
-	<version>0.13.5</version>
+	<version>0.14.0</version>
 	<description>REST API of the TOP framework</description>
 	<properties>
 		<java.version>21</java.version>
 		<maven.compiler.source>${java.version}</maven.compiler.source>
 		<maven.compiler.target>${java.version}</maven.compiler.target>
+		<maven.compiler.release>${java.version}</maven.compiler.release>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.7.18</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<version>3.5.9</version>
+		<relativePath/>
 	</parent>
 
 	<distributionManagement>
@@ -38,11 +39,6 @@
 			<artifactId>spring-data-commons</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.google.code.findbugs</groupId>
-			<artifactId>jsr305</artifactId>
-			<version>3.0.2</version>
-		</dependency>
-		<dependency>
 			<groupId>com.fasterxml.jackson.dataformat</groupId>
 			<artifactId>jackson-dataformat-yaml</artifactId>
 		</dependency>
@@ -53,7 +49,7 @@
 		<dependency>
 			<groupId>org.openapitools</groupId>
 			<artifactId>jackson-databind-nullable</artifactId>
-			<version>0.2.6</version>
+			<version>0.2.8</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -62,11 +58,6 @@
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
 		</dependency>
 	</dependencies>
 
@@ -88,7 +79,7 @@
 			<plugin>
 				<groupId>org.openapitools</groupId>
 				<artifactId>openapi-generator-maven-plugin</artifactId>
-				<version>7.11.0</version>
+				<version>7.17.0</version>
 				<executions>
 					<execution>
 						<id>spring-server</id>
@@ -107,6 +98,7 @@
 								<skipFormModel>false</skipFormModel>
 							</globalProperties>
 							<configOptions>
+								<useSpringBoot3>true</useSpringBoot3>
 								<serializableModel>true</serializableModel>
 								<delegatePattern>true</delegatePattern>
 								<booleanGetterPrefix>is</booleanGetterPrefix>

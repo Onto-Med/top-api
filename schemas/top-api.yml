@@ -40,7 +40,7 @@ paths:
         default:
           $ref: '#/components/responses/UnexpectedError'
       security:
-        - BearerAuth: [ ]
+        - BearerAuth: []
   /statistic:
     summary: Get statistics about available content. Returned data may be cached.
     get:
@@ -55,7 +55,7 @@ paths:
         default:
           $ref: '#/components/responses/UnexpectedError'
       security:
-        - BearerAuth: [ ]
+        - BearerAuth: []
   /document:
     get:
       operationId: getDocuments
@@ -561,7 +561,7 @@ paths:
           $ref: '#/components/responses/UnexpectedError'
       tags:
         - conceptPipeline
-  '/concept_pipeline/status':
+  /concept_pipeline/status:
     get:
       operationId: getConceptPipelineManagerStatus
       summary: Returns the status of the concept pipeline manager and whether it's enabled/active

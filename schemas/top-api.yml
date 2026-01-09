@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: TOP API
-  version: 0.14.0
+  version: 0.14.1
   description: |-
     API to manage phenotypes, repositories, ontologies, external terminologies and organisations and to execute phenotypic queries.
 
@@ -557,6 +557,19 @@ paths:
                 $ref: '#/components/schemas/PipelineResponse'
         '401':
           $ref: '#/components/responses/Unauthorized'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+      tags:
+        - conceptPipeline
+  /concept_pipeline/status:
+    get:
+      operationId: getConceptPipelineManagerStatus
+      summary: Returns the status of the concept pipeline manager and whether it's enabled/active
+      responses:
+        '200':
+          $ref: '#/components/responses/ConceptGraphManagerResponse'
+        '404':
+          $ref: '#/components/responses/ConceptGraphManagerResponse'
         default:
           $ref: '#/components/responses/UnexpectedError'
       tags:
@@ -2651,6 +2664,13 @@ components:
                         type: array
                         items:
                           type: integer
+    ConceptGraphManagerStatus:
+      type: object
+      properties:
+        status:
+          type: boolean
+        enabled:
+          type: boolean
     ConceptGraphPipeline:
       type: object
       properties:
@@ -3707,6 +3727,12 @@ components:
         - encounterId
         - passed
   responses:
+    ConceptGraphManagerResponse:
+      description: Whether the manager is active and/or enabled
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ConceptGraphManagerStatus'
     NotFound:
       description: The specified resource was not found.
       content:

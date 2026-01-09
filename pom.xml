@@ -5,7 +5,7 @@
 	<artifactId>top-api</artifactId>
 	<packaging>jar</packaging>
 	<name>TOP API</name>
-	<version>0.14.0</version>
+	<version>0.14.1</version>
 	<description>REST API of the TOP framework</description>
 	<properties>
 		<java.version>21</java.version>

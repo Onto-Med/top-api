@@ -11,7 +11,7 @@
 			"installMaven": "true",
 			"installGradle": "false"
 		},
-		"ghcr.io/devcontainers/features/node:1": {}
+		"ghcr.io/devcontainers/features/node:2": {}
 	},
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.

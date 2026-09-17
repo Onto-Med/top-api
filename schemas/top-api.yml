@@ -887,6 +887,35 @@ paths:
           $ref: '#/components/responses/UnexpectedError'
       tags:
         - query
+  '/data_source/{dataSourceId}/query-expansion-config':
+    get:
+      operationId: getDataSourceQueryExpansionConfig
+      summary: Returns the effective query expansion configuration for a document data source.
+      description: |
+        Returns the safe public subset of the selected document data-source adapter's query-expansion configuration.
+        The returned relation set is already intersected with the relations allowed by the referenced query-expansion profile.
+      parameters:
+        - name: dataSourceId
+          in: path
+          description: The ID of the data source.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Effective query-expansion configuration for the data source.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QueryExpansionAdapterConfig'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+      tags:
+        - query
   '/{organisationId}':
     summary: Represents an organisation.
     parameters:
@@ -3341,6 +3370,43 @@ components:
       required:
         - id
         - queryType
+    QueryExpansionAdapterConfig:
+      description: Safe public subset of a document data-source adapter's query-expansion configuration.
+      type: object
+      properties:
+        profile:
+          description: Query-expansion profile referenced by the data source.
+          type: string
+          example: medical_de
+        relations:
+          description: Relation strategies effective for this data source after intersecting adapter config with the referenced profile.
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/QueryExpansionRelationConfig'
+      required:
+        - profile
+        - relations
+    QueryExpansionRelationConfig:
+      description: Data-source-specific translation policy for a semantic query-expansion relation.
+      type: object
+      properties:
+        strategy:
+          $ref: '#/components/schemas/QueryExpansionRelationStrategy'
+      required:
+        - strategy
+    QueryExpansionRelationStrategy:
+      description: Domain-neutral retrieval intent used to compile a semantic relation into TOP concepts or expressions.
+      type: string
+      enum:
+        - alternatives
+        - optional_context
+        - require_context
+        - exclude_context
+        - recall_expansion
+        - specificity_focus
+        - proximity_context
+        - phrase_context
+        - ignore
     ProjectionEntry:
       description: Single entry of a projection select list.
       type: object

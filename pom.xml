@@ -79,7 +79,7 @@
 			<plugin>
 				<groupId>org.openapitools</groupId>
 				<artifactId>openapi-generator-maven-plugin</artifactId>
-				<version>7.17.0</version>
+				<version>7.25.0</version>
 				<executions>
 					<execution>
 						<id>spring-server</id>
@@ -120,7 +120,6 @@
 							<inputSpec>${project.basedir}/schemas/top-api.yml</inputSpec>
 							<generatorName>typescript-axios</generatorName>
 							<output>target/generated-sources/openapi/axios</output>
-							<templateDirectory>custom_templates</templateDirectory>
 							<typeMappings>
 								<typeMapping>x-local-date-time=Date</typeMapping>
 								<typeMapping>DateTime=Date</typeMapping>

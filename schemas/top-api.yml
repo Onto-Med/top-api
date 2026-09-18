@@ -907,7 +907,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/QueryExpansionAdapterConfig'
+                $ref: '#/components/schemas/QueryExpansionEffectiveConfig'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
@@ -3370,8 +3370,11 @@ components:
       required:
         - id
         - queryType
-    QueryExpansionAdapterConfig:
-      description: Safe public subset of a document data-source adapter's query-expansion configuration.
+    QueryExpansionEffectiveConfig:
+      description: |
+        Safe public query-expansion configuration effective for a document data source.
+        Relations are semantic Concept Graphs profile relations after intersecting the data-source adapter config with the referenced profile.
+        TOP retrieval strategies and executable query behavior are intentionally not exposed.
       type: object
       properties:
         profile:
@@ -3379,34 +3382,48 @@ components:
           type: string
           example: medical_de
         relations:
-          description: Relation strategies effective for this data source after intersecting adapter config with the referenced profile.
-          type: object
-          additionalProperties:
-            $ref: '#/components/schemas/QueryExpansionRelationConfig'
+          description: Semantic relations available to frontend query-expansion validation for this data source.
+          type: array
+          items:
+            $ref: '#/components/schemas/QueryExpansionRelation'
       required:
         - profile
         - relations
-    QueryExpansionRelationConfig:
-      description: Data-source-specific translation policy for a semantic query-expansion relation.
+    QueryExpansionRelation:
+      description: Semantic Concept Graphs query-expansion relation available for a data source.
       type: object
       properties:
-        strategy:
-          $ref: '#/components/schemas/QueryExpansionRelationStrategy'
+        id:
+          description: Stable semantic relation ID.
+          type: string
+          example: treated_by
+        label:
+          description: Human-readable relation label.
+          type: string
+          example: Treated by
+        description:
+          description: Human-readable relation description.
+          type: string
+          example: A diagnosis may be treated by a medication or procedure.
+        sourceCategories:
+          description: Profile category IDs allowed as relation sources.
+          type: array
+          items:
+            type: string
+          example:
+            - diagnosis
+        targetCategories:
+          description: Profile category IDs allowed as relation targets.
+          type: array
+          items:
+            type: string
+          example:
+            - medication
+            - procedure
       required:
-        - strategy
-    QueryExpansionRelationStrategy:
-      description: Domain-neutral retrieval intent used to compile a semantic relation into TOP concepts or expressions.
-      type: string
-      enum:
-        - alternatives
-        - optional_context
-        - require_context
-        - exclude_context
-        - recall_expansion
-        - specificity_focus
-        - proximity_context
-        - phrase_context
-        - ignore
+        - id
+        - sourceCategories
+        - targetCategories
     ProjectionEntry:
       description: Single entry of a projection select list.
       type: object

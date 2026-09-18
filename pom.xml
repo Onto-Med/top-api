@@ -120,6 +120,7 @@
 							<inputSpec>${project.basedir}/schemas/top-api.yml</inputSpec>
 							<generatorName>typescript-axios</generatorName>
 							<output>target/generated-sources/openapi/axios</output>
+							<templateDirectory>custom_templates</templateDirectory>
 							<typeMappings>
 								<typeMapping>x-local-date-time=Date</typeMapping>
 								<typeMapping>DateTime=Date</typeMapping>

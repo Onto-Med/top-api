@@ -916,6 +916,94 @@ paths:
           $ref: '#/components/responses/UnexpectedError'
       tags:
         - query
+  '/query-expansion/profiles':
+    get:
+      operationId: getQueryExpansionProfiles
+      summary: Lists Concept Graphs query-expansion profiles.
+      description: Returns safe semantic query-expansion profile metadata from the backend-mediated Concept Graphs integration.
+      responses:
+        '200':
+          description: Available query-expansion profiles.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/QueryExpansionProfile'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+      tags:
+        - query
+  '/query-expansion/profiles/{profileName}':
+    get:
+      operationId: getQueryExpansionProfile
+      summary: Returns Concept Graphs query-expansion profile metadata.
+      parameters:
+        - name: profileName
+          in: path
+          description: Query-expansion profile name.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Query-expansion profile metadata.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QueryExpansionProfile'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+      tags:
+        - query
+  '/data_source/{dataSourceId}/query-expansion':
+    post:
+      operationId: expandQueryForDataSource
+      summary: Generates Concept Graphs query-expansion candidates for a document data source.
+      description: |
+        Backend-mediated query expansion. The frontend supplies only semantic/user choices; backend injects the data-source configured profile, effective relations, relation definitions, and server-side LLM settings.
+      parameters:
+        - name: dataSourceId
+          in: path
+          description: The ID of the document data source.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QueryExpansionRequest'
+      responses:
+        '200':
+          description: Query-expansion response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QueryExpansionResponse'
+        '400':
+          description: Invalid query-expansion request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+      tags:
+        - query
   '/{organisationId}':
     summary: Represents an organisation.
     parameters:
@@ -3424,6 +3512,182 @@ components:
         - id
         - sourceCategories
         - targetCategories
+    QueryExpansionProfileCategory:
+      description: Semantic category available in a Concept Graphs query-expansion profile.
+      type: object
+      properties:
+        id:
+          type: string
+          example: symptom
+        description:
+          type: string
+      required:
+        - id
+        - description
+    QueryExpansionProfile:
+      description: Safe semantic Concept Graphs query-expansion profile metadata.
+      type: object
+      properties:
+        name:
+          type: string
+          example: medical_de
+        languageName:
+          type: string
+          example: Deutsch
+        categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/QueryExpansionProfileCategory'
+        defaultCategories:
+          type: array
+          items:
+            type: string
+        relations:
+          type: array
+          items:
+            $ref: '#/components/schemas/QueryExpansionRelation'
+      required:
+        - name
+        - categories
+        - defaultCategories
+        - relations
+    QueryExpansionRequest:
+      description: Frontend-safe query-expansion request. Backend injects profile, allowed relations, relation definitions, and LLM settings.
+      type: object
+      properties:
+        term:
+          type: string
+          minLength: 1
+          example: Myokardinfarkt
+        language:
+          type: string
+          default: en
+          example: de
+        categories:
+          type: array
+          items:
+            type: string
+        limitPerCategory:
+          type: integer
+          minimum: 1
+          maximum: 100
+          default: 10
+      required:
+        - term
+    QueryExpansionEvidence:
+      type: object
+      properties:
+        source:
+          type: string
+        matchedTerm:
+          type: string
+        score:
+          type: number
+          format: float
+        relation:
+          type: string
+        sourceId:
+          type: string
+        metadata:
+          type: object
+      required:
+        - source
+        - matchedTerm
+        - score
+    QueryExpansionCandidate:
+      type: object
+      properties:
+        term:
+          type: string
+        category:
+          type: string
+        status:
+          type: string
+          enum:
+            - grounded
+            - partially_grounded
+            - llm_only
+            - rejected
+        confidence:
+          type: number
+          format: float
+        evidence:
+          type: array
+          items:
+            $ref: '#/components/schemas/QueryExpansionEvidence'
+        rationale:
+          type: string
+      required:
+        - term
+        - category
+        - status
+        - confidence
+    QueryExpansionConcept:
+      type: object
+      properties:
+        id:
+          type: string
+        label:
+          type: string
+        category:
+          type: string
+        terms:
+          type: array
+          items:
+            type: string
+        metadata:
+          type: object
+      required:
+        - id
+        - label
+        - category
+    QueryExpansionSemanticRelation:
+      type: object
+      properties:
+        sourceConceptId:
+          type: string
+        relation:
+          type: string
+        targetConceptId:
+          type: string
+        confidence:
+          type: number
+          format: float
+        evidence:
+          type: array
+          items:
+            $ref: '#/components/schemas/QueryExpansionEvidence'
+        metadata:
+          type: object
+      required:
+        - sourceConceptId
+        - relation
+        - targetConceptId
+    QueryExpansionResponse:
+      type: object
+      properties:
+        term:
+          type: string
+        language:
+          type: string
+        expansions:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              $ref: '#/components/schemas/QueryExpansionCandidate'
+        concepts:
+          type: array
+          items:
+            $ref: '#/components/schemas/QueryExpansionConcept'
+        relations:
+          type: array
+          items:
+            $ref: '#/components/schemas/QueryExpansionSemanticRelation'
+      required:
+        - term
+        - language
+        - expansions
     ProjectionEntry:
       description: Single entry of a projection select list.
       type: object

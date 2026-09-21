@@ -967,9 +967,9 @@ paths:
   '/data_source/{dataSourceId}/query-expansion':
     post:
       operationId: expandQueryForDataSource
-      summary: Generates Concept Graphs query-expansion candidates for a document data source.
+      summary: Generates Concept Graphs query-expansion candidates and TOP entity drafts for a document data source.
       description: |
-        Backend-mediated query expansion. The frontend supplies only semantic/user choices; backend injects the data-source configured profile, effective relations, relation definitions, and server-side LLM settings.
+        Backend-mediated query expansion. The frontend supplies only semantic/user choices; backend injects the data-source configured profile, effective relations, relation definitions, server-side LLM settings, and compiles TOP entity drafts using data-source-owned relation strategies.
       parameters:
         - name: dataSourceId
           in: path
@@ -3519,10 +3519,15 @@ components:
         id:
           type: string
           example: symptom
+        label:
+          description: Human-readable category label.
+          type: string
+          example: Symptom
         description:
           type: string
       required:
         - id
+        - label
         - description
     QueryExpansionProfile:
       description: Safe semantic Concept Graphs query-expansion profile metadata.
@@ -3562,14 +3567,40 @@ components:
         - defaultCategories
         - defaultRelations
         - relations
+    QueryExpansionRelationMapping:
+      description: Frontend-selected semantic relation/category mapping used for query expansion.
+      type: object
+      properties:
+        relationId:
+          type: string
+          example: may_indicate
+        sourceCategoryIds:
+          type: array
+          items:
+            type: string
+          example:
+            - symptom
+        targetCategoryIds:
+          type: array
+          items:
+            type: string
+          example:
+            - diagnosis
+      required:
+        - relationId
+        - sourceCategoryIds
+        - targetCategoryIds
     QueryExpansionRequest:
-      description: Frontend-safe query-expansion request. Backend injects profile, allowed relations, relation definitions, and LLM settings.
+      description: Frontend-safe query-expansion request. Backend injects profile, allowed relation strategies, relation definitions, and LLM settings.
       type: object
       properties:
         term:
           type: string
           minLength: 1
           example: Myokardinfarkt
+        sourceConceptId:
+          description: Existing TOP source concept ID used when generating TOP entity drafts.
+          type: string
         language:
           type: string
           default: en
@@ -3578,6 +3609,10 @@ components:
           type: array
           items:
             type: string
+        relationMappings:
+          type: array
+          items:
+            $ref: '#/components/schemas/QueryExpansionRelationMapping'
         limitPerCategory:
           type: integer
           minimum: 1
@@ -3674,6 +3709,18 @@ components:
         - sourceConceptId
         - relation
         - targetConceptId
+    QueryExpansionGeneratedEntityDrafts:
+      description: TOP entity drafts compiled by the backend using data-source-owned query-expansion policy.
+      type: object
+      properties:
+        singleConcepts:
+          type: array
+          items:
+            $ref: '#/components/schemas/SingleConcept'
+        compositeConcepts:
+          type: array
+          items:
+            $ref: '#/components/schemas/CompositeConcept'
     QueryExpansionResponse:
       type: object
       properties:
@@ -3695,6 +3742,8 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/QueryExpansionSemanticRelation'
+        generatedEntityDrafts:
+          $ref: '#/components/schemas/QueryExpansionGeneratedEntityDrafts'
       required:
         - term
         - language

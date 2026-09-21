@@ -3542,6 +3542,16 @@ components:
           type: array
           items:
             type: string
+        defaultRelations:
+          description: Semantic relation IDs used by default when pre-populating query-expansion mappings.
+          type: array
+          items:
+            type: string
+          example:
+            - may_indicate
+            - treated_by
+            - investigated_by
+            - confirmed_by
         relations:
           type: array
           items:
@@ -3550,6 +3560,7 @@ components:
         - name
         - categories
         - defaultCategories
+        - defaultRelations
         - relations
     QueryExpansionRequest:
       description: Frontend-safe query-expansion request. Backend injects profile, allowed relations, relation definitions, and LLM settings.

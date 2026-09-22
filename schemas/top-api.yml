@@ -887,7 +887,7 @@ paths:
           $ref: '#/components/responses/UnexpectedError'
       tags:
         - query
-  '/data_source/{dataSourceId}/query-expansion-config':
+  '/query_expansion/data_source/{dataSourceId}/config':
     get:
       operationId: getDataSourceQueryExpansionConfig
       summary: Returns the effective query expansion configuration for a document data source.
@@ -915,8 +915,8 @@ paths:
         default:
           $ref: '#/components/responses/UnexpectedError'
       tags:
-        - query
-  '/query-expansion/profiles':
+        - queryExpansion
+  '/query_expansion/profiles':
     get:
       operationId: getQueryExpansionProfiles
       summary: Lists Concept Graphs query-expansion profiles.
@@ -937,8 +937,8 @@ paths:
         default:
           $ref: '#/components/responses/UnexpectedError'
       tags:
-        - query
-  '/query-expansion/profiles/{profileName}':
+        - queryExpansion
+  '/query_expansion/profiles/{profileName}':
     get:
       operationId: getQueryExpansionProfile
       summary: Returns Concept Graphs query-expansion profile metadata.
@@ -963,8 +963,8 @@ paths:
         default:
           $ref: '#/components/responses/UnexpectedError'
       tags:
-        - query
-  '/data_source/{dataSourceId}/query-expansion':
+        - queryExpansion
+  '/query_expansion/data_source/{dataSourceId}':
     post:
       operationId: expandQueryForDataSource
       summary: Generates Concept Graphs query-expansion candidates and TOP entity drafts for a document data source.
@@ -1003,7 +1003,7 @@ paths:
         default:
           $ref: '#/components/responses/UnexpectedError'
       tags:
-        - query
+        - queryExpansion
   '/{organisationId}':
     summary: Represents an organisation.
     parameters:
@@ -4266,6 +4266,8 @@ tags:
     externalDocs:
       description: Find out more about queries
       url: 'https://github.com/Onto-Med/top-phenotypic-query'
+  - name: queryExpansion
+    description: Backend-mediated semantic query expansion and Concept Graphs profile metadata
   - name: document
     description: Everything about documents
   - name: phrase

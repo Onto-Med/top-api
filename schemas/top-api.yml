@@ -890,10 +890,10 @@ paths:
   '/query_expansion/data_source/{dataSourceId}/config':
     get:
       operationId: getDataSourceQueryExpansionConfig
-      summary: Returns the effective query expansion configuration for a document data source.
+      summary: Returns whether query expansion is enabled for a document data source.
       description: |
-        Returns the safe public subset of the selected document data-source adapter's query-expansion configuration.
-        The returned relation set is already intersected with the relations allowed by the referenced query-expansion profile.
+        Returns frontend-safe query-expansion capability metadata configured for the selected data source.
+        Concept Graphs owns semantic profiles/relations; TOP only exposes whether the data source has query expansion enabled.
       parameters:
         - name: dataSourceId
           in: path
@@ -903,7 +903,7 @@ paths:
             type: string
       responses:
         '200':
-          description: Effective query-expansion configuration for the data source.
+          description: Query-expansion capability metadata for the data source.
           content:
             application/json:
               schema:
@@ -969,7 +969,7 @@ paths:
       operationId: expandQueryForDataSource
       summary: Generates Concept Graphs query-expansion candidates and TOP entity drafts for a document data source.
       description: |
-        Backend-mediated query expansion. The frontend supplies only semantic/user choices; backend injects the data-source configured profile, effective relations, relation definitions, server-side LLM settings, and compiles TOP entity drafts using data-source-owned relation strategies.
+        Backend-mediated query expansion. The frontend supplies only semantic/user choices and the selected Concept Graphs profile; backend injects server-side LLM settings and compiles TOP entity drafts using centralized TOP relation strategies.
       parameters:
         - name: dataSourceId
           in: path
@@ -3460,23 +3460,25 @@ components:
         - queryType
     QueryExpansionEffectiveConfig:
       description: |
-        Safe public query-expansion configuration effective for a document data source.
-        Relations are semantic Concept Graphs profile relations after intersecting the data-source adapter config with the referenced profile.
-        TOP retrieval strategies and executable query behavior are intentionally not exposed.
+        Safe public query-expansion capability metadata effective for a document data source.
+        Concept Graphs owns semantic profiles/relations. TOP-specific relation strategies and executable query behavior are intentionally not exposed.
       type: object
       properties:
+        enabled:
+          description: Whether query expansion is enabled for this data source.
+          type: boolean
+          example: true
         profile:
-          description: Query-expansion profile referenced by the data source.
+          description: Deprecated legacy data-source profile reference. Profiles are selected by the caller and owned by Concept Graphs.
           type: string
           example: medical_de
         relations:
-          description: Semantic relations available to frontend query-expansion validation for this data source.
+          description: Deprecated legacy effective relation metadata. Relation metadata is provided by Concept Graphs profiles.
           type: array
           items:
             $ref: '#/components/schemas/QueryExpansionRelation'
       required:
-        - profile
-        - relations
+        - enabled
     QueryExpansionRelation:
       description: Semantic Concept Graphs query-expansion relation available for a data source.
       type: object
@@ -3591,7 +3593,7 @@ components:
         - sourceCategoryIds
         - targetCategoryIds
     QueryExpansionRequest:
-      description: Frontend-safe query-expansion request. Backend injects profile, allowed relation strategies, relation definitions, and LLM settings.
+      description: Frontend-safe query-expansion request. Backend validates the selected profile, injects allowed relation definitions and LLM settings, and compiles TOP entity drafts using centralized relation strategies.
       type: object
       properties:
         term:
@@ -3601,6 +3603,10 @@ components:
         sourceConceptId:
           description: Existing TOP source concept ID used when generating TOP entity drafts.
           type: string
+        profileName:
+          description: Concept Graphs query-expansion profile selected by the caller.
+          type: string
+          example: medical_de
         language:
           type: string
           default: en
@@ -3620,6 +3626,7 @@ components:
           default: 10
       required:
         - term
+        - profileName
     QueryExpansionEvidence:
       type: object
       properties:
@@ -3710,7 +3717,7 @@ components:
         - relation
         - targetConceptId
     QueryExpansionGeneratedEntityDrafts:
-      description: TOP entity drafts compiled by the backend using data-source-owned query-expansion policy.
+      description: TOP entity drafts compiled by the backend using centralized TOP query-expansion relation strategies.
       type: object
       properties:
         singleConcepts:

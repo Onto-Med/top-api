@@ -60,8 +60,13 @@ paths:
     get:
       operationId: getDocuments
       summary: Searches for documents.
+      description: |
+        Select one index or alias for every filter branch and page. Document IDs are scoped to this
+        selection, not portable references. Returned references identify concrete originating indices.
+        Graph filters require unambiguous corpus context; an index is not a graph corpus identifier.
       parameters:
         - $ref: '#/components/parameters/documentDataSource'
+        - $ref: '#/components/parameters/documentIndex'
         - name: name
           in: query
           description: Filter documents by name
@@ -101,6 +106,8 @@ paths:
         - $ref: '#/components/parameters/page'
         - $ref: '#/components/parameters/include'
       responses:
+        '400':
+          $ref: '#/components/responses/InvalidDocumentSelection'
         '200':
           $ref: '#/components/responses/DocumentPageResponse'
         '401':
@@ -112,8 +119,13 @@ paths:
     put:
       operationId: importDocuments
       summary: Import documents
+      description: |
+        Resolve one destination index once for the import. An allowed destination may not exist yet,
+        subject to existing creation policy; this differs from a disallowed index. Response-only
+        document references do not select the destination and are not required on uploaded documents.
       parameters:
         - $ref: '#/components/parameters/documentDataSource'
+        - $ref: '#/components/parameters/documentIndex'
         - name: language
           in: query
           description: Language of the document sources
@@ -127,6 +139,8 @@ paths:
               items:
                 $ref: '#/components/schemas/Document'
       responses:
+        '400':
+          $ref: '#/components/responses/InvalidDocumentSelection'
         '200':
           $ref: '#/components/responses/DocumentImportResponse'
         '401':
@@ -146,8 +160,10 @@ paths:
     get:
       operationId: getSingleDocumentById
       summary: Returns a particular document
+      description: Use the document's original reference, not the current browsing selection or alias targets. Missing documents must not silently fall back to another index.
       parameters:
         - $ref: '#/components/parameters/documentDataSource'
+        - $ref: '#/components/parameters/documentIndex'
         - name: highlightConcepts
           in: query
           description: |
@@ -165,6 +181,8 @@ paths:
             $ref: '#/components/schemas/StringArray'
         - $ref: '#/components/parameters/include'
       responses:
+        '400':
+          $ref: '#/components/responses/InvalidDocumentSelection'
         '200':
           $ref: '#/components/responses/Document'
         '401':
@@ -178,13 +196,19 @@ paths:
   '/document/query/{organisationId}/{repositoryId}/{queryId}':
     get:
       operationId: getDocumentsForQuery
-      summary: Get all document ids that were found in a query
+      summary: Get a page of documents found in a query
+      description: |
+        Restore the concept query's persisted source/index and original result context; no index
+        override is accepted. Historical results must not be rebound to current alias targets.
+        Unresolvable historical scope requires an explicit migration choice or an unavailable result.
       parameters:
         - $ref: '#/components/parameters/organisationId'
         - $ref: '#/components/parameters/repositoryId'
         - $ref: '#/components/parameters/queryId'
         - $ref: '#/components/parameters/page'
       responses:
+        '400':
+          $ref: '#/components/responses/InvalidDocumentSelection'
         '200':
           $ref: '#/components/responses/DocumentPageResponse'
         '401':
@@ -363,11 +387,16 @@ paths:
     get:
       operationId: getPhrasesByDocumentId
       summary: Searches for phrases that are contained in a specific document. Use the query parameters to filter the result.
+      description: Use the concrete originating index from the document reference, not the current browsing selection. Resolve graph corpus context separately; ambiguity is an error, not a search across all corpora.
       parameters:
         - $ref: '#/components/parameters/documentDataSource'
+        - $ref: '#/components/parameters/documentIndex'
+        - $ref: '#/components/parameters/documentCorpusId'
         - $ref: '#/components/parameters/phraseText'
         - $ref: '#/components/parameters/page'
       responses:
+        '400':
+          $ref: '#/components/responses/InvalidDocumentSelection'
         '200':
           $ref: '#/components/responses/PhrasePageResponse'
         '401':
@@ -468,10 +497,15 @@ paths:
     get:
       operationId: getConceptClusterByDocumentId
       summary: Returns concept clusters for a specific document.
+      description: Use the concrete originating index from the document reference, not the current browsing selection. Resolve graph corpus context separately; ambiguity is an error, not a search across all corpora.
       parameters:
         - $ref: '#/components/parameters/documentDataSource'
+        - $ref: '#/components/parameters/documentIndex'
+        - $ref: '#/components/parameters/documentCorpusId'
         - $ref: '#/components/parameters/page'
       responses:
+        '400':
+          $ref: '#/components/responses/InvalidDocumentSelection'
         '200':
           $ref: '#/components/responses/ConceptClusterPageResponse'
         '401':
@@ -503,6 +537,11 @@ paths:
         - conceptPipeline
     post:
       operationId: startConceptGraphPipeline
+      description: |
+        Server input binds dataSourceId and one index, with the same semantics as the JSON start's
+        dataSource/index parameters. ZIP ingestion does not require an Elasticsearch selection.
+        Conflicting supplied input settings are errors. A resumed pipeline retains its original
+        source/index binding; different input must not silently reuse cached artifacts.
       summary: |
         Initialises a complete pipeline with all steps 'preprocessing', 'embedding', 'clustering' and 'graph creation'.
         You can provide optional configuration files via the properties 'data', 'labels', 'dataConfig', 'embeddingConfig', 'clusteringConfig' and 'graphConfig'.
@@ -513,6 +552,8 @@ paths:
             schema:
               $ref: '#/components/schemas/ConceptPipelineRequest'
       responses:
+        '400':
+          $ref: '#/components/responses/InvalidDocumentSelection'
         '200':
           description: A short summary of the graphs created by this pipeline.
           content:
@@ -533,6 +574,14 @@ paths:
         - conceptPipeline
     put:
       operationId: startConceptGraphPipelineWithJson
+      description: |
+        Server input is selected by dataSource and index, not payload name or pipeline ID.
+        Conflicting supplied payload/input settings are errors, not silent precedence. The body
+        remains the existing JSON-formatted string. Resume retains the original source/index binding;
+        different input must not silently reuse cached artifacts. Binding persistence is a backend obligation.
+      parameters:
+        - $ref: '#/components/parameters/pipelineDataSource'
+        - $ref: '#/components/parameters/documentIndex'
       summary: |
         Initialises a complete pipeline with all steps 'preprocessing', 'embedding', 'clustering' and 'graph creation'.
         Doesn't support file uploading; configuration is done via json body.
@@ -543,6 +592,8 @@ paths:
             schema:
               $ref: '#/components/schemas/ConceptPipelineConfigRequest'
       responses:
+        '400':
+          $ref: '#/components/responses/InvalidDocumentSelection'
         '200':
           description: A short summary of the graphs created by this pipeline.
           content:
@@ -1311,6 +1362,7 @@ paths:
     get:
       operationId: exportRepository
       summary: Exports a repository with the specified converter.
+      description: Exported concept queries must preserve their selected source/index and any original result context supported by the converter.
       responses:
         '200':
           description: Export result.
@@ -1335,6 +1387,7 @@ paths:
     post:
       operationId: importRepository
       summary: Imports data with the specified converter to a repository.
+      description: Preserve imported concept queries' selected source/index. Missing historical scope requires explicit migration before import; never silently rebind saved results.
       requestBody:
         required: true
         content:
@@ -1380,6 +1433,12 @@ paths:
         - query
     post:
       operationId: enqueueQuery
+      description: |
+        Concept query creation/execution must resolve and persist exactly one authorized source/index.
+        The client must supply index even when only one choice is configured. Reject missing, blank,
+        invalid or ambiguous choices.
+        Preserve this scope on any subsequent query update or execution; do not silently search all
+        indices or select the first. Phenotype queries do not require a document index.
       summary: |
         Enqueue a new query. You can get the query result with a GET request to the getQueryResult path. The ID property of the provided query object is used as identifier throughout the life-cycle of the query.
       requestBody:
@@ -1390,6 +1449,8 @@ paths:
             schema:
               $ref: '#/components/schemas/Query'
       responses:
+        '400':
+          $ref: '#/components/responses/InvalidDocumentSelection'
         '201':
           description: The query was enqueued successfully.
           content:
@@ -1476,6 +1537,7 @@ paths:
     get:
       operationId: downloadQueryResult
       summary: Download the result of a particular query by ID.
+      description: Concept results retain their original query source/index context. IDs alone are not portable document references; result-record/CSV identity migration is separate work.
       responses:
         '200':
           description: The query result as ZIP file.
@@ -1500,6 +1562,12 @@ paths:
     get:
       operationId: getQueryResultIds
       summary: Get the resulting ids (e.g. documents) of a particular query by ID.
+      description: |
+        This generic map is unchanged. Concept document IDs are scoped by the persisted query binding
+        and original result context, not portable document references. Historical results must not
+        be rebound to current alias targets. An alias spanning indices with duplicate document IDs
+        cannot be represented faithfully by this map; supported alias constraints or a richer result
+        contract require a separate decision. Do not silently merge colliding IDs.
       responses:
         '200':
           description: Map of document ids to a list of offsets where entities were found.
@@ -2102,6 +2170,42 @@ components:
       description: Filter by data type.
       schema:
         $ref: '#/components/schemas/DataType'
+    documentCorpusId:
+      name: corpusId
+      in: query
+      description: |
+        Graph corpus context, distinct from data source, document index and pipeline ID. If omitted,
+        resolve unambiguously through a persisted pipeline binding or reject the request. Do not
+        search all corpora or infer corpus identity from source/index naming.
+      schema:
+        type: string
+        minLength: 1
+    documentIndex:
+      name: index
+      in: query
+      required: true
+      description: |
+        One explicit document index. Browsing, import and pipeline starts select an authorized
+        configured index or alias; exact-document lookups use the concrete originating index from
+        the document reference, not the current UI selection. Omission is an error even when only
+        one choice is configured. Empty, whitespace-only, invalid or disallowed values are errors.
+        No arrays, repeated selections, comma-list interpretation, wildcard expansion or fallback.
+        Selection validation and authorization are backend obligations. For exact references,
+        authorize the concrete index under source access rules even when discovery lists an alias.
+        A client-supplied reference alone grants no access. Alias rollover authorization needs a
+        backend policy; never silently redirect to current targets.
+      schema:
+        $ref: '#/components/schemas/DocumentIndex'
+    pipelineDataSource:
+      name: dataSource
+      in: query
+      description: |
+        Source ID for server-backed pipeline input, equivalent to multipart dataSourceId. Must resolve
+        explicitly or through an unambiguous existing source context; never infer it from payload name
+        or pipeline ID. Conflicting input settings are errors. Not globally required for uploads.
+      schema:
+        type: string
+        minLength: 1
     documentDataSource:
       name: dataSource
       in: query
@@ -3260,8 +3364,15 @@ components:
       description: |
         Represents a concept search query.
         A concept query references exactly one entity and specifies a language to search for.
+        The client must supply one authorized index for creation/execution; persist that selection.
+        Historical queries without index require explicit migration before conforming to this contract.
+        Never infer a sole choice, search all indices or take the first. Retain original result
+        context across alias changes; storing
+        only an alias name does not preserve historical scope. This persistence is a backend obligation.
       type: object
       properties:
+        index:
+          $ref: '#/components/schemas/DocumentIndex'
         entityId:
           description: The ID of the entity this query is performed with.
           type: string
@@ -3273,6 +3384,7 @@ components:
         - $ref: '#/components/schemas/Query'
       required:
         - entityId
+        - index
     QueryResult:
       description: Result of a query. It might indicate that the query has not finished yet or has failed.
       type: object
@@ -3328,6 +3440,19 @@ components:
           description: ID of the data source.
           type: string
           example: example_data_source
+        indices:
+          description: |
+            Authorized configured index/alias choices for document/concept sources, not a current
+            selection. Optional for phenotype/non-document sources. Discovery and execution must
+            respect source access; do not expose endpoints, ports, credentials or adapter configuration.
+            Names must not be whitespace-only (validated by the backend).
+          type: array
+          uniqueItems: true
+          items:
+            $ref: '#/components/schemas/DocumentIndex'
+          example:
+            - documents
+            - archive
         title:
           description: Human-readable title of the data source.
           type: string
@@ -3423,9 +3548,48 @@ components:
         graphDB:
           type: integer
           format: int64
-    Document:
+    DocumentIndex:
+      description: |
+        One nonblank document index or alias name, never an array or search expression. minLength
+        rejects empty strings; the backend must reject whitespace-only values without silently
+        trimming identities, validate selection against authorized configuration and resolve aliases.
+      type: string
+      minLength: 1
+      example: documents
+    DocumentReference:
+      description: |
+        Exact original document identity. index is the concrete backing index, which may differ
+        from a selected alias. All fields must be nonblank; whitespace-only validation and source
+        authorization are backend obligations. Do not silently trim or rewrite identities.
       type: object
       properties:
+        dataSourceId:
+          type: string
+          minLength: 1
+        index:
+          $ref: '#/components/schemas/DocumentIndex'
+        documentId:
+          type: string
+          minLength: 1
+      required:
+        - dataSourceId
+        - index
+        - documentId
+      example:
+        dataSourceId: example_data_source
+        index: documents-000001
+        documentId: doc-1
+    Document:
+      description: |
+        A document shared by responses and import payloads. Responses must populate reference once
+        backend migration is complete; its documentId must equal id. Reference remains optional and
+        read-only so uploads need no provenance; their destination comes from operation selection.
+      type: object
+      properties:
+        reference:
+          readOnly: true
+          allOf:
+            - $ref: '#/components/schemas/DocumentReference'
         id:
           type: string
         text:
@@ -3485,8 +3649,12 @@ components:
           description: Unique identifier of the pipeline.
           type: string
         dataSourceId:
-          description: 'ID of the data source, the pipeline is issued for.'
+          description: Source ID for server-backed input, equivalent to the JSON start's dataSource parameter. Must resolve for server input; not required for ZIP ingestion. Never infer it from pipelineId.
           type: string
+        index:
+          description: One explicit server input index or alias; always required at runtime for server-backed input, even with one configured choice. Schema-optional only for ZIP ingestion, where it is irrelevant. Reject conflicting supplied input settings.
+          allOf:
+            - $ref: '#/components/schemas/DocumentIndex'
         skipPresent:
           description: 'If a pipeline with the specified ID already exists, intermediate pipeline steps will be picked up.'
           type: boolean
@@ -3733,6 +3901,19 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ConceptGraphManagerStatus'
+    InvalidDocumentSelection:
+      description: |
+        Missing required selection; empty, whitespace-only, invalid or disallowed index; conflicting
+        source/index input or resume binding; or ambiguous graph corpus context. An allowed but
+        nonexistent import destination is subject to creation policy, not automatically disallowed.
+        Runtime validation, authorization and binding persistence require backend implementation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            code: 400
+            message: Select one authorized document index.
     NotFound:
       description: The specified resource was not found.
       content:

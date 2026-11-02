@@ -44,6 +44,12 @@ you need to make some modifications to your Maven installation in order to downl
     yarn add @onto-med/top-api
     ```
 
+## Document Index Selection
+
+See [the index-selection contract and migration notes](INDEX_SELECTION.md) for scalar selection,
+document provenance, compatibility changes, downstream obligations and offline contract checks.
+These schema changes do not imply end-to-end runtime support.
+
 ## Contribution and Development
 
 Please see our [Contributing Guide](https://github.com/Onto-Med/top-api/blob/main/CONTRIBUTING.md).
